@@ -30,14 +30,13 @@ const PendingApproval = () => {
         }
       } catch (err) {
         if (!axios.isCancel(err)) {
-          // Log errors only to telemetry systems or critical logs in production if needed
           console.error("Status synchronization sync dropped temporarily.");
         }
       }
     };
 
     const interval = setInterval(checkStatus, 5000);
-    checkStatus();
+    checkStatus(); // Immediate execution on mount
     
     return () => {
       isMounted = false;
