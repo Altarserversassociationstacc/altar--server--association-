@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { ClipLoader } from 'react-spinners';
 import { FaSync, FaTimes, FaDownload } from 'react-icons/fa';
-
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL?.replace(/\/$/, '') || 'http://localhost:5001';
 const Gallery = ({ isFullPage = false }) => {
   const [loading, setLoading] = useState(true);
   const [memories, setMemories] = useState([]);
@@ -13,7 +13,7 @@ const Gallery = ({ isFullPage = false }) => {
   useEffect(() => {
     const fetchGallery = async () => {
       try {
-        const res = await axios.get('http://localhost:5001/api/gallery');
+        const res = await axios.get(`${API_BASE_URL}/api/gallery`);
         setMemories(res.data);
       } catch (err) {
         console.error("Failed to fetch gallery:", err);
@@ -50,13 +50,13 @@ const Gallery = ({ isFullPage = false }) => {
   };
 
   return (
-    <section className={`py-16 bg-[#0a0a0a] text-white px-6 font-sans ${isFullPage ? 'min-h-screen pt-24' : ''}`}>
+    <section className={`py-16 bg-[#f8f5f2] dark:bg-[#0a0a0a] text-gray-900 dark:text-white px-6 font-sans transition-colors duration-500 ${isFullPage ? 'min-h-screen pt-24' : ''}`}>
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className={`text-center ${isFullPage ? 'mb-20' : 'mb-12'}`}>
           <h2 className="text-4xl md:text-5xl font-serif text-[#8b4513] mb-4">Gallery Archives</h2>
           <div className="h-1 w-20 bg-[#8b4513] mx-auto mb-6"></div>
-          <p className="text-[#d2b48c] text-lg md:text-xl font-light max-w-2xl mx-auto leading-relaxed">
+          <p className="text-[#8b4513] dark:text-[#d2b48c] text-lg md:text-xl font-light max-w-2xl mx-auto leading-relaxed">
             Memories from our sacred events and activities. Captured moments of our service at the Holy Altar and our fraternal life.
           </p>
         </div>
@@ -66,7 +66,7 @@ const Gallery = ({ isFullPage = false }) => {
           {loading ? (
             <div className="col-span-full flex flex-col items-center justify-center py-20">
               <ClipLoader color="#8b4513" size={60} />
-              <p className="mt-6 text-[#d2b48c] text-[10px] uppercase tracking-[0.5em] font-bold flex items-center gap-3">
+              <p className="mt-6 text-[#8b4513] dark:text-[#d2b48c] text-[10px] uppercase tracking-[0.5em] font-bold flex items-center gap-3">
                 <FaSync className="animate-spin text-[12px]" /> Opening the Archives
               </p>
             </div>
@@ -74,7 +74,7 @@ const Gallery = ({ isFullPage = false }) => {
             memories.slice(0, visibleCount).map((item) => (
             <div 
               key={item._id || item.id} 
-              className="group relative overflow-hidden border border-[#3d2b1f] aspect-square rounded-full bg-[#1a1a1a] cursor-pointer transition-transform duration-300 hover:scale-110 hover:z-10"
+              className="group relative overflow-hidden border border-[#e6d5c3] dark:border-[#3d2b1f] aspect-square rounded-full bg-gray-200 dark:bg-[#1a1a1a] cursor-pointer transition-transform duration-300 hover:scale-110 hover:z-10"
               onClick={() => setSelectedImage(item)}
             >
               {/* Image */}
@@ -85,11 +85,11 @@ const Gallery = ({ isFullPage = false }) => {
               />
               
               {/* Overlay Overlay */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col justify-center items-center text-center p-4 rounded-full">
+              <div className="absolute inset-0 bg-gradient-to-t from-white/90 dark:from-black via-white/50 dark:via-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col justify-center items-center text-center p-4 rounded-full">
                 <span className="text-[#8b4513] text-[8px] font-bold uppercase tracking-widest mb-1">
                   {item.category}
                 </span>
-                <h3 className="text-[10px] md:text-xs font-serif text-white px-1 leading-tight">{item.title}</h3>
+                <h3 className="text-[10px] md:text-xs font-serif text-gray-900 dark:text-white px-1 leading-tight">{item.title}</h3>
               </div>
 
               {/* Border decoration */}
@@ -104,7 +104,7 @@ const Gallery = ({ isFullPage = false }) => {
           <div className="mt-12 text-center">
             <button 
               onClick={() => setVisibleCount(prev => prev + 14)}
-              className="inline-block bg-transparent border border-[#3d2b1f] hover:border-[#8b4513] hover:bg-[#1a110b] text-[#d2b48c] px-8 py-3 rounded-lg uppercase tracking-widest text-[10px] font-bold transition-all duration-300 shadow-lg hover:-translate-y-0.5"
+              className="inline-block bg-transparent border border-[#d2b48c] dark:border-[#3d2b1f] hover:border-[#8b4513] hover:bg-white dark:hover:bg-[#1a110b] text-[#8b4513] dark:text-[#d2b48c] px-8 py-3 rounded-lg uppercase tracking-widest text-[10px] font-bold transition-all duration-300 shadow-lg hover:-translate-y-0.5"
             >
               Load More Moments
             </button>
@@ -114,19 +114,19 @@ const Gallery = ({ isFullPage = false }) => {
         {/* Fullscreen Modal */}
         {selectedImage && (
           <div 
-            className="fixed inset-0 z-[100] bg-black/95 backdrop-blur-sm flex items-center justify-center p-4 md:p-10 animate-fadeIn"
+            className="fixed inset-0 z-[100] bg-white/95 dark:bg-black/95 backdrop-blur-sm flex items-center justify-center p-4 md:p-10 animate-fadeIn"
             onClick={() => setSelectedImage(null)}
           >
             <div className="absolute top-6 right-6 flex gap-4">
               <button 
-                className="text-[#d2b48c] hover:text-white transition-colors p-2 bg-[#1a110b] rounded-full border border-[#3d2b1f] z-10"
+                className="text-[#8b4513] dark:text-[#d2b48c] hover:text-gray-900 dark:hover:text-white transition-colors p-2 bg-gray-100 dark:bg-[#1a110b] rounded-full border border-[#e6d5c3] dark:border-[#3d2b1f] z-10"
                 onClick={(e) => { e.stopPropagation(); handleDownload(getImageUrl(selectedImage.imageUrl), selectedImage.title); }}
                 title="Download Memory"
               >
                 <FaDownload size={20} />
               </button>
               <button 
-                className="text-[#d2b48c] hover:text-white transition-colors p-2 bg-[#1a110b] rounded-full border border-[#3d2b1f] z-10"
+                className="text-[#8b4513] dark:text-[#d2b48c] hover:text-gray-900 dark:hover:text-white transition-colors p-2 bg-gray-100 dark:bg-[#1a110b] rounded-full border border-[#e6d5c3] dark:border-[#3d2b1f] z-10"
                 onClick={() => setSelectedImage(null)}
               >
                 <FaTimes size={24} />
@@ -144,7 +144,7 @@ const Gallery = ({ isFullPage = false }) => {
               />
               <div className="text-center px-4">
                 <span className="text-[#8b4513] text-xs font-bold uppercase tracking-[0.3em] mb-2 block">{selectedImage.category || 'General'}</span>
-                <h3 className="text-2xl md:text-3xl font-serif text-white tracking-tight">{selectedImage.title}</h3>
+                <h3 className="text-2xl md:text-3xl font-serif text-gray-900 dark:text-white tracking-tight">{selectedImage.title}</h3>
               </div>
             </div>
           </div>
@@ -153,7 +153,7 @@ const Gallery = ({ isFullPage = false }) => {
         {/* Footer Link */}
         {!isFullPage && memories.length > 49 && (
           <div className="mt-16 text-center">
-            <Link to="/gallery" className="inline-block bg-transparent border border-[#3d2b1f] hover:border-[#8b4513] hover:bg-[#1a110b] text-[#d2b48c] px-8 py-3 rounded-lg uppercase tracking-widest text-[10px] font-bold transition-all duration-300">
+            <Link to="/gallery" className="inline-block bg-transparent border border-[#d2b48c] dark:border-[#3d2b1f] hover:border-[#8b4513] hover:bg-white dark:hover:bg-[#1a110b] text-[#8b4513] dark:text-[#d2b48c] px-8 py-3 rounded-lg uppercase tracking-widest text-[10px] font-bold transition-all duration-300">
               View Full Gallery
             </Link>
           </div>

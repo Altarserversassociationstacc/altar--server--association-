@@ -116,13 +116,13 @@ const VerifyEmail = () => {
   };
 
   return (
-    <div className="min-h-[calc(100vh-80px)] bg-[#041004] flex items-center justify-center p-6 relative overflow-hidden font-sans">
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[30rem] h-[30rem] bg-green-600 rounded-full blur-[150px] opacity-10 pointer-events-none"></div>
+    <div className="min-h-[calc(100vh-80px)] bg-[#f8f5f2] dark:bg-[#050505] flex items-center justify-center p-6 relative overflow-hidden font-sans transition-colors duration-500">
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[30rem] h-[30rem] bg-[#8b4513] rounded-full blur-[150px] opacity-10 pointer-events-none"></div>
       
-      <div className="max-w-md w-full bg-black/40 backdrop-blur-xl border border-white/10 rounded-3xl shadow-2xl overflow-hidden relative z-10 animate-fadeIn">
-        <div className="p-8 text-center border-b border-white/5 bg-green-900/10">
-          <h2 className="text-3xl font-serif text-white tracking-tight">Verify Access</h2>
-          <p className="text-green-500 text-[10px] mt-2 font-bold uppercase tracking-[0.2em]">Enter Authentication Code</p>
+      <div className="max-w-md w-full bg-white/60 dark:bg-black/40 backdrop-blur-xl border border-[#e6d5c3] dark:border-white/10 rounded-3xl shadow-2xl overflow-hidden relative z-10 animate-fadeIn transition-colors">
+        <div className="p-8 text-center border-b border-[#e6d5c3] dark:border-white/5 bg-[#8b4513]/5">
+          <h2 className="text-3xl font-serif text-gray-900 dark:text-white tracking-tight">Verify Access</h2>
+          <p className="text-[#8b4513] dark:text-[#d2b48c] text-[10px] mt-2 font-bold uppercase tracking-[0.2em]">Enter Authentication Code</p>
         </div>
 
         <div className="p-8">
@@ -130,9 +130,9 @@ const VerifyEmail = () => {
           {success && <div className="mb-6 p-3 bg-green-900/10 border border-green-900/50 text-green-500 text-xs rounded-sm text-center uppercase tracking-widest">{success}</div>}
           
           <form onSubmit={handleSubmit}>
-            <p className="text-gray-300 text-sm mb-6 font-light text-center leading-relaxed">
+            <p className="text-gray-700 dark:text-gray-300 text-sm mb-6 font-light text-center leading-relaxed">
               A 6-digit verification code has been sent to your registered email: <br/>
-              <span className="text-green-400 font-bold tracking-tight">{email}</span>
+              <span className="text-[#8b4513] dark:text-[#d2b48c] font-bold tracking-tight">{email}</span>
             </p>
 
             <div className="flex justify-between gap-2 mb-8" onPaste={handlePaste}>
@@ -145,7 +145,7 @@ const VerifyEmail = () => {
                   value={data}
                   onChange={(e) => handleChange(e.target, index)}
                   onKeyDown={(e) => handleKeyDown(e, index)}
-                  className="w-12 h-14 bg-white/5 border border-white/10 text-white text-2xl text-center font-mono rounded-xl focus:ring-2 focus:ring-green-500/50 focus:border-green-500 outline-none transition-all"
+                  className="w-12 h-14 bg-transparent dark:bg-white/5 border border-[#e6d5c3] dark:border-white/10 text-gray-900 dark:text-white text-2xl text-center font-mono rounded-xl focus:ring-2 focus:ring-[#8b4513]/50 focus:border-[#8b4513] outline-none transition-all"
                   required
                 />
               ))}
@@ -154,19 +154,19 @@ const VerifyEmail = () => {
             <button 
               type="submit" 
               disabled={loading || otp.join("").length !== 6} 
-              className="w-full bg-gradient-to-r from-green-700 to-green-600 hover:from-green-600 hover:to-green-500 text-white font-bold py-4 px-4 rounded-xl tracking-[0.2em] transition-all duration-300 uppercase text-[10px] shadow-lg hover:shadow-green-900/40 hover:-translate-y-0.5 disabled:opacity-50 disabled:hover:translate-y-0 flex items-center justify-center gap-2"
+              className="w-full bg-gradient-to-r from-[#8b4513] to-[#5c4033] hover:from-[#a0522d] hover:to-[#8b4513] text-white font-bold py-4 px-4 rounded-xl tracking-[0.2em] transition-all duration-300 uppercase text-[10px] shadow-lg hover:-translate-y-0.5 disabled:opacity-50 disabled:hover:translate-y-0 flex items-center justify-center gap-2"
             >
               {loading ? <PulseLoader color="#ffffff" size={8} margin={2} /> : <>Verify Account <FaArrowRight size={10} /></>}
             </button>
           </form>
           
-          <div className="mt-8 text-center pt-6 border-t border-white/5">
-            <p className="text-gray-400 text-xs font-light">
+          <div className="mt-8 text-center pt-6 border-t border-[#e6d5c3] dark:border-white/5">
+            <p className="text-gray-600 dark:text-gray-400 text-xs font-light">
               Didn't receive the code? 
               <button 
                 onClick={handleResend} 
                 disabled={resending || timer > 0} 
-                className="text-green-500 hover:text-white cursor-pointer transition-colors font-bold uppercase ml-2 disabled:opacity-50 disabled:cursor-not-allowed inline-flex items-center gap-1"
+                className="text-[#8b4513] dark:text-[#d2b48c] hover:opacity-80 cursor-pointer transition-colors font-bold uppercase ml-2 disabled:opacity-50 disabled:cursor-not-allowed inline-flex items-center gap-1"
               >
                 {resending ? 'Sending...' : timer > 0 ? `Resend Code in ${timer}s` : <><FaSyncAlt size={10} /> Resend Code</>}
               </button>

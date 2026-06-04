@@ -67,25 +67,25 @@ const Missa = () => {
 
   const renderSection = (section) => (
     <div key={section.title} className="mb-8">
-      <h3 className="text-xl font-serif text-[#8b4513] border-b border-[#2a1b12] pb-2 mb-4">{section.title}</h3>
-      <ul className="space-y-2 list-disc list-inside text-gray-400">
+      <h3 className="text-xl font-serif text-[#8b4513] border-b border-[#e6d5c3] dark:border-[#2a1b12] pb-2 mb-4 transition-colors">{section.title}</h3>
+      <ul className="space-y-2 list-disc list-inside text-gray-700 dark:text-gray-400">
         {section.items.map(item => <li key={item} className="text-sm">{item}</li>)}
       </ul>
     </div>
   );
 
   return (
-    <div className="animate-fadeIn">
-      <h2 className="text-2xl font-serif text-[#d2b48c] mb-6">{currentContent.title}</h2>
-      <div className="bg-[#111111]/80 backdrop-blur-md border border-[#2a1b12] p-6 md:p-8 rounded-xl shadow-xl max-w-4xl">
+    <div className="animate-fadeIn transition-colors duration-500">
+      <h2 className="text-2xl font-serif text-[#8b4513] dark:text-[#d2b48c] mb-6">{currentContent.title}</h2>
+      <div className="bg-white/80 dark:bg-[#111111]/80 backdrop-blur-md border border-[#e6d5c3] dark:border-[#2a1b12] p-6 md:p-8 rounded-xl shadow-xl max-w-4xl transition-colors">
         
         {/* Language Switcher */}
-        <div className="flex justify-center gap-2 mb-8 p-2 bg-[#161616] border border-[#2a1b12] rounded-lg max-w-xs mx-auto">
+        <div className="flex justify-center gap-2 mb-8 p-2 bg-gray-100 dark:bg-[#161616] border border-[#e6d5c3] dark:border-[#2a1b12] rounded-lg max-w-xs mx-auto transition-colors">
           {Object.keys(content).map(lang => (
             <button
               key={lang}
               onClick={() => setLanguage(lang)}
-              className={`w-full py-2 text-xs font-bold uppercase tracking-widest rounded-md transition-all ${language === lang ? 'bg-blue-800 text-white shadow-lg' : 'text-gray-500 hover:bg-[#2a1b12]'}`}
+              className={`w-full py-2 text-xs font-bold uppercase tracking-widest rounded-md transition-all ${language === lang ? 'bg-[#8b4513] text-white shadow-lg' : 'text-gray-600 dark:text-gray-500 hover:bg-white dark:hover:bg-[#2a1b12]'}`}
             >
               {lang}
             </button>

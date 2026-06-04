@@ -86,19 +86,19 @@ const Settings = ({ user, setCurrentUser }) => {
   };
 
   return (
-    <div className="animate-fadeIn font-sans select-none pb-12">
-      <h2 className="text-2xl font-serif text-[#d2b48c] mb-6">Account Settings</h2>
+    <div className="animate-fadeIn font-sans select-none pb-12 transition-colors duration-500">
+      <h2 className="text-2xl font-serif text-[#8b4513] dark:text-[#d2b48c] mb-6">Account Settings</h2>
 
-      <div className="bg-[#111111]/80 backdrop-blur-md border border-[#2a1b12] p-6 md:p-8 rounded-xl shadow-xl max-w-4xl">
+      <div className="bg-white/80 dark:bg-[#111111]/80 backdrop-blur-md border border-[#e6d5c3] dark:border-[#2a1b12] p-6 md:p-8 rounded-xl shadow-xl max-w-4xl transition-colors">
         
         {/* Profile Avatar Frame Layer Section */}
-        <div className="flex flex-col md:flex-row items-center gap-6 mb-8 border-b border-[#2a1b12] pb-8">
+        <div className="flex flex-col md:flex-row items-center gap-6 mb-8 border-b border-[#e6d5c3] dark:border-[#2a1b12] pb-8">
           <div className="relative group cursor-pointer">
-            <div className="w-24 h-24 rounded-full border-2 border-[#3d2b1f] overflow-hidden bg-[#1a110b] flex items-center justify-center group-hover:border-green-500 transition-colors shadow-inner">
+            <div className="w-24 h-24 rounded-full border-2 border-[#d2b48c] dark:border-[#3d2b1f] overflow-hidden bg-gray-100 dark:bg-[#1a110b] flex items-center justify-center group-hover:border-[#8b4513] transition-colors shadow-inner">
               {formData.profilePicture ? (
                 <img src={formData.profilePicture} alt="Profile" className="w-full h-full object-cover" />
               ) : (
-                <FaUser className="text-[#d2b48c] w-1/2 h-1/2" />
+                <FaUser className="text-[#8b4513] dark:text-[#d2b48c] w-1/2 h-1/2" />
               )}
             </div>
             {!isProfileLocked && (
@@ -109,10 +109,10 @@ const Settings = ({ user, setCurrentUser }) => {
             )}
           </div>
           <div className="text-center md:text-left">
-            <h3 className="text-white font-serif text-xl">{formData.fullName || user?.fullName}</h3>
-            <p className="text-gray-400 text-[10px] uppercase tracking-widest mt-1">Reg No: {formData.regNo || 'Pending'}</p>
+            <h3 className="text-gray-900 dark:text-white font-serif text-xl">{formData.fullName || user?.fullName}</h3>
+            <p className="text-gray-600 dark:text-gray-400 text-[10px] uppercase tracking-widest mt-1">Reg No: {formData.regNo || 'Pending'}</p>
             {!isProfileLocked && (
-              <label className="mt-3 inline-block px-4 py-2 bg-[#161616] border border-[#2a1b12] hover:border-[#3d2b1f] text-xs font-bold text-[#d2b48c] uppercase tracking-widest rounded-lg transition-all cursor-pointer">
+              <label className="mt-3 inline-block px-4 py-2 bg-transparent dark:bg-[#161616] border border-[#e6d5c3] dark:border-[#2a1b12] hover:border-[#8b4513] dark:hover:border-[#3d2b1f] text-xs font-bold text-[#8b4513] dark:text-[#d2b48c] uppercase tracking-widest rounded-lg transition-all cursor-pointer shadow-sm">
                 Change Avatar
                 <input type="file" accept="image/*" onChange={handleImageChange} className="hidden" />
               </label>
@@ -130,7 +130,7 @@ const Settings = ({ user, setCurrentUser }) => {
             </div>
             <div>
               <h3 className="text-yellow-600 font-bold uppercase tracking-widest text-xs">Portal Control Status: {user?.accountStatus}</h3>
-              <p className="text-gray-400 text-[10px] mt-1">{user?.statusReason || 'Your profile details have been securely locked. Please contact the Administrator if you need to make modifications.'}</p>
+                <p className="text-gray-700 dark:text-gray-400 text-[10px] mt-1">{user?.statusReason || 'Your profile details have been securely locked. Please contact the Administrator if you need to make modifications.'}</p>
             </div>
           </div>
         )}
@@ -142,7 +142,7 @@ const Settings = ({ user, setCurrentUser }) => {
               <label className="block text-[#8b4513] text-[10px] font-bold uppercase tracking-widest mb-2">Full Name</label>
               <div className="relative group">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-500"><FaUser size={14} /></div>
-                <input type="text" name="fullName" value={formData.fullName} onChange={handleChange} className="w-full bg-[#161616] border border-[#2a1b12] rounded-lg pl-10 p-3.5 text-sm text-[#d2b48c] outline-none focus:border-green-500 transition-all" required />
+                <input type="text" name="fullName" value={formData.fullName} onChange={handleChange} className="w-full bg-transparent dark:bg-[#161616] border border-[#e6d5c3] dark:border-[#2a1b12] rounded-lg pl-10 p-3.5 text-sm text-gray-900 dark:text-[#d2b48c] outline-none focus:border-[#8b4513] transition-all" required />
               </div>
             </div>
 
@@ -150,25 +150,25 @@ const Settings = ({ user, setCurrentUser }) => {
               <label className="block text-[#8b4513] text-[10px] font-bold uppercase tracking-widest mb-2">Phone Number</label>
               <div className="relative group">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-500"><FaPhoneAlt size={14} /></div>
-                <input type="tel" name="phoneNumber" value={formData.phoneNumber} onChange={handleChange} className="w-full bg-[#161616] border border-[#2a1b12] rounded-lg pl-10 p-3.5 text-sm text-[#d2b48c] outline-none focus:border-green-500 transition-all" required />
+                <input type="tel" name="phoneNumber" value={formData.phoneNumber} onChange={handleChange} className="w-full bg-transparent dark:bg-[#161616] border border-[#e6d5c3] dark:border-[#2a1b12] rounded-lg pl-10 p-3.5 text-sm text-gray-900 dark:text-[#d2b48c] outline-none focus:border-[#8b4513] transition-all" required />
               </div>
             </div>
 
             <div>
               <label className="block text-[#8b4513] text-[10px] font-bold uppercase tracking-widest mb-2">Department</label>
-              <input type="text" name="department" value={formData.department} onChange={handleChange} className="w-full bg-[#161616] border border-[#2a1b12] rounded-lg p-3.5 text-sm text-[#d2b48c] outline-none focus:border-green-500 transition-all" required />
+              <input type="text" name="department" value={formData.department} onChange={handleChange} className="w-full bg-transparent dark:bg-[#161616] border border-[#e6d5c3] dark:border-[#2a1b12] rounded-lg p-3.5 text-sm text-gray-900 dark:text-[#d2b48c] outline-none focus:border-[#8b4513] transition-all" required />
             </div>
 
             <div>
               <label className="block text-[#8b4513] text-[10px] font-bold uppercase tracking-widest mb-2">Registration No</label>
-              <input type="text" name="regNo" value={formData.regNo} onChange={handleChange} className="w-full bg-[#161616] border border-[#2a1b12] rounded-lg p-3.5 text-sm text-[#d2b48c] outline-none focus:border-green-500 transition-all" required />
+              <input type="text" name="regNo" value={formData.regNo} onChange={handleChange} className="w-full bg-transparent dark:bg-[#161616] border border-[#e6d5c3] dark:border-[#2a1b12] rounded-lg p-3.5 text-sm text-gray-900 dark:text-[#d2b48c] outline-none focus:border-[#8b4513] transition-all" required />
             </div>
 
             <div className="relative">
               <label className="block text-[#8b4513] text-[10px] font-bold uppercase tracking-widest mb-2">Current Academic Level</label>
               <div className="relative">
-                <select name="currentLevel" value={formData.currentLevel} onChange={handleChange} className="w-full bg-[#161616] border border-[#2a1b12] rounded-lg p-3.5 pr-10 text-sm text-[#d2b48c] outline-none focus:border-green-500 transition-all appearance-none cursor-pointer">
-                  {academicLevels.map(lvl => <option key={lvl} value={lvl} className="bg-[#111111]">{lvl}</option>)}
+                <select name="currentLevel" value={formData.currentLevel} onChange={handleChange} className="w-full bg-transparent dark:bg-[#161616] border border-[#e6d5c3] dark:border-[#2a1b12] rounded-lg p-3.5 pr-10 text-sm text-gray-900 dark:text-[#d2b48c] outline-none focus:border-[#8b4513] transition-all appearance-none cursor-pointer">
+                  {academicLevels.map(lvl => <option key={lvl} value={lvl} className="bg-white dark:bg-[#111111]">{lvl}</option>)}
                 </select>
                 <div className="absolute inset-y-0 right-0 pr-4 flex items-center pointer-events-none text-[#8b4513]"><FaChevronDown size={10} /></div>
               </div>
@@ -177,8 +177,8 @@ const Settings = ({ user, setCurrentUser }) => {
             <div className="relative">
               <label className="block text-[#8b4513] text-[10px] font-bold uppercase tracking-widest mb-2">Level Inducted into Guild</label>
               <div className="relative">
-                <select name="levelInducted" value={formData.levelInducted} onChange={handleChange} className="w-full bg-[#161616] border border-[#2a1b12] rounded-lg p-3.5 pr-10 text-sm text-[#d2b48c] outline-none focus:border-green-500 transition-all appearance-none cursor-pointer">
-                  {academicLevels.map(lvl => <option key={lvl} value={lvl} className="bg-[#111111]">{lvl}</option>)}
+                <select name="levelInducted" value={formData.levelInducted} onChange={handleChange} className="w-full bg-transparent dark:bg-[#161616] border border-[#e6d5c3] dark:border-[#2a1b12] rounded-lg p-3.5 pr-10 text-sm text-gray-900 dark:text-[#d2b48c] outline-none focus:border-[#8b4513] transition-all appearance-none cursor-pointer">
+                  {academicLevels.map(lvl => <option key={lvl} value={lvl} className="bg-white dark:bg-[#111111]">{lvl}</option>)}
                 </select>
                 <div className="absolute inset-y-0 right-0 pr-4 flex items-center pointer-events-none text-[#8b4513]"><FaChevronDown size={10} /></div>
               </div>
@@ -186,27 +186,27 @@ const Settings = ({ user, setCurrentUser }) => {
 
             <div>
               <label className="block text-[#8b4513] text-[10px] font-bold uppercase tracking-widest mb-2">Date of Birth</label>
-              <input type="date" name="dateOfBirth" value={formData.dateOfBirth} onChange={handleChange} className="w-full bg-[#161616] border border-[#2a1b12] rounded-lg p-3.5 text-sm text-[#d2b48c] outline-none focus:border-green-500 transition-all" required />
+              <input type="date" name="dateOfBirth" value={formData.dateOfBirth} onChange={handleChange} className="w-full bg-transparent dark:bg-[#161616] border border-[#e6d5c3] dark:border-[#2a1b12] rounded-lg p-3.5 text-sm text-gray-900 dark:text-[#d2b48c] outline-none focus:border-[#8b4513] transition-all" required />
             </div>
 
             <div>
               <label className="block text-[#8b4513] text-[10px] font-bold uppercase tracking-widest mb-2">State of Origin</label>
-              <input type="text" name="stateOfOrigin" value={formData.stateOfOrigin} onChange={handleChange} className="w-full bg-[#161616] border border-[#2a1b12] rounded-lg p-3.5 text-sm text-[#d2b48c] outline-none focus:border-green-500 transition-all" required />
+              <input type="text" name="stateOfOrigin" value={formData.stateOfOrigin} onChange={handleChange} className="w-full bg-transparent dark:bg-[#161616] border border-[#e6d5c3] dark:border-[#2a1b12] rounded-lg p-3.5 text-sm text-gray-900 dark:text-[#d2b48c] outline-none focus:border-[#8b4513] transition-all" required />
             </div>
 
             <div>
               <label className="block text-[#8b4513] text-[10px] font-bold uppercase tracking-widest mb-2">Home Town</label>
-              <input type="text" name="homeTown" value={formData.homeTown} onChange={handleChange} className="w-full bg-[#161616] border border-[#2a1b12] rounded-lg p-3.5 text-sm text-[#d2b48c] outline-none focus:border-green-500 transition-all" required />
+              <input type="text" name="homeTown" value={formData.homeTown} onChange={handleChange} className="w-full bg-transparent dark:bg-[#161616] border border-[#e6d5c3] dark:border-[#2a1b12] rounded-lg p-3.5 text-sm text-gray-900 dark:text-[#d2b48c] outline-none focus:border-[#8b4513] transition-all" required />
             </div>
 
             <div>
               <label className="block text-[#8b4513] text-[10px] font-bold uppercase tracking-widest mb-2">Home Diocese</label>
-              <input type="text" name="homeDiocese" value={formData.homeDiocese} onChange={handleChange} className="w-full bg-[#161616] border border-[#2a1b12] rounded-lg p-3.5 text-sm text-[#d2b48c] outline-none focus:border-green-500 transition-all" required />
+              <input type="text" name="homeDiocese" value={formData.homeDiocese} onChange={handleChange} className="w-full bg-transparent dark:bg-[#161616] border border-[#e6d5c3] dark:border-[#2a1b12] rounded-lg p-3.5 text-sm text-gray-900 dark:text-[#d2b48c] outline-none focus:border-[#8b4513] transition-all" required />
             </div>
 
             <div className="md:col-span-2">
               <label className="block text-[#8b4513] text-[10px] font-bold uppercase tracking-widest mb-2">School Residential Address</label>
-              <input type="text" name="schoolResidentialAddress" value={formData.schoolResidentialAddress} onChange={handleChange} className="w-full bg-[#161616] border border-[#2a1b12] rounded-lg p-3.5 text-sm text-[#d2b48c] outline-none focus:border-green-500 transition-all" required />
+              <input type="text" name="schoolResidentialAddress" value={formData.schoolResidentialAddress} onChange={handleChange} className="w-full bg-transparent dark:bg-[#161616] border border-[#e6d5c3] dark:border-[#2a1b12] rounded-lg p-3.5 text-sm text-gray-900 dark:text-[#d2b48c] outline-none focus:border-[#8b4513] transition-all" required />
             </div>
 
             {/* Field: Permanent Residence - Typo Fixed here */}
@@ -217,18 +217,18 @@ const Settings = ({ user, setCurrentUser }) => {
                 name="permanentResidence" 
                 value={formData.permanentResidence} 
                 onChange={handleChange} 
-                className="w-full bg-[#161616] border border-[#2a1b12] rounded-lg p-3.5 text-sm text-[#d2b48c] outline-none focus:border-green-500 transition-all" 
+                className="w-full bg-transparent dark:bg-[#161616] border border-[#e6d5c3] dark:border-[#2a1b12] rounded-lg p-3.5 text-sm text-gray-900 dark:text-[#d2b48c] outline-none focus:border-[#8b4513] transition-all" 
                 required 
               />
             </div>
           </fieldset>
           
           {!isProfileLocked && (
-            <div className="flex flex-col md:flex-row gap-4 pt-4 border-t border-[#2a1b12]">
-              <button type="submit" disabled={loading} className="w-full md:w-auto px-8 py-4 bg-gradient-to-r from-green-800 to-green-700 hover:from-green-700 hover:to-green-600 text-white text-xs font-bold uppercase tracking-widest rounded-lg shadow-lg flex items-center justify-center gap-3 transition-all">
+            <div className="flex flex-col md:flex-row gap-4 pt-4 border-t border-[#e6d5c3] dark:border-[#2a1b12]">
+              <button type="submit" disabled={loading} className="w-full md:w-auto px-8 py-4 bg-gradient-to-r from-[#8b4513] to-[#5c4033] hover:from-[#a0522d] hover:to-[#8b4513] text-white text-xs font-bold uppercase tracking-widest rounded-lg shadow-lg flex items-center justify-center gap-3 transition-all">
                 {loading ? <PulseLoader color="#ffffff" size={8} margin={2} /> : <><FaSave /> Save Changes</>}
               </button>
-              <button type="button" onClick={handleLockProfile} disabled={loading} className="w-full md:w-auto px-8 py-4 bg-[#161616] border border-red-900/50 hover:bg-red-900/20 text-red-500 text-xs font-bold uppercase tracking-widest rounded-lg transition-all flex items-center justify-center gap-3">
+              <button type="button" onClick={handleLockProfile} disabled={loading} className="w-full md:w-auto px-8 py-4 bg-transparent dark:bg-[#161616] border border-red-900/50 hover:bg-red-50 dark:hover:bg-red-900/20 text-red-500 text-xs font-bold uppercase tracking-widest rounded-lg transition-all flex items-center justify-center gap-3">
                 <FaLock /> Lock Profile
               </button>
             </div>

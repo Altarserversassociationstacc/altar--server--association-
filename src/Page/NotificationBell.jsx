@@ -44,7 +44,7 @@ const NotificationBell = ({ currentUser }) => {
       <button 
         onClick={() => setIsNotificationOpen(!isNotificationOpen)}
         onBlur={() => setTimeout(() => setIsNotificationOpen(false), 300)}
-        className="relative p-2 text-[#d2b48c] hover:text-white transition-colors focus:outline-none group"
+        className="relative p-2 text-[#8b4513] dark:text-[#d2b48c] hover:text-gray-900 dark:hover:text-white transition-colors focus:outline-none group"
       >
         <FaBell size={18} className="group-hover:scale-110 transition-transform duration-300" />
         {unreadCount > 0 && (
@@ -55,9 +55,9 @@ const NotificationBell = ({ currentUser }) => {
       </button>
 
       {isNotificationOpen && (
-        <div className="absolute -right-20 sm:right-0 mt-3 w-[90vw] max-w-[320px] bg-black/60 backdrop-blur-2xl border border-white/10 rounded-xl shadow-2xl overflow-hidden animate-fadeIn z-50">
-          <div className="p-4 border-b border-white/5 flex items-center justify-between bg-black/20">
-            <h3 className="text-[#d2b48c] font-serif text-sm">Notifications</h3>
+        <div className="absolute -right-20 sm:right-0 mt-3 w-[90vw] max-w-[320px] bg-white/95 dark:bg-black/60 backdrop-blur-2xl border border-[#e6d5c3] dark:border-white/10 rounded-xl shadow-2xl overflow-hidden animate-fadeIn z-50">
+          <div className="p-4 border-b border-[#e6d5c3] dark:border-white/5 flex items-center justify-between bg-gray-50 dark:bg-black/20">
+            <h3 className="text-[#8b4513] dark:text-[#d2b48c] font-serif text-sm">Notifications</h3>
             {unreadCount > 0 && (
               <button onClick={handleMarkAllRead} className="text-[9px] text-blue-500 hover:text-blue-400 font-bold uppercase tracking-widest transition-colors">
                 Mark all read
@@ -68,12 +68,12 @@ const NotificationBell = ({ currentUser }) => {
             {notifications.length > 0 ? (
               <div className="flex flex-col">
                 {notifications.map((notif) => (
-                  <div key={notif.id} className={`p-4 border-b border-white/5 last:border-b-0 transition-colors ${notif.unread ? 'bg-white/5' : 'hover:bg-white/10'}`}>
+                  <div key={notif.id} className={`p-4 border-b border-[#e6d5c3] dark:border-white/5 last:border-b-0 transition-colors ${notif.unread ? 'bg-gray-100 dark:bg-white/5' : 'hover:bg-gray-50 dark:hover:bg-white/10'}`}>
                     <div className="flex justify-between items-start mb-1">
-                      <h4 className={`text-xs font-bold ${notif.unread ? 'text-white' : 'text-gray-400'}`}>{notif.title}</h4>
+                      <h4 className={`text-xs font-bold ${notif.unread ? 'text-gray-900 dark:text-white' : 'text-gray-600 dark:text-gray-400'}`}>{notif.title}</h4>
                       <span className="text-[9px] text-gray-500 uppercase tracking-widest ml-2 whitespace-nowrap">{notif.time}</span>
                     </div>
-                    <p className="text-[10px] text-gray-400 leading-relaxed mt-1">{notif.message}</p>
+                    <p className="text-[10px] text-gray-600 dark:text-gray-400 leading-relaxed mt-1">{notif.message}</p>
                   </div>
                 ))}
               </div>

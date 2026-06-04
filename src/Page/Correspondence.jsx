@@ -43,17 +43,17 @@ const Correspondence = ({ user }) => {
   }
 
   return (
-    <div className="animate-fadeIn">
-      <h2 className="text-2xl font-serif text-[#d2b48c] mb-6">Official Correspondence</h2>
+    <div className="animate-fadeIn transition-colors duration-500">
+      <h2 className="text-2xl font-serif text-[#8b4513] dark:text-[#d2b48c] mb-6">Official Correspondence</h2>
 
-      <div className="bg-black/40 backdrop-blur-xl border border-white/10 p-6 md:p-8 rounded-xl shadow-2xl max-w-4xl">
-        <div className="flex items-center gap-3 mb-6 border-b border-white/5 pb-6">
-          <div className="w-12 h-12 rounded-full bg-blue-900/20 border border-blue-900/50 flex items-center justify-center shrink-0">
-            <FaEnvelope className="text-blue-500" size={20} />
+      <div className="bg-white/60 dark:bg-black/40 backdrop-blur-xl border border-[#e6d5c3] dark:border-white/10 p-6 md:p-8 rounded-xl shadow-2xl max-w-4xl transition-colors">
+        <div className="flex items-center gap-3 mb-6 border-b border-[#e6d5c3] dark:border-white/5 pb-6">
+          <div className="w-12 h-12 rounded-full bg-[#8b4513]/10 dark:bg-blue-900/20 border border-[#8b4513]/30 dark:border-blue-900/50 flex items-center justify-center shrink-0">
+            <FaEnvelope className="text-[#8b4513] dark:text-blue-500" size={20} />
           </div>
           <div>
-            <h3 className="text-white font-serif text-xl">Send a Message</h3>
-            <p className="text-gray-400 text-[10px] uppercase tracking-widest mt-1">Submit excuses or general inquiries directly to the executives</p>
+            <h3 className="text-gray-900 dark:text-white font-serif text-xl">Send a Message</h3>
+            <p className="text-gray-600 dark:text-gray-400 text-[10px] uppercase tracking-widest mt-1">Submit excuses or general inquiries directly to the executives</p>
           </div>
         </div>
 
@@ -73,13 +73,13 @@ const Correspondence = ({ user }) => {
             <div>
               <label className="block text-[#8b4513] text-[10px] font-bold uppercase tracking-widest mb-2">Recipient (Executive)</label>
               <div className="relative group">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-500 group-focus-within:text-blue-500 transition-colors">
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-[#8b4513] dark:text-gray-500 opacity-70 group-focus-within:opacity-100 transition-colors">
                   <FaUserTie size={14} />
                 </div>
                 <select
                   value={form.recipient}
                   onChange={(e) => setForm({ ...form, recipient: e.target.value })}
-                  className="w-full bg-white/5 border border-white/10 rounded-lg pl-10 p-3.5 text-sm text-[#d2b48c] focus:ring-2 focus:ring-blue-900/50 focus:border-blue-500 outline-none transition-all appearance-none cursor-pointer"
+                  className="w-full bg-transparent dark:bg-white/5 border border-[#e6d5c3] dark:border-white/10 rounded-lg pl-10 p-3.5 text-sm text-gray-900 dark:text-[#d2b48c] focus:ring-2 focus:ring-[#8b4513]/50 focus:border-[#8b4513] outline-none transition-all appearance-none cursor-pointer"
                 >
                   <option value="Secretary General">Secretary General</option>
                   <option value="PRO">Public Relations Officer (PRO)</option>
@@ -94,7 +94,7 @@ const Correspondence = ({ user }) => {
               <select
                 value={form.subject}
                 onChange={(e) => setForm({ ...form, subject: e.target.value })}
-                className="w-full bg-white/5 border border-white/10 rounded-lg p-3.5 text-sm text-[#d2b48c] focus:ring-2 focus:ring-blue-900/50 focus:border-blue-500 outline-none transition-all cursor-pointer"
+                className="w-full bg-transparent dark:bg-white/5 border border-[#e6d5c3] dark:border-white/10 rounded-lg p-3.5 text-sm text-gray-900 dark:text-[#d2b48c] focus:ring-2 focus:ring-[#8b4513]/50 focus:border-[#8b4513] outline-none transition-all cursor-pointer"
               >
                 <option value="Excuse from Meeting">Excuse from Meeting</option>
                 <option value="Excuse from Mass/Duty">Excuse from Mass/Duty</option>
@@ -112,14 +112,14 @@ const Correspondence = ({ user }) => {
               placeholder="Type your message here... (If excusing yourself, state the exact date and reason)."
               value={form.message}
               onChange={(e) => setForm({ ...form, message: e.target.value })}
-              className="w-full bg-white/5 border border-white/10 rounded-lg p-4 text-sm text-[#d2b48c] focus:ring-2 focus:ring-blue-900/50 focus:border-blue-500 outline-none transition-all resize-none"
+              className="w-full bg-transparent dark:bg-white/5 border border-[#e6d5c3] dark:border-white/10 rounded-lg p-4 text-sm text-gray-900 dark:text-[#d2b48c] focus:ring-2 focus:ring-[#8b4513]/50 focus:border-[#8b4513] outline-none transition-all resize-none"
             ></textarea>
           </div>
 
           <button
             type="submit"
             disabled={status.loading}
-            className="w-full md:w-auto px-8 py-4 bg-gradient-to-r from-blue-900 to-blue-800 hover:from-blue-800 hover:to-blue-700 text-white text-xs font-bold uppercase tracking-widest rounded-lg shadow-lg hover:-translate-y-0.5 transition-all duration-300 disabled:opacity-50 disabled:hover:translate-y-0 flex items-center justify-center gap-3"
+            className="w-full md:w-auto px-8 py-4 bg-gradient-to-r from-[#8b4513] to-[#5c4033] hover:from-[#a0522d] hover:to-[#8b4513] text-white text-xs font-bold uppercase tracking-widest rounded-lg shadow-lg hover:-translate-y-0.5 transition-all duration-300 disabled:opacity-50 disabled:hover:translate-y-0 flex items-center justify-center gap-3"
           >
             {status.loading ? <PulseLoader color="#ffffff" size={8} margin={2} /> : <><FaPaperPlane /> Send Correspondence</>}
           </button>

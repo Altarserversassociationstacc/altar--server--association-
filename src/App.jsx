@@ -35,11 +35,11 @@ const Layout = ({ children }) => {
   const isDashboard = location.pathname.startsWith('/dashboard');
 
   return (
-    <div className="min-h-screen bg-black text-white font-sans selection:bg-[#8b4513] selection:text-white flex flex-col">
+    <div className="min-h-screen flex flex-col font-sans transition-colors duration-500 bg-[#f8f5f2] dark:bg-[#050505] text-gray-900 dark:text-white selection:bg-[#8b4513]/30 selection:text-[#d2b48c]">
       {!isDashboard && <Header />}
-      <div className="flex-1 flex flex-col">
+      <main className="flex-1 flex flex-col">
         {children}
-      </div>
+      </main>
       {!isDashboard && <Footer />}
     </div>
   );

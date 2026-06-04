@@ -27,13 +27,13 @@ const Feedback = ({ user }) => {
   };
 
   return (
-    <div className="animate-fadeIn flex flex-col items-center justify-center py-12 md:py-24">
-      <div className="bg-[#111111]/80 backdrop-blur-md border border-[#2a1b12] p-8 md:p-12 rounded-2xl shadow-2xl text-center max-w-lg w-full">
-        <div className="w-20 h-20 bg-blue-900/20 border border-blue-900/50 rounded-full flex items-center justify-center mx-auto mb-6">
-          <FaEnvelope className="text-blue-500 text-3xl" />
+    <div className="animate-fadeIn flex flex-col items-center justify-center py-12 md:py-24 transition-colors duration-500">
+      <div className="bg-white/80 dark:bg-[#111111]/80 backdrop-blur-md border border-[#e6d5c3] dark:border-[#2a1b12] p-8 md:p-12 rounded-2xl shadow-2xl text-center max-w-lg w-full transition-colors">
+        <div className="w-20 h-20 bg-[#8b4513]/10 dark:bg-blue-900/20 border border-[#8b4513]/30 dark:border-blue-900/50 rounded-full flex items-center justify-center mx-auto mb-6">
+          <FaEnvelope className="text-[#8b4513] dark:text-blue-500 text-3xl" />
         </div>
-        <h2 className="text-3xl font-serif text-[#d2b48c] mb-2 tracking-tight">Suggestions & Complaints</h2>
-        <p className="text-gray-400 text-xs mb-10 font-light uppercase tracking-widest leading-relaxed">
+        <h2 className="text-3xl font-serif text-[#8b4513] dark:text-[#d2b48c] mb-2 tracking-tight">Suggestions & Complaints</h2>
+        <p className="text-gray-600 dark:text-gray-400 text-xs mb-10 font-light uppercase tracking-widest leading-relaxed">
           Your voice matters. Send an automatic email to the association's executives with your suggestions or complaints.
         </p>
 
@@ -56,13 +56,13 @@ const Feedback = ({ user }) => {
                placeholder="Share your thoughts, suggestions, or complaints here..."
                value={message}
                onChange={(e) => setMessage(e.target.value)}
-               className="w-full bg-[#161616] border border-[#2a1b12] rounded-lg p-4 text-sm text-[#d2b48c] focus:ring-2 focus:ring-blue-900/50 focus:border-blue-500 outline-none transition-all resize-none shadow-inner"
+               className="w-full bg-transparent dark:bg-[#161616] border border-[#e6d5c3] dark:border-[#2a1b12] rounded-lg p-4 text-sm text-gray-900 dark:text-[#d2b48c] focus:ring-2 focus:ring-[#8b4513]/50 focus:border-[#8b4513] outline-none transition-all resize-none shadow-inner"
              ></textarea>
           </div>
           <button 
             type="submit" 
             disabled={status.loading}
-            className="w-full py-4 bg-gradient-to-r from-blue-900 to-blue-800 hover:from-blue-800 hover:to-blue-700 text-white rounded-xl font-bold uppercase tracking-widest text-xs shadow-lg transition-all border border-blue-900/50 flex items-center justify-center gap-3 disabled:opacity-50"
+            className="w-full py-4 bg-gradient-to-r from-[#8b4513] to-[#5c4033] hover:from-[#a0522d] hover:to-[#8b4513] text-white rounded-xl font-bold uppercase tracking-widest text-xs shadow-lg transition-all flex items-center justify-center gap-3 disabled:opacity-50"
           >
             {status.loading ? <PulseLoader color="#ffffff" size={8} margin={2} /> : <><FaPaperPlane /> Send Feedback</>}
           </button>

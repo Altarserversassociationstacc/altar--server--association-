@@ -82,7 +82,7 @@ const ContactUs = () => {
   };
 
   return (
-    <section id="contact" className="py-24 bg-[#050505] text-white px-6 font-sans relative overflow-hidden selection:bg-[#8b4513]/30 selection:text-[#d2b48c]">
+    <section id="contact" className="py-24 bg-[#f8f5f2] dark:bg-[#050505] text-gray-900 dark:text-white px-6 font-sans relative overflow-hidden selection:bg-[#8b4513]/30 selection:text-[#d2b48c] transition-colors duration-500">
       {/* Studio Ambient Background Light */}
       <div className="absolute top-40 right-10 w-[35rem] h-[35rem] bg-[#8b4513] rounded-full blur-[180px] opacity-5 pointer-events-none"></div>
       
@@ -91,7 +91,7 @@ const ContactUs = () => {
         {/* Module Header */}
         <div className="text-center mb-20 space-y-3">
           <h2 className="text-4xl md:text-5xl font-serif text-[#8b4513] uppercase tracking-wider">Get In Touch</h2>
-          <p className="text-[#d2b48c]/80 tracking-[0.25em] uppercase text-[10px] font-bold max-w-md mx-auto leading-relaxed">
+          <p className="text-[#8b4513] dark:text-[#d2b48c]/80 tracking-[0.25em] uppercase text-[10px] font-bold max-w-md mx-auto leading-relaxed">
             Have questions? We're here to help. Reach out to us anytime!
           </p>
         </div>
@@ -104,38 +104,38 @@ const ContactUs = () => {
             href="https://maps.google.com/?q=St.+Thomas+Aquinas+Catholic+Chapel+FUTO" 
             target="_blank" 
             rel="noopener noreferrer"
-            className="bg-[#111111]/80 backdrop-blur-md border border-[#2a1b12] rounded-2xl p-8 text-center shadow-xl group hover:border-[#8b4513]/40 hover:-translate-y-1 transition-all duration-300 block"
+            className="bg-white/80 dark:bg-[#111111]/80 backdrop-blur-md border border-[#e6d5c3] dark:border-[#2a1b12] rounded-2xl p-8 text-center shadow-xl group hover:border-[#8b4513]/40 hover:-translate-y-1 transition-all duration-300 block"
           >
             <div className="w-12 h-12 bg-[#8b4513]/10 border border-[#8b4513]/20 rounded-full flex items-center justify-center mx-auto mb-5 text-[#8b4513] group-hover:bg-[#8b4513] group-hover:text-white transition-all duration-300">
               <FaMapMarkerAlt size={18} />
             </div>
-            <h3 className="text-[#d2b48c] font-serif text-lg mb-2 tracking-wide">Visit Us</h3>
-            <p className="text-gray-400 text-xs font-light">Sanctuary / Sacristy, STACC Parish HQ</p>
+            <h3 className="text-[#8b4513] dark:text-[#d2b48c] font-serif text-lg mb-2 tracking-wide">Visit Us</h3>
+            <p className="text-gray-600 dark:text-gray-400 text-xs font-light">Sanctuary / Sacristy, STACC Parish HQ</p>
             <span className="text-[9px] text-[#8b4513] font-bold uppercase tracking-widest mt-4 block opacity-0 group-hover:opacity-100 transition-opacity">Open Maps Direction →</span>
           </a>
 
           {/* EMAIL CARD */}
           <a 
             href="mailto:altarserversassociationstacc1@gmail.com?subject=Website%20Inquiry"
-            className="bg-[#111111]/80 backdrop-blur-md border border-[#2a1b12] rounded-2xl p-8 text-center shadow-xl group hover:border-[#8b4513]/40 hover:-translate-y-1 transition-all duration-300 block"
+            className="bg-white/80 dark:bg-[#111111]/80 backdrop-blur-md border border-[#e6d5c3] dark:border-[#2a1b12] rounded-2xl p-8 text-center shadow-xl group hover:border-[#8b4513]/40 hover:-translate-y-1 transition-all duration-300 block"
           >
             <div className="w-12 h-12 bg-[#8b4513]/10 border border-[#8b4513]/20 rounded-full flex items-center justify-center mx-auto mb-5 text-[#8b4513] group-hover:bg-[#8b4513] group-hover:text-white transition-all duration-300">
               <FaEnvelope size={16} />
             </div>
-            <h3 className="text-[#d2b48c] font-serif text-lg mb-2 tracking-wide">Email Us</h3>
-            <p className="text-gray-400 text-xs font-light truncate max-w-full px-2 hover:text-white transition-colors">altarserversassociationstacc1@gmail.com</p>
+            <h3 className="text-[#8b4513] dark:text-[#d2b48c] font-serif text-lg mb-2 tracking-wide">Email Us</h3>
+            <p className="text-gray-600 dark:text-gray-400 text-xs font-light truncate max-w-full px-2 hover:text-[#8b4513] dark:hover:text-white transition-colors">altarserversassociationstacc1@gmail.com</p>
             <span className="text-[9px] text-[#8b4513] font-bold uppercase tracking-widest mt-4 block opacity-0 group-hover:opacity-100 transition-opacity">Launch Mail Client →</span>
           </a>
 
           {/* PHONE CARD */}
-          <div className="bg-[#111111]/80 backdrop-blur-md border border-[#2a1b12] rounded-2xl p-8 text-center shadow-xl group hover:border-[#8b4513]/40 hover:-translate-y-1 transition-all duration-300 block">
+          <div className="bg-white/80 dark:bg-[#111111]/80 backdrop-blur-md border border-[#e6d5c3] dark:border-[#2a1b12] rounded-2xl p-8 text-center shadow-xl group hover:border-[#8b4513]/40 hover:-translate-y-1 transition-all duration-300 block">
             <div className="w-12 h-12 bg-[#8b4513]/10 border border-[#8b4513]/20 rounded-full flex items-center justify-center mx-auto mb-5 text-[#8b4513] group-hover:bg-[#8b4513] group-hover:text-white transition-all duration-300">
               <FaPhoneAlt size={15} />
             </div>
-            <h3 className="text-[#d2b48c] font-serif text-lg mb-2 tracking-wide">Call Us</h3>
-            <div className="flex flex-col space-y-1 text-gray-400 text-xs font-light">
-              <a href="tel:+2349127056239" className="hover:text-white transition-colors">+234 912 705 6239</a>
-              <a href="tel:+2348138957245" className="hover:text-white transition-colors">+234 813 895 7245</a>
+            <h3 className="text-[#8b4513] dark:text-[#d2b48c] font-serif text-lg mb-2 tracking-wide">Call Us</h3>
+            <div className="flex flex-col space-y-1 text-gray-600 dark:text-gray-400 text-xs font-light">
+              <a href="tel:+2349127056239" className="hover:text-[#8b4513] dark:hover:text-white transition-colors">+234 912 705 6239</a>
+              <a href="tel:+2348138957245" className="hover:text-[#8b4513] dark:hover:text-white transition-colors">+234 813 895 7245</a>
             </div>
             <span className="text-[9px] text-[#8b4513] font-bold uppercase tracking-widest mt-4 block opacity-0 group-hover:opacity-100 transition-opacity">Click a Line to Call →</span>
           </div>
@@ -146,9 +146,9 @@ const ContactUs = () => {
         <div className="grid lg:grid-cols-2 gap-16 items-start mb-24">
           
           {/* Functional Email Form */}
-          <div className="bg-[#111111]/90 backdrop-blur-md p-8 md:p-10 border border-[#2a1b12] rounded-2xl shadow-2xl relative overflow-hidden">
+          <div className="bg-white/90 dark:bg-[#111111]/90 backdrop-blur-md p-8 md:p-10 border border-[#e6d5c3] dark:border-[#2a1b12] rounded-2xl shadow-2xl relative overflow-hidden">
             <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-[#8b4513] via-[#5c4033] to-transparent" />
-            <h3 className="text-xl font-serif text-[#d2b48c] mb-8 tracking-wide">Send Us a Message</h3>
+            <h3 className="text-xl font-serif text-[#8b4513] dark:text-[#d2b48c] mb-8 tracking-wide">Send Us a Message</h3>
             
             {status.message && (
               <div className={`mb-6 p-4 rounded-xl border text-[10px] font-bold uppercase tracking-widest text-center ${
@@ -162,26 +162,26 @@ const ContactUs = () => {
               <div className="grid md:grid-cols-2 gap-5">
                 <div className="space-y-2">
                   <label className="text-[10px] uppercase text-[#8b4513] font-bold ml-0.5">Full Name *</label>
-                  <input required name="fullName" value={formFields.fullName} onChange={handleInputChange} type="text" placeholder="John Doe" className="w-full bg-[#161616] border border-[#2a1b12] rounded-xl p-3.5 text-sm text-[#d2b48c] focus:border-[#8b4513] outline-none transition-colors" />
+                  <input required name="fullName" value={formFields.fullName} onChange={handleInputChange} type="text" placeholder="John Doe" className="w-full bg-transparent dark:bg-[#161616] border border-[#e6d5c3] dark:border-[#2a1b12] rounded-xl p-3.5 text-sm text-gray-900 dark:text-[#d2b48c] focus:border-[#8b4513] outline-none transition-colors" />
                 </div>
                 <div className="space-y-2">
                   <label className="text-[10px] uppercase text-[#8b4513] font-bold ml-0.5">Email Address *</label>
-                  <input required name="emailAddress" value={formFields.emailAddress} onChange={handleInputChange} type="email" placeholder="john@example.com" className="w-full bg-[#161616] border border-[#2a1b12] rounded-xl p-3.5 text-sm text-[#d2b48c] focus:border-[#8b4513] outline-none transition-colors" />
+                  <input required name="emailAddress" value={formFields.emailAddress} onChange={handleInputChange} type="email" placeholder="john@example.com" className="w-full bg-transparent dark:bg-[#161616] border border-[#e6d5c3] dark:border-[#2a1b12] rounded-xl p-3.5 text-sm text-gray-900 dark:text-[#d2b48c] focus:border-[#8b4513] outline-none transition-colors" />
                 </div>
               </div>
               <div className="grid md:grid-cols-2 gap-5">
                 <div className="space-y-2">
                   <label className="text-[10px] uppercase text-[#8b4513] font-bold ml-0.5">Phone Number</label>
-                  <input name="phoneNumber" value={formFields.phoneNumber} onChange={handleInputChange} type="tel" placeholder="+234 ..." className="w-full bg-[#161616] border border-[#2a1b12] rounded-xl p-3.5 text-sm text-[#d2b48c] focus:border-[#8b4513] outline-none transition-colors" />
+                  <input name="phoneNumber" value={formFields.phoneNumber} onChange={handleInputChange} type="tel" placeholder="+234 ..." className="w-full bg-transparent dark:bg-[#161616] border border-[#e6d5c3] dark:border-[#2a1b12] rounded-xl p-3.5 text-sm text-gray-900 dark:text-[#d2b48c] focus:border-[#8b4513] outline-none transition-colors" />
                 </div>
                 <div className="space-y-2">
                   <label className="text-[10px] uppercase text-[#8b4513] font-bold ml-0.5">Subject *</label>
-                  <input required name="subject" value={formFields.subject} onChange={handleInputChange} type="text" placeholder="Inquiry category" className="w-full bg-[#161616] border border-[#2a1b12] rounded-xl p-3.5 text-sm text-[#d2b48c] focus:border-[#8b4513] outline-none transition-colors" />
+                  <input required name="subject" value={formFields.subject} onChange={handleInputChange} type="text" placeholder="Inquiry category" className="w-full bg-transparent dark:bg-[#161616] border border-[#e6d5c3] dark:border-[#2a1b12] rounded-xl p-3.5 text-sm text-gray-900 dark:text-[#d2b48c] focus:border-[#8b4513] outline-none transition-colors" />
                 </div>
               </div>
               <div className="space-y-2">
                 <label className="text-[10px] uppercase text-[#8b4513] font-bold ml-0.5">Message Content *</label>
-                <textarea required name="message" value={formFields.message} onChange={handleInputChange} rows="4" placeholder="Type structural details regarding your inquiry..." className="w-full bg-[#161616] border border-[#2a1b12] rounded-xl p-3.5 text-sm text-[#d2b48c] focus:border-[#8b4513] outline-none resize-none transition-colors" />
+                <textarea required name="message" value={formFields.message} onChange={handleInputChange} rows="4" placeholder="Type structural details regarding your inquiry..." className="w-full bg-transparent dark:bg-[#161616] border border-[#e6d5c3] dark:border-[#2a1b12] rounded-xl p-3.5 text-sm text-gray-900 dark:text-[#d2b48c] focus:border-[#8b4513] outline-none resize-none transition-colors" />
               </div>
               
               <button disabled={loading} type="submit" className="w-full bg-gradient-to-r from-[#8b4513] to-[#5c4033] hover:brightness-110 py-4 rounded-xl font-bold uppercase text-[10px] tracking-[0.25em] text-white shadow-lg transform active:scale-[0.99] transition-all duration-300 mt-2 disabled:opacity-50 flex items-center justify-center">
@@ -193,16 +193,16 @@ const ContactUs = () => {
           {/* Core Media Directories Sidebar */}
           <div className="space-y-12 lg:pl-6">
             <div className="space-y-4">
-              <h3 className="text-xl font-serif text-[#d2b48c] tracking-wide">Find Us</h3>
-              <div className="bg-[#111111]/60 backdrop-blur-sm rounded-2xl p-6 border border-[#2a1b12] border-l-4 border-l-[#8b4513] shadow-lg space-y-1">
-                <h4 className="font-bold text-xs uppercase text-gray-200">Campus Chapel Parish Location</h4>
-                <p className="text-gray-400 text-xs italic font-normal">St. Thomas Aquinas Catholic Chapel (STACC), Altar Servers Sacristy, FUTO Campus, Owerri.</p>
+              <h3 className="text-xl font-serif text-[#8b4513] dark:text-[#d2b48c] tracking-wide">Find Us</h3>
+              <div className="bg-white/60 dark:bg-[#111111]/60 backdrop-blur-sm rounded-2xl p-6 border border-[#e6d5c3] dark:border-[#2a1b12] border-l-4 border-l-[#8b4513] shadow-lg space-y-1">
+                <h4 className="font-bold text-xs uppercase text-gray-800 dark:text-gray-200">Campus Chapel Parish Location</h4>
+                <p className="text-gray-600 dark:text-gray-400 text-xs italic font-normal">St. Thomas Aquinas Catholic Chapel (STACC), Altar Servers Sacristy, FUTO Campus, Owerri.</p>
               </div>
             </div>
 
             <div className="space-y-4">
-              <h3 className="text-xl font-serif text-[#d2b48c] tracking-wide">Connect With Us</h3>
-              <p className="text-gray-400 text-xs leading-relaxed font-light">
+              <h3 className="text-xl font-serif text-[#8b4513] dark:text-[#d2b48c] tracking-wide">Connect With Us</h3>
+              <p className="text-gray-600 dark:text-gray-400 text-xs leading-relaxed font-light">
                 Follow our official social networks for live media updates, liturgical training alerts, and spiritual service opportunities within our guild.
               </p>
               
@@ -220,7 +220,7 @@ const ContactUs = () => {
                     target="_blank" 
                     rel="noopener noreferrer" 
                     title={social.label}
-                    className="w-11 h-11 rounded-xl border border-[#2a1b12] bg-[#111111] flex items-center justify-center text-gray-400 hover:border-[#8b4513] hover:bg-[#8b4513] hover:text-white transform active:scale-90 transition-all duration-300 shadow-md"
+                    className="w-11 h-11 rounded-xl border border-[#e6d5c3] dark:border-[#2a1b12] bg-white dark:bg-[#111111] flex items-center justify-center text-gray-600 dark:text-gray-400 hover:border-[#8b4513] dark:hover:border-[#8b4513] hover:bg-[#8b4513] hover:text-white transform active:scale-90 transition-all duration-300 shadow-md"
                   >
                     {social.icon}
                   </a>
@@ -231,18 +231,18 @@ const ContactUs = () => {
         </div>
 
         {/* FAQ Presentation Layer Block */}
-        <div className="max-w-4xl mx-auto border-t border-[#2a1b12] pt-20">
+        <div className="max-w-4xl mx-auto border-t border-[#e6d5c3] dark:border-[#2a1b12] pt-20 transition-colors duration-500">
           <h3 className="text-3xl font-serif text-center text-[#8b4513] uppercase tracking-wider mb-12">Frequently Asked Questions</h3>
           <div className="space-y-2">
             {faqs.map((faq, index) => {
               const isOpen = activeFaq === index;
               return (
-                <div key={index} className="border-b border-[#2a1b12]/60 last:border-none">
+                <div key={index} className="border-b border-[#e6d5c3] dark:border-[#2a1b12]/60 last:border-none transition-colors duration-500">
                   <button 
                     onClick={() => setActiveFaq(isOpen ? null : index)}
-                    className="w-full py-5 flex justify-between items-center text-left hover:text-[#d2b48c] group transition-colors focus:outline-none"
+                    className="w-full py-5 flex justify-between items-center text-left hover:text-[#8b4513] dark:hover:text-[#d2b48c] group transition-colors focus:outline-none"
                   >
-                    <span className="font-serif text-base tracking-wide text-gray-200 group-hover:text-[#d2b48c] transition-colors">{faq.question}</span>
+                    <span className="font-serif text-base tracking-wide text-gray-800 dark:text-gray-200 group-hover:text-[#8b4513] dark:group-hover:text-[#d2b48c] transition-colors">{faq.question}</span>
                     <span className="text-[#8b4513] ml-4 flex-shrink-0 transition-transform duration-300">
                       {isOpen ? <FaChevronUp size={12} /> : <FaChevronDown size={12} />}
                     </span>
@@ -250,7 +250,7 @@ const ContactUs = () => {
                   
                   {/* Accordion Expansion Slider */}
                   <div className={`overflow-hidden transition-all duration-500 max-h-0 ${isOpen ? 'max-h-40 pb-6' : ''}`}>
-                    <p className="text-gray-400 text-xs leading-relaxed font-light px-0.5">
+                    <p className="text-gray-600 dark:text-gray-400 text-xs leading-relaxed font-light px-0.5">
                       {faq.answer}
                     </p>
                   </div>

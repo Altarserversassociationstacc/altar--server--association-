@@ -57,16 +57,16 @@ const ExecutiveSection = () => {
   }, [currentSession]);
 
   return (
-    <section className="relative py-32 bg-[#050505] px-6 border-t border-[#2a1b12] overflow-hidden group/hero">
+    <section className="relative py-32 bg-[#f8f5f2] dark:bg-[#050505] px-6 border-t border-[#e6d5c3] dark:border-[#2a1b12] overflow-hidden group/hero transition-colors duration-500">
       {/* Professional Hero Background with subtle zoom effect */}
       <div 
-        className="absolute inset-0 opacity-40 bg-cover bg-center bg-no-repeat pointer-events-none transition-transform duration-1000 group-hover/hero:scale-105"
+        className="absolute inset-0 opacity-20 dark:opacity-40 bg-cover bg-center bg-no-repeat pointer-events-none transition-transform duration-1000 group-hover/hero:scale-105"
         style={{ backgroundImage: `url(${heroBg})` }}
       />
       
       {/* Layered Overlays for Cinematic Depth & Contrast */}
-      <div className="absolute inset-0 bg-gradient-to-b from-[#050505] via-transparent to-[#050505] pointer-events-none" />
-      <div className="absolute inset-0 bg-black/30 backdrop-blur-[1px] pointer-events-none" />
+      <div className="absolute inset-0 bg-gradient-to-b from-[#f8f5f2] dark:from-[#050505] via-transparent to-[#f8f5f2] dark:to-[#050505] pointer-events-none transition-colors duration-500" />
+      <div className="absolute inset-0 bg-white/30 dark:bg-black/30 backdrop-blur-[1px] pointer-events-none transition-colors duration-500" />
 
       <div className="relative z-10 max-w-6xl mx-auto text-center">
         
@@ -77,14 +77,14 @@ const ExecutiveSection = () => {
               Current Administration
             </p>
           </div>
-          <h2 className="text-4xl md:text-5xl font-serif text-[#d2b48c] tracking-tighter">
+          <h2 className="text-4xl md:text-5xl font-serif text-[#8b4513] dark:text-[#d2b48c] tracking-tighter">
             Meet the Executives
           </h2>
           <p className="text-[#8b4513] text-xs font-bold uppercase tracking-[0.4em] opacity-80">
             Academic Session {currentSession}
           </p>
           {groupPhoto?.executiveName && (
-            <h3 className="text-[#d2b48c] text-xl md:text-2xl font-serif italic pt-2 animate-fadeIn">
+            <h3 className="text-[#8b4513] dark:text-[#d2b48c] text-xl md:text-2xl font-serif italic pt-2 animate-fadeIn">
               {groupPhoto.executiveName}
             </h3>
           )}
@@ -100,7 +100,7 @@ const ExecutiveSection = () => {
           ) : groupPhoto ? (
             <Link 
               to="/executives" 
-              className="group relative block w-full max-w-5xl rounded-[2rem] overflow-hidden border border-[#2a1b12] shadow-2xl transition-all duration-700 hover:border-[#8b4513]/50"
+              className="group relative block w-full max-w-5xl rounded-[2rem] overflow-hidden border border-[#e6d5c3] dark:border-[#2a1b12] shadow-2xl transition-all duration-700 hover:border-[#8b4513]/50"
             >
               <img 
                 src={groupPhoto.imageUrl} 
@@ -109,16 +109,16 @@ const ExecutiveSection = () => {
               />
               
               {/* Overlays */}
-              <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-transparent to-transparent opacity-80"></div>
+              <div className="absolute inset-0 bg-gradient-to-t from-[#f8f5f2] dark:from-[#050505] via-transparent to-transparent opacity-80 transition-colors duration-500"></div>
               
               <div className="absolute bottom-8 inset-x-0 flex flex-col items-center px-6">
-                 <div className="flex items-center gap-4 bg-black/60 backdrop-blur-xl px-8 py-4 rounded-full border border-[#8b4513]/20 transition-all group-hover:bg-[#8b4513]/10">
+                 <div className="flex items-center gap-4 bg-white/80 dark:bg-black/60 backdrop-blur-xl px-8 py-4 rounded-full border border-[#8b4513]/20 transition-all group-hover:bg-[#8b4513]/10">
                     <FaUsers className="text-[#8b4513] text-lg" />
                     <div className="text-left">
-                      <p className="text-[#d2b48c] font-black uppercase text-[10px] tracking-widest leading-none">
+                      <p className="text-[#8b4513] dark:text-[#d2b48c] font-black uppercase text-[10px] tracking-widest leading-none">
                         View Executive Directory
                       </p>
-                      <p className="text-gray-500 text-[9px] uppercase mt-1">
+                      <p className="text-gray-600 dark:text-gray-500 text-[9px] uppercase mt-1">
                         Session {groupPhoto.sessionYear}
                       </p>
                     </div>
@@ -128,18 +128,18 @@ const ExecutiveSection = () => {
             </Link>
           ) : (
             /* Professional Empty State */
-            <div className="w-full max-w-4xl py-20 px-8 rounded-[2rem] bg-[#0a0a0a] border border-dashed border-[#2a1b12] flex flex-col items-center">
-              <div className="w-16 h-16 rounded-full bg-[#111111] border border-[#2a1b12] flex items-center justify-center text-[#8b4513] mb-6">
+            <div className="w-full max-w-4xl py-20 px-8 rounded-[2rem] bg-white dark:bg-[#0a0a0a] border border-dashed border-[#e6d5c3] dark:border-[#2a1b12] flex flex-col items-center transition-colors duration-500">
+              <div className="w-16 h-16 rounded-full bg-gray-50 dark:bg-[#111111] border border-[#e6d5c3] dark:border-[#2a1b12] flex items-center justify-center text-[#8b4513] mb-6 transition-colors">
                 <FaUsers size={28} className="opacity-50" />
               </div>
-              <h4 className="text-2xl font-serif text-[#d2b48c] mb-3">Cabinet Archives Pending</h4>
-              <p className="text-gray-500 text-sm max-w-md leading-relaxed mb-8">
+              <h4 className="text-2xl font-serif text-[#8b4513] dark:text-[#d2b48c] mb-3">Cabinet Archives Pending</h4>
+              <p className="text-gray-600 dark:text-gray-500 text-sm max-w-md leading-relaxed mb-8">
                 The official portrait for the {currentSession} session is being processed. 
                 In the meantime, you may explore our historical leadership database.
               </p>
               <Link 
                 to="/executives" 
-                className="flex items-center gap-3 bg-[#111111] hover:bg-[#1a110b] border border-[#2a1b12] hover:border-[#8b4513] text-[#d2b48c] px-10 py-4 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all"
+                className="flex items-center gap-3 bg-gray-50 dark:bg-[#111111] hover:bg-white dark:hover:bg-[#1a110b] border border-[#e6d5c3] dark:border-[#2a1b12] hover:border-[#8b4513] text-[#8b4513] dark:text-[#d2b48c] px-10 py-4 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all shadow-sm"
               >
                 Access Archives <FaArrowRight />
               </Link>

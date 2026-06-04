@@ -1,17 +1,26 @@
 import { defineConfig } from 'vite';
-import react from '@vitejs/plugin-react'; //  Correct name
-import tailwindcss from '@tailwindcss/vite'
+import react from '@vitejs/plugin-react';
+import tailwindcss from '@tailwindcss/vite';
 
 export default defineConfig({
-  plugins: [react(), tailwindcss()],
+  plugins: [
+    react(), 
+    tailwindcss()
+  ],
   server: {
-    host: 'localhost',
+    // 🌐 Standardized for both laptop and local network testing
+    host: '0.0.0.0', 
     port: 5173,
+    strictPort: true,
     hmr: {
-      // 🔒 Forces the live connection thread to map to standard localhost strings
+      // 🔒 Ensures Hot Module Replacement works smoothly with local DNS
       host: 'localhost',
       protocol: 'ws',
       port: 5173
     }
+  },
+  // ⚡ Optimization for faster local feature building
+  optimizeDeps: {
+    include: ['react', 'react-dom']
   }
 });

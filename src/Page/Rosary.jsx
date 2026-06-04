@@ -125,17 +125,17 @@ const Rosary = () => {
   const currentContent = content[language];
 
   return (
-    <div className="animate-fadeIn">
-      <h2 className="text-2xl font-serif text-[#d2b48c] mb-6">{currentContent.title}</h2>
-      <div className="bg-black/40 backdrop-blur-xl border border-white/10 p-6 md:p-8 rounded-xl shadow-2xl max-w-4xl">
+    <div className="animate-fadeIn transition-colors duration-500">
+      <h2 className="text-2xl font-serif text-[#8b4513] dark:text-[#d2b48c] mb-6">{currentContent.title}</h2>
+      <div className="bg-white/60 dark:bg-black/40 backdrop-blur-xl border border-[#e6d5c3] dark:border-white/10 p-6 md:p-8 rounded-xl shadow-2xl max-w-4xl transition-colors">
         
         {/* Language Switcher */}
-        <div className="flex justify-center gap-2 mb-8 p-2 bg-white/5 border border-white/10 rounded-lg max-w-xs mx-auto">
+        <div className="flex justify-center gap-2 mb-8 p-2 bg-white dark:bg-white/5 border border-[#e6d5c3] dark:border-white/10 rounded-lg max-w-xs mx-auto transition-colors">
           {Object.keys(content).map(lang => (
             <button
               key={lang}
               onClick={() => setLanguage(lang)}
-              className={`w-full py-2 text-xs font-bold uppercase tracking-widest rounded-md transition-all ${language === lang ? 'bg-blue-800 text-white shadow-lg' : 'text-gray-500 hover:bg-[#2a1b12]'}`}
+              className={`w-full py-2 text-xs font-bold uppercase tracking-widest rounded-md transition-all ${language === lang ? 'bg-[#8b4513] text-white shadow-lg' : 'text-gray-600 dark:text-gray-500 hover:bg-gray-100 dark:hover:bg-[#2a1b12]'}`}
             >
               {lang}
             </button>
@@ -143,25 +143,25 @@ const Rosary = () => {
         </div>
 
         {/* Render Prayers */}
-        <div className="space-y-6 text-gray-300 text-sm leading-loose border-b border-white/5 pb-10">
-          <h3 className="text-xl font-serif text-[#8b4513] mb-6 border-b border-white/5 inline-block pb-2">The Prayers</h3>
+        <div className="space-y-6 text-gray-800 dark:text-gray-300 text-sm leading-loose border-b border-[#e6d5c3] dark:border-white/5 pb-10 transition-colors">
+          <h3 className="text-xl font-serif text-[#8b4513] mb-6 border-b border-[#e6d5c3] dark:border-white/5 inline-block pb-2">The Prayers</h3>
           {currentContent.prayers.map((prayer, index) => (
-            <div key={index} className="bg-white/5 p-4 rounded-lg border border-white/10">
-              <h4 className="font-bold text-[#d2b48c] mb-2 uppercase tracking-widest text-[10px]">{prayer.title}</h4>
-              <p className={index === 0 ? "italic text-gray-400" : ""}>{prayer.text}</p>
+            <div key={index} className="bg-white dark:bg-white/5 p-4 rounded-lg border border-[#e6d5c3] dark:border-white/10 shadow-sm dark:shadow-none transition-colors">
+              <h4 className="font-bold text-[#8b4513] dark:text-[#d2b48c] mb-2 uppercase tracking-widest text-[10px]">{prayer.title}</h4>
+              <p className={index === 0 ? "italic text-gray-600 dark:text-gray-400" : ""}>{prayer.text}</p>
             </div>
           ))}
         </div>
 
         {/* Render Mystery Categories in a Grid */}
         <div className="mt-10 animate-fadeIn">
-          <h3 className="text-xl font-serif text-[#8b4513] mb-6 border-b border-white/5 inline-block pb-2">The Mysteries</h3>
+          <h3 className="text-xl font-serif text-[#8b4513] mb-6 border-b border-[#e6d5c3] dark:border-white/5 inline-block pb-2">The Mysteries</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {currentContent.mysteryCategories.map((category, idx) => (
-              <div key={idx} className="bg-white/5 p-6 rounded-xl border border-white/10 hover:border-white/20 transition-all">
-                <h4 className="text-lg font-serif text-[#d2b48c]">{category.title}</h4>
-                <p className="text-xs text-gray-500 mb-4">{category.day}</p>
-                <ol className="space-y-3 list-decimal list-inside text-gray-400">
+              <div key={idx} className="bg-white dark:bg-white/5 p-6 rounded-xl border border-[#e6d5c3] dark:border-white/10 hover:border-[#8b4513]/40 dark:hover:border-white/20 transition-all shadow-sm dark:shadow-none">
+                <h4 className="text-lg font-serif text-[#8b4513] dark:text-[#d2b48c]">{category.title}</h4>
+                <p className="text-xs text-gray-500 dark:text-gray-500 mb-4">{category.day}</p>
+                <ol className="space-y-3 list-decimal list-inside text-gray-700 dark:text-gray-400">
                   {category.mysteries.map((mystery, mIdx) => (
                     <li key={mIdx} className="text-sm">{mystery}</li>
                   ))}

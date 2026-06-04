@@ -88,14 +88,14 @@ const CompleteProfile = () => {
 
   const renderInputField = (name, type, placeholder, Icon) => (
     <div className="mb-4">
-      <label className="text-[10px] text-green-700 font-bold uppercase ml-1 mb-1 block">{placeholder}</label>
+      <label className="text-[10px] text-[#8b4513] font-bold uppercase ml-1 mb-1 block">{placeholder}</label>
       <div className="relative group">
-        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-green-700 group-focus-within:text-green-400 transition-colors">
+        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-[#8b4513] dark:text-[#d2b48c] opacity-70 group-focus-within:opacity-100 transition-colors">
           <Icon size={14} />
         </div>
         <input
           type={type}
-          className="w-full bg-white/5 border border-white/10 rounded-xl p-3 pl-9 text-gray-300 text-sm focus:border-green-500 focus:ring-2 focus:ring-green-500/50 outline-none transition-all"
+          className="w-full bg-transparent dark:bg-white/5 border border-[#e6d5c3] dark:border-white/10 rounded-xl p-3 pl-9 text-gray-900 dark:text-gray-300 text-sm focus:border-[#8b4513] focus:ring-2 focus:ring-[#8b4513]/50 outline-none transition-all"
           placeholder={placeholder}
           name={name}
           value={formData[name]}
@@ -108,25 +108,25 @@ const CompleteProfile = () => {
 
   const renderSelectField = (name, placeholder, options, Icon) => (
     <div className="mb-4">
-      <label className="text-[10px] text-green-700 font-bold uppercase ml-1 mb-1 block">{placeholder}</label>
+      <label className="text-[10px] text-[#8b4513] font-bold uppercase ml-1 mb-1 block">{placeholder}</label>
       <div className="relative group">
-        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-green-700 group-focus-within:text-green-400 transition-colors">
+        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-[#8b4513] dark:text-[#d2b48c] opacity-70 group-focus-within:opacity-100 transition-colors">
           <Icon size={14} />
         </div>
         <select
           name={name}
           value={formData[name]}
           onChange={handleChange}
-          className="w-full bg-[#111911] border border-white/10 rounded-xl p-3 pl-9 pr-10 text-gray-300 text-sm focus:border-green-500 focus:ring-2 focus:ring-green-500/50 outline-none transition-all appearance-none cursor-pointer"
+          className="w-full bg-transparent dark:bg-[#111911] border border-[#e6d5c3] dark:border-white/10 rounded-xl p-3 pl-9 pr-10 text-gray-900 dark:text-gray-300 text-sm focus:border-[#8b4513] focus:ring-2 focus:ring-[#8b4513]/50 outline-none transition-all appearance-none cursor-pointer"
           required
         >
           {options.map((option) => (
-            <option key={option} value={option} className="bg-[#041004] text-white">
+            <option key={option} value={option} className="bg-white dark:bg-[#050505] text-gray-900 dark:text-white">
               {option}
             </option>
           ))}
         </select>
-        <div className="absolute inset-y-0 right-0 pr-4 flex items-center pointer-events-none text-green-700">
+        <div className="absolute inset-y-0 right-0 pr-4 flex items-center pointer-events-none text-[#8b4513]">
           <FaChevronDown size={10} />
         </div>
       </div>
@@ -136,14 +136,14 @@ const CompleteProfile = () => {
   if (!user) return null;
 
   return (
-    <div className="min-h-screen bg-[#041004] flex items-center justify-center p-6 relative overflow-hidden font-sans">
+    <div className="min-h-[calc(100vh-80px)] bg-[#f8f5f2] dark:bg-[#050505] flex items-center justify-center p-6 relative overflow-hidden font-sans transition-colors duration-500">
       
       {/* Background Ambience Overlays */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[30rem] h-[30rem] bg-green-600 rounded-full blur-[150px] opacity-10 pointer-events-none"></div>
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[30rem] h-[30rem] bg-[#8b4513] rounded-full blur-[150px] opacity-10 pointer-events-none"></div>
       
-      <div className="w-full max-w-lg bg-black/40 backdrop-blur-xl border border-white/10 rounded-3xl p-8 shadow-2xl relative z-10 animate-fadeIn">
+      <div className="w-full max-w-lg bg-white/60 dark:bg-black/40 backdrop-blur-xl border border-[#e6d5c3] dark:border-white/10 rounded-3xl p-8 shadow-2xl relative z-10 animate-fadeIn transition-colors">
         <header className="text-center mb-8">
-          <h1 className="text-2xl font-serif text-white tracking-tight">Complete Your Profile</h1>
+          <h1 className="text-2xl font-serif text-gray-900 dark:text-white tracking-tight">Complete Your Profile</h1>
           <p className="text-gray-500 text-[10px] uppercase tracking-widest mt-2">Sanctuary Access Verification</p>
         </header>
 
@@ -156,12 +156,12 @@ const CompleteProfile = () => {
         <form onSubmit={handleSubmit}>
           {/* Avatar Component Presentation Section */}
           <div className="flex flex-col items-center mb-6">
-            <div className="h-24 w-24 rounded-full border-2 border-dashed border-white/10 flex items-center justify-center overflow-hidden bg-white/5 relative shadow-inner">
+            <div className="h-24 w-24 rounded-full border-2 border-dashed border-[#e6d5c3] dark:border-white/10 flex items-center justify-center overflow-hidden bg-transparent dark:bg-white/5 relative shadow-inner">
                {preview ? (
                  <img src={preview} alt="Profile" className="w-full h-full object-cover" />
                ) : (
                  <span className="text-[10px] text-gray-500 text-center">
-                   <FaUserCircle size={24} className="mx-auto mb-1 text-green-700" /> Upload<br/>Photo
+                   <FaUserCircle size={24} className="mx-auto mb-1 text-[#8b4513]" /> Upload<br/>Photo
                  </span>
                )}
             </div>
@@ -173,7 +173,7 @@ const CompleteProfile = () => {
           <div className="max-h-[45vh] overflow-y-auto pr-2 mb-6 scrollbar-thin scrollbar-thumb-green-900">
             
             {/* Segment A: Academic Coordinates */}
-            <h3 className="text-green-500 text-[10px] font-bold uppercase tracking-widest border-b border-white/5 pb-2 mb-4 mt-2">Academic Details</h3>
+            <h3 className="text-[#8b4513] dark:text-[#d2b48c] text-[10px] font-bold uppercase tracking-widest border-b border-[#e6d5c3] dark:border-white/5 pb-2 mb-4 mt-2">Academic Details</h3>
             {renderInputField('regNo', 'text', 'Registration Number', FaIdBadge)}
             {renderInputField('department', 'text', 'Department', FaGraduationCap)}
             
@@ -182,14 +182,14 @@ const CompleteProfile = () => {
             {renderSelectField('levelInducted', 'Level Inducted into Guild', academicLevels, FaChurch)}
 
             {/* Segment B: Personal Metadata */}
-            <h3 className="text-green-500 text-[10px] font-bold uppercase tracking-widest border-b border-white/5 pb-2 mb-4 mt-6">Personal Details</h3>
+            <h3 className="text-[#8b4513] dark:text-[#d2b48c] text-[10px] font-bold uppercase tracking-widest border-b border-[#e6d5c3] dark:border-white/5 pb-2 mb-4 mt-6">Personal Details</h3>
             {renderInputField('dateOfBirth', 'date', 'Date of Birth', FaCalendarAlt)}
             {renderInputField('phoneNumber', 'tel', 'Phone Number', FaPhoneAlt)}
             {renderInputField('stateOfOrigin', 'text', 'State of Origin', FaMapMarkerAlt)}
             {renderInputField('homeTown', 'text', 'Home Town', FaHome)}
 
             {/* Segment C: Geographical and Ecclesiastical Coordinates */}
-            <h3 className="text-green-500 text-[10px] font-bold uppercase tracking-widest border-b border-white/5 pb-2 mb-4 mt-6">Location & Ecclesiastical Details</h3>
+            <h3 className="text-[#8b4513] dark:text-[#d2b48c] text-[10px] font-bold uppercase tracking-widest border-b border-[#e6d5c3] dark:border-white/5 pb-2 mb-4 mt-6">Location & Ecclesiastical Details</h3>
             {renderInputField('schoolResidentialAddress', 'text', 'School Residential Address', FaCity)}
             {renderInputField('permanentResidence', 'text', 'Permanent Residence', FaHome)}
             {renderInputField('homeDiocese', 'text', 'Home Diocese', FaChurch)}
@@ -198,7 +198,7 @@ const CompleteProfile = () => {
           <button 
             type="submit" 
             disabled={loading}
-            className="w-full bg-gradient-to-r from-green-700 to-green-600 py-4 rounded-xl text-[10px] font-bold uppercase tracking-widest text-white shadow-lg hover:-translate-y-0.5 active:translate-y-0 transition-all duration-300 disabled:opacity-50 flex justify-center"
+            className="w-full bg-gradient-to-r from-[#8b4513] to-[#5c4033] hover:from-[#a0522d] hover:to-[#8b4513] py-4 rounded-xl text-[10px] font-bold uppercase tracking-widest text-white shadow-lg hover:-translate-y-0.5 active:translate-y-0 transition-all duration-300 disabled:opacity-50 flex justify-center"
           >
             {loading ? <PulseLoader color="#ffffff" size={8} margin={2} /> : "Update Bio Data"}
           </button>

@@ -45,17 +45,17 @@ const LiturgicalCalendar = () => {
   const style = colorMap[vestmentColor] || colorMap.green;
 
   return (
-    <div className="animate-fadeIn">
-      <h2 className="text-2xl font-serif text-[#d2b48c] mb-6">Liturgical Calendar</h2>
+    <div className="animate-fadeIn transition-colors duration-500">
+      <h2 className="text-2xl font-serif text-[#8b4513] dark:text-[#d2b48c] mb-6">Liturgical Calendar</h2>
 
-      <div className="bg-black/40 backdrop-blur-xl border border-white/10 p-6 md:p-8 rounded-xl shadow-2xl max-w-4xl">
-        <div className="flex items-center gap-3 mb-8 border-b border-white/5 pb-6">
-          <div className="w-12 h-12 rounded-full bg-blue-900/20 border border-blue-900/50 flex items-center justify-center shrink-0">
-            <FaCalendarAlt className="text-blue-500" size={20} />
+      <div className="bg-white/60 dark:bg-black/40 backdrop-blur-xl border border-[#e6d5c3] dark:border-white/10 p-6 md:p-8 rounded-xl shadow-2xl max-w-4xl transition-colors">
+        <div className="flex items-center gap-3 mb-8 border-b border-[#e6d5c3] dark:border-white/5 pb-6">
+          <div className="w-12 h-12 rounded-full bg-[#8b4513]/10 dark:bg-blue-900/20 border border-[#8b4513]/30 dark:border-blue-900/50 flex items-center justify-center shrink-0">
+            <FaCalendarAlt className="text-[#8b4513] dark:text-blue-500" size={20} />
           </div>
           <div>
-            <h3 className="text-white font-serif text-xl">Today's Liturgy</h3>
-            <p className="text-gray-400 text-[10px] uppercase tracking-widest mt-1">{new Date().toDateString()}</p>
+            <h3 className="text-gray-900 dark:text-white font-serif text-xl">Today's Liturgy</h3>
+            <p className="text-gray-600 dark:text-gray-400 text-[10px] uppercase tracking-widest mt-1">{new Date().toDateString()}</p>
           </div>
         </div>
 
@@ -63,13 +63,13 @@ const LiturgicalCalendar = () => {
 
         {calendarData && (
           <div className="space-y-6">
-            <div className="bg-white/5 border border-white/10 rounded-xl p-6 relative overflow-hidden shadow-inner">
-              <div className="absolute top-0 right-0 p-4 opacity-5 pointer-events-none"><FaCross size={100} /></div>
-              <h4 className="text-2xl font-serif text-white mb-2">{calendarData.celebrations[0]?.title || 'Ordinary Time'}</h4>
-              <p className="text-sm text-gray-400 mb-6 capitalize">{calendarData.season} Season • Week {calendarData.season_week}</p>
+            <div className="bg-white dark:bg-white/5 border border-[#e6d5c3] dark:border-white/10 rounded-xl p-6 relative overflow-hidden shadow-inner transition-colors">
+              <div className="absolute top-0 right-0 p-4 opacity-5 pointer-events-none text-[#8b4513] dark:text-white"><FaCross size={100} /></div>
+              <h4 className="text-2xl font-serif text-gray-900 dark:text-white mb-2">{calendarData.celebrations[0]?.title || 'Ordinary Time'}</h4>
+              <p className="text-sm text-gray-600 dark:text-gray-400 mb-6 capitalize">{calendarData.season} Season • Week {calendarData.season_week}</p>
               
               <div className="flex items-center gap-3">
-                <p className="text-[10px] uppercase font-bold tracking-widest text-gray-400">Vestment Color:</p>
+                <p className="text-[10px] uppercase font-bold tracking-widest text-gray-600 dark:text-gray-400">Vestment Color:</p>
                 <span 
                   className="px-4 py-1.5 rounded-md text-xs font-bold uppercase tracking-widest shadow-md border border-[#3d2b1f]" 
                   style={{ backgroundColor: style.bg, color: style.text }}

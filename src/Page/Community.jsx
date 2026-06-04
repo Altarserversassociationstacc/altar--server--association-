@@ -23,16 +23,16 @@ const Community = ({ user, setCurrentUser }) => {
   };
 
   return (
-    <div className="animate-fadeIn flex flex-col items-center justify-center py-12 md:py-24">
-      <div className="bg-black/40 backdrop-blur-xl border border-white/10 p-8 md:p-12 rounded-2xl shadow-2xl text-center max-w-md w-full relative overflow-hidden">
+    <div className="animate-fadeIn flex flex-col items-center justify-center py-12 md:py-24 transition-colors duration-500">
+      <div className="bg-white/60 dark:bg-black/40 backdrop-blur-xl border border-[#e6d5c3] dark:border-white/10 p-8 md:p-12 rounded-2xl shadow-2xl text-center max-w-md w-full relative overflow-hidden transition-colors">
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-48 h-48 bg-green-600 rounded-full blur-[100px] opacity-10 pointer-events-none"></div>
         
         <div className="text-5xl mb-4 text-green-500 animate-pulse flex justify-center">
           <FaWhatsapp />
         </div>
         
-        <h3 className="text-2xl font-serif text-[#d2b48c] mb-2 tracking-tight">ASA WhatsApp Community</h3>
-        <p className="text-gray-400 text-xs mt-2 mb-8 font-light uppercase tracking-widest leading-relaxed">
+        <h3 className="text-2xl font-serif text-[#8b4513] dark:text-[#d2b48c] mb-2 tracking-tight">ASA WhatsApp Community</h3>
+        <p className="text-gray-700 dark:text-gray-400 text-xs mt-2 mb-8 font-light uppercase tracking-widest leading-relaxed">
           By joining the community, you will be able to see all specialized sub-groups. <br /><br />
           <strong className="text-[#8b4513]">Note:</strong> Access to certain groups requires approval from the Secretary General.
         </p>

@@ -1,1 +1,24 @@
 @import "tailwindcss";
+
+/* 🌟 ENABLE TAILWIND V4 MANUAL DARK MODE TOGGLE */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* 🌟 GLOBAL BACKGROUND DEFIINITIONS */
+body {
+  @apply bg-[#f8f5f2] text-gray-900 transition-colors duration-500;
+}
+
+.dark body {
+  @apply bg-[#050505] text-white;
+}
+
+/* 🌟 PROFESSIONAL CARD VARIABLES */
+.theme-card {
+  background-color: #f8f9fa;
+  border-color: #e5e7eb;
+}
+
+.dark .theme-card {
+  background-color: #1e1e1e;
+  border-color: #2d3748;
+}

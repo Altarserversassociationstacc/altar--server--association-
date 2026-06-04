@@ -139,19 +139,19 @@ const ActivityRatings = ({
         {/* ==========================================
             📈 STEP 1: INTERACTIVE PICTOGRAPH GRID
            ========================================== */}
-        <div className="flex flex-col md:flex-row gap-4 h-[320px] w-full transition-all duration-500 ease-in-out">
+        <div className="flex flex-col md:flex-row gap-4 h-[500px] md:h-[320px] w-full transition-all duration-500 ease-in-out">
           
           {/* Chart Card: Masses */}
           <div 
             onClick={() => setExpandedChartCard('mass')}
-            className={`relative transition-all duration-500 cursor-pointer flex flex-col bg-[#0b130b] border p-5 rounded-2xl shadow-xl ${
+            className={`relative transition-all duration-500 cursor-pointer flex flex-col bg-[#0b130b] border p-4 md:p-5 rounded-2xl shadow-xl ${
               expandedChartCard === 'mass' 
-                ? 'flex-[2.5] border-blue-500/30 bg-gradient-to-br from-[#0c150c] to-[#050a05]' 
-                : 'flex-[0.6] border-white/5 hover:border-blue-500/20 opacity-40 hover:opacity-100'
+                ? 'flex-[4] md:flex-[2.5] border-blue-500/30 bg-gradient-to-br from-[#0c150c] to-[#050a05]' 
+                : 'flex-[1] md:flex-[0.6] border-white/5 hover:border-blue-500/20 opacity-80 md:opacity-40 hover:opacity-100'
             }`}
           >
-            <div className="flex items-center justify-between mb-4">
-              <div className="flex items-center gap-3">
+            <div className="flex items-center justify-between mb-3 md:mb-4">
+              <div className={`flex items-center gap-3 ${expandedChartCard !== 'mass' ? 'md:flex-col md:mx-auto' : ''}`}>
                 <div className="p-2.5 bg-blue-500/10 rounded-xl text-blue-400 shadow-[0_0_15px_rgba(59,130,246,0.1)]">
                   <FaCalendarDay size={14} />
                 </div>
@@ -164,7 +164,7 @@ const ActivityRatings = ({
                   </div>
                 )}
               </div>
-              {expandedChartCard === 'mass' ? <FaCompress size={12} className="text-gray-600" /> : <FaExpandArrowsAlt size={12} className="text-gray-600" />}
+              {expandedChartCard === 'mass' ? <FaCompress size={12} className="text-gray-600" /> : <FaExpandArrowsAlt size={12} className="text-gray-600 opacity-100 md:opacity-0 group-hover:opacity-100 transition-opacity" />}
             </div>
             <div className="flex-1 w-full relative">
               <Bar data={massChartData} options={chartOptions} />
@@ -177,14 +177,14 @@ const ActivityRatings = ({
               setExpandedChartCard('sessions');
               setActiveSubDrawer('meetings'); // Open meeting dates history log layout on click
             }}
-            className={`relative transition-all duration-500 cursor-pointer flex flex-col bg-[#0b130b] border p-5 rounded-2xl shadow-xl hover:bg-emerald-950/10 ${
+            className={`relative transition-all duration-500 cursor-pointer flex flex-col bg-[#0b130b] border p-4 md:p-5 rounded-2xl shadow-xl hover:bg-emerald-950/10 ${
               expandedChartCard === 'sessions' 
-                ? 'flex-[2.5] border-emerald-500/40 bg-gradient-to-br from-[#0c150c] to-[#050a05]' 
-                : 'flex-[0.6] border-white/5 hover:border-emerald-500/20 opacity-40 hover:opacity-100'
+                ? 'flex-[4] md:flex-[2.5] border-emerald-500/40 bg-gradient-to-br from-[#0c150c] to-[#050a05]' 
+                : 'flex-[1] md:flex-[0.6] border-white/5 hover:border-emerald-500/20 opacity-80 md:opacity-40 hover:opacity-100'
             }`}
           >
-            <div className="flex items-center justify-between mb-4">
-              <div className="flex items-center gap-3">
+            <div className="flex items-center justify-between mb-3 md:mb-4">
+              <div className={`flex items-center gap-3 ${expandedChartCard !== 'sessions' ? 'md:flex-col md:mx-auto' : ''}`}>
                 <div className="p-2.5 bg-emerald-500/10 rounded-xl text-emerald-400 shadow-[0_0_15px_rgba(16,185,129,0.1)]">
                   <FaChartPie size={14} />
                 </div>
@@ -195,7 +195,7 @@ const ActivityRatings = ({
                   </div>
                 )}
               </div>
-              {expandedChartCard === 'sessions' ? <FaCompress size={12} className="text-gray-600" /> : <FaExpandArrowsAlt size={12} className="text-gray-600" />}
+              {expandedChartCard === 'sessions' ? <FaCompress size={12} className="text-gray-600" /> : <FaExpandArrowsAlt size={12} className="text-gray-600 opacity-100 md:opacity-0 group-hover:opacity-100 transition-opacity" />}
             </div>
             <div className="flex-1 w-full relative flex items-center justify-center">
                {expandedChartCard === 'sessions' && (

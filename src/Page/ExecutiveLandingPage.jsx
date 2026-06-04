@@ -73,12 +73,12 @@ export const ExecutiveLandingPage = () => {
   }, [selectedSession]);
 
   return (
-    <div id="executives-archive" className="min-h-screen bg-[#0a0a0a] text-white font-sans antialiased selection:bg-[#8b4513]/30 selection:text-[#d2b48c] scroll-mt-24">
+    <div id="executives-archive" className="min-h-screen bg-[#f8f5f2] dark:bg-[#0a0a0a] text-gray-900 dark:text-white font-sans antialiased selection:bg-[#8b4513]/30 selection:text-[#d2b48c] scroll-mt-24 transition-colors duration-500">
       
       {/* Dynamic Header Controls Bar */}
-      <div className="sticky top-0 z-40 bg-[#0a0a0a]/90 backdrop-blur-md border-b border-[#2a1b12] py-8 px-6 md:px-12 flex flex-col items-center gap-6 text-center">
+      <div className="sticky top-0 z-40 bg-[#f8f5f2]/90 dark:bg-[#0a0a0a]/90 backdrop-blur-md border-b border-[#e6d5c3] dark:border-[#2a1b12] py-8 px-6 md:px-12 flex flex-col items-center gap-6 text-center transition-colors">
         <div className="flex flex-col items-center">
-          <h1 className="text-4xl font-serif font-bold text-[#d2b48c] tracking-tight flex items-center gap-3">
+          <h1 className="text-2xl md:text-4xl font-serif font-bold text-[#8b4513] tracking-tight flex items-center gap-2 whitespace-nowrap">
             <FaUserTie className="text-[#8b4513]" /> Executive Team
           </h1>
           <p className="text-[10px] text-gray-500 mt-2 uppercase tracking-widest font-semibold">
@@ -92,10 +92,10 @@ export const ExecutiveLandingPage = () => {
           <select 
             value={selectedSession} 
             onChange={(e) => setSelectedSession(e.target.value)}
-            className="w-full sm:w-48 bg-[#111111] border border-[#2a1b12] text-sm text-[#d2b48c] rounded-xl pl-11 pr-4 py-3 outline-none appearance-none cursor-pointer focus:border-[#8b4513] transition-all font-medium shadow-inner"
+            className="w-full sm:w-48 bg-white dark:bg-[#111111] border border-[#e6d5c3] dark:border-[#2a1b12] text-sm text-[#8b4513] dark:text-[#d2b48c] rounded-xl pl-11 pr-4 py-3 outline-none appearance-none cursor-pointer focus:border-[#8b4513] transition-all font-medium shadow-inner"
           >
             {generateSessionOptions().map(session => (
-              <option key={session} value={session} className="bg-[#111111] text-white">{session}</option>
+              <option key={session} value={session} className="bg-white dark:bg-[#111111] text-gray-900 dark:text-white">{session}</option>
             ))}
           </select>
           <FaChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 text-[#8b4513] pointer-events-none text-[10px]" />
@@ -115,13 +115,13 @@ export const ExecutiveLandingPage = () => {
             <div className="space-y-12 mb-20">
               {groupPhoto ? (
                 <div className="space-y-10">
-                  <div className="group relative w-full rounded-[2.5rem] overflow-hidden border border-[#2a1b12] shadow-2xl transition-all duration-700 hover:border-[#8b4513]/40">
+                  <div className="group relative w-full rounded-[2.5rem] overflow-hidden border border-[#e6d5c3] dark:border-[#2a1b12] shadow-2xl transition-all duration-700 hover:border-[#8b4513]/40">
                     <img 
                       src={groupPhoto.imageUrl} 
                       alt={`Official group portrait`}
                       className="w-full h-auto object-contain transition-transform duration-1000"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-90" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-90 transition-colors" />
                     <div className="absolute bottom-10 left-10 space-y-2">
                       <span className="text-[10px] font-bold tracking-[0.3em] uppercase bg-[#8b4513]/30 border border-[#8b4513]/50 text-[#d2b48c] px-4 py-1.5 rounded-full backdrop-blur-sm">
                         Official Session Assembly
@@ -132,27 +132,27 @@ export const ExecutiveLandingPage = () => {
                       </h2>
                     </div>
                   </div>
-                  <div className="p-8 bg-[#111111]/40 border border-[#2a1b12] rounded-[2rem] max-w-4xl mx-auto text-center shadow-inner">
+                  <div className="p-8 bg-white/60 dark:bg-[#111111]/40 border border-[#e6d5c3] dark:border-[#2a1b12] rounded-[2rem] max-w-4xl mx-auto text-center shadow-inner transition-colors">
                      <h4 className="text-[#8b4513] text-[10px] font-bold uppercase tracking-[0.3em] mb-3">Council Narrative</h4>
-                     <p className="text-gray-400 text-sm leading-relaxed italic font-light">
+                     <p className="text-gray-700 dark:text-gray-400 text-sm leading-relaxed italic font-light">
                        The {selectedSession} Executive Council leads with a focus on liturgical excellence and fraternal growth within the sanctuary.
                      </p>
                   </div>
                 </div>
               ) : (
-                <div className="w-full py-20 bg-[#111111]/40 border border-dashed border-[#2a1b12] rounded-[2.5rem] flex items-center justify-center text-gray-600 text-xs uppercase tracking-[0.3em] font-bold">
+                <div className="w-full py-20 bg-white/60 dark:bg-[#111111]/40 border border-dashed border-[#e6d5c3] dark:border-[#2a1b12] rounded-[2.5rem] flex items-center justify-center text-gray-500 text-xs uppercase tracking-[0.3em] font-bold transition-colors">
                   Official Group Portrait Pending
                 </div>
               )}
 
               {/* Demarcation Line */}
-              <div className="border-b border-[#2a1b12] w-full opacity-30 shadow-[0_1px_2px_rgba(0,0,0,0.5)]"></div>
+              <div className="border-b border-[#e6d5c3] dark:border-[#2a1b12] w-full opacity-30 shadow-[0_1px_2px_rgba(0,0,0,0.5)] transition-colors"></div>
             </div>
 
             {/* 2. Individual Cabinet Grid below */}
             <div className="space-y-12">
-              <div className="border-b border-[#2a1b12] pb-4">
-                <h3 className="text-2xl font-serif text-[#d2b48c] tracking-wide">Executive Cabinet Board</h3>
+              <div className="border-b border-[#e6d5c3] dark:border-[#2a1b12] pb-4 transition-colors">
+                <h3 className="text-2xl font-serif text-[#8b4513] dark:text-[#d2b48c] tracking-wide">Executive Cabinet Board</h3>
                 <p className="text-[10px] text-gray-500 uppercase tracking-widest font-bold mt-1">Officers of the Association</p>
               </div>
 
@@ -161,7 +161,7 @@ export const ExecutiveLandingPage = () => {
                   {executives.map((exec) => (
                     <div 
                       key={exec._id} 
-                      className="group bg-[#111111]/60 border border-[#2a1b12] rounded-[2.5rem] overflow-hidden shadow-xl transition-all duration-500 hover:border-[#8b4513]/40"
+                      className="group bg-white dark:bg-[#111111]/60 border border-[#e6d5c3] dark:border-[#2a1b12] rounded-[2.5rem] overflow-hidden shadow-xl transition-all duration-500 hover:border-[#8b4513]/40"
                     >
                       <div className="p-6 text-left">
                         <div className="flex flex-col gap-4">
@@ -177,25 +177,25 @@ export const ExecutiveLandingPage = () => {
                           {/* Administrative Metadata Fields */}
                           <div className="space-y-4">
                             <div className="space-y-3">
-                              <p className="text-[9px] uppercase tracking-[0.4em] font-bold text-[#8b4513] border-b border-white/5 pb-1">Council Data</p>
+                              <p className="text-[9px] uppercase tracking-[0.4em] font-bold text-[#8b4513] border-b border-[#e6d5c3] dark:border-white/5 pb-1">Council Data</p>
                               
                               <div className="grid gap-2">
-                                <p className="text-lg font-serif text-white tracking-tight">{exec.executiveName}</p>
-                                <p className="text-[10px] font-bold uppercase tracking-widest text-gray-500">Full Name: <span className="text-white ml-2 font-serif text-base font-normal tracking-normal normal-case">{exec.name?.toUpperCase()}</span></p>
-                                <p className="text-[10px] font-bold uppercase tracking-widest text-gray-500">Department: <span className="text-gray-300 ml-2 font-normal normal-case">{exec.department}</span></p>
-                                <p className="text-[10px] font-bold uppercase tracking-widest text-gray-500">Position: <span className="text-[#d2b48c] ml-2 font-bold normal-case">{exec.position}</span></p>
+                                <p className="text-lg font-serif text-gray-900 dark:text-white tracking-tight">{exec.executiveName}</p>
+                                <p className="text-[10px] font-bold uppercase tracking-widest text-gray-500">Full Name: <span className="text-gray-900 dark:text-white ml-2 font-serif text-base font-normal tracking-normal normal-case">{exec.name?.toUpperCase()}</span></p>
+                                <p className="text-[10px] font-bold uppercase tracking-widest text-gray-500">Department: <span className="text-gray-700 dark:text-gray-300 ml-2 font-normal normal-case">{exec.department}</span></p>
+                                <p className="text-[10px] font-bold uppercase tracking-widest text-gray-500">Position: <span className="text-[#8b4513] dark:text-[#d2b48c] ml-2 font-bold normal-case">{exec.position}</span></p>
                               </div>
                             </div>
 
                             <div className="space-y-2">
-                              <p className="text-[9px] uppercase tracking-[0.4em] font-bold text-[#8b4513] border-b border-white/5 pb-1">Bio Profile</p>
-                              <p className="text-xs text-gray-400 leading-relaxed font-light italic">
+                              <p className="text-[9px] uppercase tracking-[0.4em] font-bold text-[#8b4513] border-b border-[#e6d5c3] dark:border-white/5 pb-1">Bio Profile</p>
+                              <p className="text-xs text-gray-700 dark:text-gray-400 leading-relaxed font-light italic">
                                 "{exec.bio}"
                               </p>
                             </div>
 
                             <div className="space-y-2">
-                              <p className="text-[9px] uppercase tracking-[0.4em] font-bold text-[#8b4513] border-b border-white/5 pb-1">Contact Channels</p>
+                              <p className="text-[9px] uppercase tracking-[0.4em] font-bold text-[#8b4513] border-b border-[#e6d5c3] dark:border-white/5 pb-1">Contact Channels</p>
                               <div className="grid gap-2">
                                 <div className="flex items-center gap-3 group/link">
                                   <FaEnvelope size={10} className="text-[#8b4513]" />
@@ -214,11 +214,11 @@ export const ExecutiveLandingPage = () => {
                   ))}
                 </div>
               ) : (
-                <div className="w-full py-20 bg-[#111111]/30 border border-dashed border-[#2a1b12] rounded-3xl flex flex-col items-center justify-center text-center p-6">
+                <div className="w-full py-20 bg-white/60 dark:bg-[#111111]/30 border border-dashed border-[#e6d5c3] dark:border-[#2a1b12] rounded-3xl flex flex-col items-center justify-center text-center p-6 transition-colors">
                   <div className="w-12 h-12 rounded-full bg-[#8b4513]/10 border border-[#8b4513]/20 flex items-center justify-center text-[#8b4513] mb-4">
                     <FaFolderOpen size={20} />
                   </div>
-                  <h4 className="text-sm font-serif text-[#d2b48c] mb-1">No Archives Loaded Yet</h4>
+                  <h4 className="text-sm font-serif text-[#8b4513] dark:text-[#d2b48c] mb-1">No Archives Loaded Yet</h4>
                   <p className="text-xs text-gray-500 max-w-xs leading-relaxed">
                     The administrative records for the {selectedSession} session have not been initialized by the panel auditor.
                   </p>

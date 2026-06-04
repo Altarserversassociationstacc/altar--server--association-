@@ -10,7 +10,7 @@ import ContactUs from './ContactUs';
 
 const Home = () => {
   return (
-    <main className="bg-[#050505]">
+    <main className="bg-[#f8f5f2] dark:bg-[#050505] transition-colors duration-500">
       <Hero />
       <AboutUs isFullPage={false} />
       <JoinUs />

@@ -4,14 +4,14 @@ import {
   FaMapMarkerAlt, FaEnvelope, FaPhoneAlt, FaChurch, FaChevronRight,
   FaFacebookF, FaTwitter, FaInstagram 
 } from 'react-icons/fa'; 
-import logo from '../assets/logo.png';
+import logo from '../assets/des.png';
 
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="pt-20 pb-10 border-t transition-colors duration-500 font-sans bg-[#050505] border-[#2a1b12] text-gray-400">
+    <footer className="pt-20 pb-10 border-t transition-colors duration-500 font-sans bg-[#f8f5f2] dark:bg-[#050505] border-[#e6d5c3] dark:border-[#2a1b12] text-gray-600 dark:text-gray-400">
       <div className="max-w-7xl mx-auto px-6">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-16 mb-20">
           
@@ -19,20 +19,20 @@ const Footer = () => {
           <div className="space-y-6">
             <div className="flex items-center gap-3">
               <div className="flex h-20 w-auto items-center justify-center"> {/* Increased height for logo */}
-                <img src={logo} alt="ASA Logo" className="w-full h-full" />
+                <img src={logo} alt="ASA Logo" className="w-full h-full object-contain" />
               </div>
             </div>
             <p className="text-sm leading-relaxed italic">
               "Ad Majorem Dei Gloriam" — Promoting the culture of reverent service and spiritual growth at the Holy Altar.
             </p>
             <div className="flex gap-4 pt-4">
-              <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="w-10 h-10 border border-[#2a1b12] bg-[#111111] shadow-md flex items-center justify-center rounded-full hover:border-[#8b4513] hover:bg-[#8b4513] hover:text-white transition-all duration-300 text-lg hover:-translate-y-1" aria-label="Facebook">
+              <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="w-10 h-10 border border-[#e6d5c3] dark:border-[#2a1b12] bg-white dark:bg-[#111111] shadow-md flex items-center justify-center rounded-full hover:border-[#8b4513] dark:hover:border-[#8b4513] hover:bg-[#8b4513] hover:text-white transition-all duration-300 text-lg hover:-translate-y-1" aria-label="Facebook">
                 <FaFacebookF />
               </a>
-              <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="w-10 h-10 border border-[#2a1b12] bg-[#111111] shadow-md flex items-center justify-center rounded-full hover:border-[#8b4513] hover:bg-[#8b4513] hover:text-white transition-all duration-300 text-lg hover:-translate-y-1" aria-label="Twitter">
+              <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="w-10 h-10 border border-[#e6d5c3] dark:border-[#2a1b12] bg-white dark:bg-[#111111] shadow-md flex items-center justify-center rounded-full hover:border-[#8b4513] dark:hover:border-[#8b4513] hover:bg-[#8b4513] hover:text-white transition-all duration-300 text-lg hover:-translate-y-1" aria-label="Twitter">
                 <FaTwitter />
               </a>
-              <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="w-10 h-10 border border-[#2a1b12] bg-[#111111] shadow-md flex items-center justify-center rounded-full hover:border-[#8b4513] hover:bg-[#8b4513] hover:text-white transition-all duration-300 text-lg hover:-translate-y-1" aria-label="Instagram">
+              <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="w-10 h-10 border border-[#e6d5c3] dark:border-[#2a1b12] bg-white dark:bg-[#111111] shadow-md flex items-center justify-center rounded-full hover:border-[#8b4513] dark:hover:border-[#8b4513] hover:bg-[#8b4513] hover:text-white transition-all duration-300 text-lg hover:-translate-y-1" aria-label="Instagram">
                 <FaInstagram />
               </a>
             </div>
@@ -40,7 +40,7 @@ const Footer = () => {
 
           {/* Quick Links */}
           <div className="space-y-6">
-            <h3 className="text-sm font-bold uppercase tracking-[0.2em] border-b pb-2 inline-block text-[#d2b48c] border-[#2a1b12]">
+            <h3 className="text-sm font-bold uppercase tracking-[0.2em] border-b pb-2 inline-block text-[#8b4513] dark:text-[#d2b48c] border-[#e6d5c3] dark:border-[#2a1b12]">
               Quick Links
             </h3>
             <ul className="space-y-4 text-xs uppercase tracking-widest font-medium">
@@ -51,14 +51,14 @@ const Footer = () => {
                 { name: 'Announcements', path: '/#announcements' }
               ].map((link) => (
                 <li key={link.name}>
-                  <Link to={link.path} className="flex items-center gap-2 hover:text-[#8b4513] transition-colors">
+                  <Link to={link.path} className="flex items-center gap-2 hover:text-[#8b4513] dark:hover:text-[#d2b48c] transition-colors">
                     <FaChevronRight className="text-[8px] opacity-50" />
                     {link.name}
                   </Link>
                 </li>
               ))}
               <li>
-                <a href="http://localhost:3001/admin/login" className="flex items-center gap-2 text-gray-500 hover:text-blue-500 transition-colors">
+                <a href="http://localhost:3001/admin/login" className="flex items-center gap-2 text-gray-500 dark:text-gray-500 hover:text-blue-600 dark:hover:text-blue-500 transition-colors">
                   <FaChevronRight className="text-[8px] opacity-50" />
                   Admin Portal
                 </a>
@@ -68,7 +68,7 @@ const Footer = () => {
 
           {/* Contact Info */}
           <div className="space-y-6">
-            <h3 className="text-sm font-bold uppercase tracking-[0.2em] border-b pb-2 inline-block text-[#d2b48c] border-[#2a1b12]">
+            <h3 className="text-sm font-bold uppercase tracking-[0.2em] border-b pb-2 inline-block text-[#8b4513] dark:text-[#d2b48c] border-[#e6d5c3] dark:border-[#2a1b12]">
               Get In Touch
             </h3>
             <div className="space-y-4 text-sm font-light">
@@ -90,12 +90,12 @@ const Footer = () => {
         </div>
 
         {/* Bottom Bar */}
-        <div className="pt-8 border-t text-[10px] uppercase tracking-widest text-center space-y-4 border-[#2a1b12] mt-10">
+        <div className="pt-8 border-t text-[10px] uppercase tracking-widest text-center space-y-4 border-[#e6d5c3] dark:border-[#2a1b12] mt-10">
           <p>
             © {currentYear} Altar Server Association • St. Thomas Aquinas Catholic Chaplaincy, FUTO. All rights reserved.
           </p>
-          <p className="text-gray-500 font-medium">
-            Developed by <span className="text-[#d2b48c]">Bro Egwuonwu Makuochukwu Vitalis</span> 
+          <p className="text-gray-600 dark:text-gray-500 font-medium">
+            Developed by <span className="text-[#8b4513] dark:text-[#d2b48c]">Bro Egwuonwu Makuochukwu Vitalis</span> 
             <br className="md:hidden" /> 
           </p>
         </div>

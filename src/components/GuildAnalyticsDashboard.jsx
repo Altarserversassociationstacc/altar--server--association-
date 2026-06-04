@@ -89,19 +89,19 @@ const GuildAnalyticsDashboard = ({ metrics }) => {
   };
 
   return (
-    <div className="flex flex-row gap-4 mt-8 h-[380px] w-full transition-all duration-700 ease-in-out">
+    <div className="flex flex-col md:flex-row gap-4 mt-8 h-[500px] md:h-[380px] w-full transition-all duration-700 ease-in-out">
       
       {/* 1. MASS ATTENDANCE CARD */}
       <div 
         onClick={() => toggleExpand('mass')}
-        className={`relative transition-all duration-700 cursor-pointer group flex flex-col bg-[#142214] border rounded-2xl shadow-2xl p-6 ${
+        className={`relative transition-all duration-700 cursor-pointer group flex flex-col bg-[#142214] border rounded-2xl shadow-2xl p-4 md:p-6 ${
           expandedCard === 'mass' 
-            ? 'flex-[3] border-blue-500/40 bg-gradient-to-br from-[#142214] to-[#0a1a0a]' 
-            : 'flex-[0.5] border-white/5 hover:border-blue-500/30 grayscale hover:grayscale-0'
+            ? 'flex-[4] md:flex-[3] border-blue-500/40 bg-gradient-to-br from-[#142214] to-[#0a1a0a]' 
+            : 'flex-[1] md:flex-[0.5] border-white/5 hover:border-blue-500/30 grayscale hover:grayscale-0'
         }`}
       >
-        <div className="flex items-center justify-between mb-6">
-          <div className={`flex items-center gap-3 ${expandedCard !== 'mass' && 'flex-col mx-auto'}`}>
+        <div className="flex items-center justify-between mb-4 md:mb-6">
+          <div className={`flex items-center gap-3 ${expandedCard !== 'mass' ? 'md:flex-col md:mx-auto' : ''}`}>
             <div className="p-3 bg-blue-500/10 rounded-xl text-blue-500 shadow-[0_0_15px_rgba(60,80,224,0.2)]">
               <FaCalendarDay size={18} />
             </div>
@@ -112,7 +112,7 @@ const GuildAnalyticsDashboard = ({ metrics }) => {
               </div>
             )}
           </div>
-          {expandedCard === 'mass' ? <FaCompress className="text-gray-600" /> : <FaExpandArrowsAlt className="text-gray-600 opacity-0 group-hover:opacity-100 transition-opacity" />}
+          {expandedCard === 'mass' ? <FaCompress className="text-gray-600" /> : <FaExpandArrowsAlt className="text-gray-600 opacity-100 md:opacity-0 group-hover:opacity-100 transition-opacity" />}
         </div>
 
         <div className="flex-1 w-full relative">
@@ -123,14 +123,14 @@ const GuildAnalyticsDashboard = ({ metrics }) => {
       {/* 2. SESSION ANALYTICS CARD */}
       <div 
         onClick={() => toggleExpand('sessions')}
-        className={`relative transition-all duration-700 cursor-pointer group flex flex-col bg-[#142214] border rounded-2xl shadow-2xl p-6 ${
+        className={`relative transition-all duration-700 cursor-pointer group flex flex-col bg-[#142214] border rounded-2xl shadow-2xl p-4 md:p-6 ${
           expandedCard === 'sessions' 
-            ? 'flex-[3] border-cyan-500/40 bg-gradient-to-br from-[#142214] to-[#0a1a0a]' 
-            : 'flex-[0.5] border-white/5 hover:border-cyan-500/30 grayscale hover:grayscale-0'
+            ? 'flex-[4] md:flex-[3] border-cyan-500/40 bg-gradient-to-br from-[#142214] to-[#0a1a0a]' 
+            : 'flex-[1] md:flex-[0.5] border-white/5 hover:border-cyan-500/30 grayscale hover:grayscale-0'
         }`}
       >
-        <div className="flex items-center justify-between mb-6">
-          <div className={`flex items-center gap-3 ${expandedCard !== 'sessions' && 'flex-col mx-auto'}`}>
+        <div className="flex items-center justify-between mb-4 md:mb-6">
+          <div className={`flex items-center gap-3 ${expandedCard !== 'sessions' ? 'md:flex-col md:mx-auto' : ''}`}>
             <div className="p-3 bg-cyan-500/10 rounded-xl text-cyan-500 shadow-[0_0_15px_rgba(128,202,238,0.2)]">
               <FaChartPie size={18} />
             </div>
@@ -141,7 +141,7 @@ const GuildAnalyticsDashboard = ({ metrics }) => {
               </div>
             )}
           </div>
-          {expandedCard === 'sessions' ? <FaCompress className="text-gray-600" /> : <FaExpandArrowsAlt className="text-gray-600 opacity-0 group-hover:opacity-100 transition-opacity" />}
+          {expandedCard === 'sessions' ? <FaCompress className="text-gray-600" /> : <FaExpandArrowsAlt className="text-gray-600 opacity-100 md:opacity-0 group-hover:opacity-100 transition-opacity" />}
         </div>
 
         <div className="flex-1 w-full relative flex items-center justify-center">
