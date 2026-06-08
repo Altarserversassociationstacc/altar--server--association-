@@ -1,381 +1,293 @@
 import React, { useState } from 'react';
-import { Bar, Doughnut } from 'react-chartjs-2';
-import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  ArcElement,
-  Title,
-  Tooltip,
-  Legend
-} from 'chart.js';
 import { 
-  FaStar, FaCheckSquare, FaTimes, FaArrowRight, 
-  FaTachometerAlt, FaChartPie, FaCalendarDay, 
-  FaExpandArrowsAlt, FaCompress, FaGraduationCap 
+  FaCheckSquare, FaTimes, FaArrowRight, 
+  FaTachometerAlt, FaCalendarDay, FaFilter,
+  FaChevronLeft, FaChevronRight, FaChurch, FaUsers
 } from 'react-icons/fa';
 
-ChartJS.register(CategoryScale, LinearScale, BarElement, ArcElement, Title, Tooltip, Legend);
-
 const ActivityRatings = ({ 
-  metrics, 
+  allMeetings, // <--- Accept the new prop here
   currentUser, 
-  isAltarLady, 
-  activeSubDrawer, 
-  setActiveSubDrawer,
   onBackToDashboard
 }) => {
-  const [expandedChartCard, setExpandedChartCard] = useState('mass');
+  // 🎛️ DYNAMIC FILTERS
+  const [selectedSemester, setSelectedSemester] = useState('All');
+  const [selectedLevel, setSelectedLevel] = useState('All');
 
-  // Enforce structural boundaries on dynamic student data packages
-  const computedMetrics = {
-    meetingCount: metrics?.meetingCount || 0,
-    meetingTotal: metrics?.meetingTotal || 10,
-    meetingPercent: metrics?.meetingPercent || 0,
-    otherActivitiesCount: metrics?.otherActivitiesCount || 0,
-    massesCount: metrics?.massesCount || 0,
-    weeksElapsed: metrics?.weeksElapsed || 1,
-    overallPercent: metrics?.overallPercent || 0,
-    standing: metrics?.standing || 'Evaluation Pending...',
-    meetingLogs: metrics?.meetingLogs || []
+  // 📆 CALENDAR ENGINE STATE
+  const [currentMonth, setCurrentMonth] = useState(new Date().getMonth());
+  const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
+  const [selectedDateString, setSelectedDateString] = useState(null);
+
+  const MONTHS = [
+    'January', 'February', 'March', 'April', 'May', 'June', 
+    'July', 'August', 'September', 'October', 'November', 'December'
+  ];
+  const DAYS_SHORT = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+  const startingYear = new Date().getFullYear() - 3;
+  const YEAR_DROPDOWN_OPTIONS = Array.from({ length: 8 }, (_, i) => startingYear + i);
+
+  // =================================================================
+  // 🔌 DATABASE INJECTION & FORMATTING
+  // =================================================================
+  console.log("1. Raw Data from Database:", allMeetings);
+console.log("2. Current User ID:", currentUser?._id);
+  // Transform your Global Meetings into the format the calendar expects
+ // ✅ NEW CODE
+  const liveLogs = (allMeetings || []).map(meeting => ({
+    title: meeting.title,
+    date: meeting.date, // <-- Changed to match the backend!
+    semester: meeting.semester,
+    level: meeting.level || 'All Levels',
+    type: meeting.type || 'Meeting',
+    attended: meeting.attended
+  }));
+
+  const filteredLogs = liveLogs.filter((session) => {
+    const matchSemester = selectedSemester === 'All' || session.semester === selectedSemester;
+    const matchLevel = selectedLevel === 'All' || session.level === selectedLevel;
+    return matchSemester && matchLevel;
+  });
+
+  // ... (The rest of the component stays exactly the same!)
+
+  // 📈 PERCENTAGE & YIELD CALCULATIONS
+  const totalFilteredCount = filteredLogs.length;
+  const attendedFilteredCount = filteredLogs.filter(log => log.attended).length;
+  const calculatedPercent = totalFilteredCount > 0 ? Math.round((attendedFilteredCount / totalFilteredCount) * 100) : 0;
+
+  const dynamicStanding = totalFilteredCount === 0 ? 'No Logs Found' : 
+                          calculatedPercent >= 75 ? 'Excellent Standing' : 
+                          calculatedPercent >= 50 ? 'Good Standing' : 'Review Required';
+
+  // =================================================================
+  // 📅 ROBUST CALENDAR MATRIX LOGIC
+  // =================================================================
+  const getDaysInMonth = (month, year) => new Date(year, month + 1, 0).getDate();
+  const getFirstDayOfMonth = (month, year) => new Date(year, month, 1).getDay();
+
+  const daysInMonth = getDaysInMonth(currentMonth, currentYear);
+  const firstDayIndex = getFirstDayOfMonth(currentMonth, currentYear);
+
+  const calendarCells = [];
+  for (let i = 0; i < firstDayIndex; i++) calendarCells.push(null); 
+  for (let day = 1; day <= daysInMonth; day++) calendarCells.push(day);
+
+  const formatDateString = (day) => {
+    if (!day) return '';
+    const mm = String(currentMonth + 1).padStart(2, '0');
+    const dd = String(day).padStart(2, '0');
+    return `${currentYear}-${mm}-${dd}`;
   };
 
-  const calculateDevotionMetric = (massesServed, weeksElapsed) => {
-    if (massesServed === 0 && weeksElapsed >= 12) return "DORMANT";
-    const serviceVelocity = massesServed / weeksElapsed;
-    if (serviceVelocity >= 4) return "100%";
-    if (serviceVelocity >= 3) return "75%";
-    if (serviceVelocity >= 2) return "50%";
-    if (serviceVelocity >= 1) return "25%";
-    return "0%";
+  // 🛡️ TIMEZONE SAFE DATE MATCHING
+  const getLogsForDate = (dateStr) => {
+    return filteredLogs.filter(log => {
+      if (!log.date) return false; 
+      
+      // Explicitly pull local year, month, and day to prevent UTC shifting
+      const logDateObj = new Date(log.date);
+      if (isNaN(logDateObj.getTime())) return false; // Prevent invalid date crashes
+
+      const yy = logDateObj.getFullYear();
+      const mm = String(logDateObj.getMonth() + 1).padStart(2, '0');
+      const dd = String(logDateObj.getDate()).padStart(2, '0');
+      
+      const localLogDateStr = `${yy}-${mm}-${dd}`;
+      return localLogDateStr === dateStr;
+    });
   };
 
-  // ==========================================
-  // 📊 LIVE DATA INJECTION FOR PICTOGRAPHS
-  // ==========================================
-  const massChartData = {
-    labels: ['Wk 1', 'Wk 2', 'Wk 3', 'Wk 4', 'Current Session Track'],
-    datasets: [{
-      label: 'Masses Handled',
-      data: [
-        Math.round(computedMetrics.massesCount * 0.1), 
-        Math.round(computedMetrics.massesCount * 0.2), 
-        Math.round(computedMetrics.massesCount * 0.3), 
-        Math.round(computedMetrics.massesCount * 0.4), 
-        computedMetrics.massesCount
-      ], 
-      backgroundColor: '#3b82f6',
-      hoverBackgroundColor: '#60a5fa',
-      borderRadius: 8,
-      barThickness: expandedChartCard === 'mass' ? 24 : 8,
-    }]
+  const prevMonth = () => {
+    setSelectedDateString(null); 
+    if (currentMonth === 0) { setCurrentMonth(11); setCurrentYear(prev => prev - 1); } 
+    else { setCurrentMonth(prev => prev - 1); }
   };
 
-  const donutChartData = {
-    labels: ['Attended Assemblies', 'Absences Deficit'],
-    datasets: [{
-      data: [computedMetrics.meetingCount, Math.max(0, computedMetrics.meetingTotal - computedMetrics.meetingCount)], 
-      backgroundColor: ['#10b981', '#ef4444'],
-      hoverOffset: 6,
-      borderWidth: 0,
-      cutout: '75%'
-    }]
+  const nextMonth = () => {
+    setSelectedDateString(null);
+    if (currentMonth === 11) { setCurrentMonth(0); setCurrentYear(prev => prev + 1); } 
+    else { setCurrentMonth(prev => prev + 1); }
   };
 
-  const chartOptions = { 
-    responsive: true, 
-    maintainAspectRatio: false, 
-    plugins: { 
-      legend: { display: false },
-      tooltip: {
-        backgroundColor: '#111111',
-        titleFont: { size: 11, weight: 'bold' },
-        bodyFont: { size: 10 },
-        padding: 10,
-        borderRadius: 6,
-        displayColors: false
-      }
-    },
-    scales: {
-      x: { 
-        display: expandedChartCard !== null, 
-        grid: { display: false }, 
-        ticks: { color: '#6b7280', font: { size: 9 } } 
-      },
-      y: { 
-        display: expandedChartCard !== null, 
-        grid: { color: 'rgba(255, 255, 255, 0.02)' }, 
-        ticks: { color: '#6b7280', font: { size: 9 } } 
-      }
-    }
-  };
-
+  const activeLogs = selectedDateString ? getLogsForDate(selectedDateString) : [];
+  
   return (
-    <div className="animate-fadeIn font-sans text-white pb-12">
-      {/* Navigation Header */}
-      <div className="mb-6 flex items-center justify-between">
-        <button 
-          onClick={onBackToDashboard}
-          className="text-gray-400 hover:text-[#d2b48c] text-[10px] font-black uppercase tracking-[0.25em] flex items-center gap-2 transition-colors outline-none"
-        >
+    <div className="animate-fadeIn font-sans text-white pb-12 w-full space-y-8">
+      
+      {/* Navigation Top Bar */}
+      <div className="flex items-center justify-between border-b-2 border-white/10 pb-6">
+        <button onClick={onBackToDashboard} className="text-gray-400 hover:text-[#d2b48c] text-[10px] font-black uppercase tracking-[0.25em] flex items-center gap-2 transition-colors outline-none">
           <FaArrowRight className="rotate-180" /> Dashboard Overview
         </button>
-        <span className="text-[9px] font-mono tracking-widest text-gray-500 uppercase">Profile: {currentUser?.fullName || 'Sanctuary Member'}</span>
+        <span className="text-[9px] font-mono tracking-widest text-[#d2b48c] uppercase font-bold">
+          {currentUser?.fullName || 'Sanctuary Member'}
+        </span>
       </div>
 
-      <div className="bg-black/40 backdrop-blur-xl border border-white/10 p-6 md:p-8 rounded-3xl shadow-2xl space-y-8">
+      {/* 🏛️ TOP ACTION CONTROL BANNER */}
+      <div className="flex flex-col lg:flex-row justify-between gap-6 bg-black/40 backdrop-blur-xl border border-white/10 p-6 rounded-3xl shadow-2xl">
         
-        <header className="border-b border-white/5 pb-4 flex flex-col sm:flex-row justify-between sm:items-center gap-2">
+        {/* Score Display */}
+        <div className="flex-1 flex items-center gap-6 border-r-0 lg:border-r border-white/10 pr-0 lg:pr-6">
+          <div className="relative w-20 h-20 rounded-full flex items-center justify-center shrink-0 border border-white/5 transition-all duration-500" style={{ background: `conic-gradient(${calculatedPercent >= 50 ? '#10b981' : '#ef4444'} ${calculatedPercent}%, rgba(255,255,255,0.05) 0)` }}>
+            <div className="w-16 h-16 bg-[#111111] rounded-full flex items-center justify-center absolute shadow-inner text-white font-mono font-black text-sm">
+              {calculatedPercent}%
+            </div>
+          </div>
           <div>
-            <h3 className="text-[#d2b48c] font-serif text-2xl tracking-tight uppercase">Personal Engagement Ratings</h3>
-            <p className="text-gray-500 text-2xs uppercase tracking-widest mt-1">Real-time Performance Analysis Ledger</p>
+            <h2 className="text-2xl font-black text-white tracking-tight uppercase">Attendance Score</h2>
+            <p className="text-sm font-bold text-gray-400 mt-1 uppercase tracking-widest">
+              <span className="text-[#d2b48c]">{attendedFilteredCount}</span> / {totalFilteredCount} Sessions
+            </p>
+            <span className={`text-[9px] font-black uppercase tracking-widest px-2 py-0.5 rounded-md mt-2 inline-block border ${calculatedPercent >= 70 ? 'bg-green-950/20 text-green-400 border-green-900/30' : 'bg-red-950/20 text-red-400 border-red-900/30'}`}>
+              {dynamicStanding}
+            </span>
           </div>
-          <span className={`text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-lg border self-start sm:self-center ${computedMetrics.overallPercent >= 70 ? 'bg-green-950/20 text-green-400 border-green-900/30' : 'bg-yellow-950/20 text-yellow-500 border-yellow-900/30'}`}>
-            {computedMetrics.standing}
-          </span>
-        </header>
-
-        {/* ==========================================
-            📈 STEP 1: INTERACTIVE PICTOGRAPH GRID
-           ========================================== */}
-        <div className="flex flex-col md:flex-row gap-4 h-[500px] md:h-[320px] w-full transition-all duration-500 ease-in-out">
-          
-          {/* Chart Card: Masses */}
-          <div 
-            onClick={() => setExpandedChartCard('mass')}
-            className={`relative transition-all duration-500 cursor-pointer flex flex-col bg-[#0b130b] border p-4 md:p-5 rounded-2xl shadow-xl ${
-              expandedChartCard === 'mass' 
-                ? 'flex-[4] md:flex-[2.5] border-blue-500/30 bg-gradient-to-br from-[#0c150c] to-[#050a05]' 
-                : 'flex-[1] md:flex-[0.6] border-white/5 hover:border-blue-500/20 opacity-80 md:opacity-40 hover:opacity-100'
-            }`}
-          >
-            <div className="flex items-center justify-between mb-3 md:mb-4">
-              <div className={`flex items-center gap-3 ${expandedChartCard !== 'mass' ? 'md:flex-col md:mx-auto' : ''}`}>
-                <div className="p-2.5 bg-blue-500/10 rounded-xl text-blue-400 shadow-[0_0_15px_rgba(59,130,246,0.1)]">
-                  <FaCalendarDay size={14} />
-                </div>
-                {expandedChartCard === 'mass' && (
-                  <div className="animate-fadeIn">
-                    <h4 className="text-xs font-black uppercase tracking-wider text-white">
-                      {isAltarLady ? 'Sanctuary Aesthetics' : 'Liturgical Mass Tracks'}
-                    </h4>
-                    <p className="text-[9px] text-gray-500 font-bold uppercase">Volume Trend Output</p>
-                  </div>
-                )}
-              </div>
-              {expandedChartCard === 'mass' ? <FaCompress size={12} className="text-gray-600" /> : <FaExpandArrowsAlt size={12} className="text-gray-600 opacity-100 md:opacity-0 group-hover:opacity-100 transition-opacity" />}
-            </div>
-            <div className="flex-1 w-full relative">
-              <Bar data={massChartData} options={chartOptions} />
-            </div>
-          </div>
-
-          {/* 🎯 FIXED & UPDATED: Clicking anywhere inside this circle wrapper card triggers the verified date drawer modal directly! */}
-          <div 
-            onClick={() => {
-              setExpandedChartCard('sessions');
-              setActiveSubDrawer('meetings'); // Open meeting dates history log layout on click
-            }}
-            className={`relative transition-all duration-500 cursor-pointer flex flex-col bg-[#0b130b] border p-4 md:p-5 rounded-2xl shadow-xl hover:bg-emerald-950/10 ${
-              expandedChartCard === 'sessions' 
-                ? 'flex-[4] md:flex-[2.5] border-emerald-500/40 bg-gradient-to-br from-[#0c150c] to-[#050a05]' 
-                : 'flex-[1] md:flex-[0.6] border-white/5 hover:border-emerald-500/20 opacity-80 md:opacity-40 hover:opacity-100'
-            }`}
-          >
-            <div className="flex items-center justify-between mb-3 md:mb-4">
-              <div className={`flex items-center gap-3 ${expandedChartCard !== 'sessions' ? 'md:flex-col md:mx-auto' : ''}`}>
-                <div className="p-2.5 bg-emerald-500/10 rounded-xl text-emerald-400 shadow-[0_0_15px_rgba(16,185,129,0.1)]">
-                  <FaChartPie size={14} />
-                </div>
-                {expandedChartCard === 'sessions' && (
-                  <div className="animate-fadeIn">
-                    <h4 className="text-xs font-black uppercase tracking-wider text-white">Assembly Yield Ratio</h4>
-                    <p className="text-[9px] text-emerald-500 font-bold uppercase tracking-wide">Click card circle to view exact dates logs</p>
-                  </div>
-                )}
-              </div>
-              {expandedChartCard === 'sessions' ? <FaCompress size={12} className="text-gray-600" /> : <FaExpandArrowsAlt size={12} className="text-gray-600 opacity-100 md:opacity-0 group-hover:opacity-100 transition-opacity" />}
-            </div>
-            <div className="flex-1 w-full relative flex items-center justify-center">
-               {expandedChartCard === 'sessions' && (
-                 <div className="absolute text-center z-10 animate-fadeIn">
-                    <p className="text-3xl font-serif font-bold text-white tracking-tight">{computedMetrics.meetingPercent}%</p>
-                    <p className="text-[8px] text-emerald-500 uppercase font-black tracking-widest mt-0.5">Ratio Check</p>
-                 </div>
-               )}
-               <Doughnut data={donutChartData} options={chartOptions} />
-            </div>
-          </div>
-
         </div>
 
-        {/* ==========================================
-            📋 STEP 2: SUMMARY METRIC CARD GRID
-           ========================================== */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          
-          {/* Card Module: Assemblies */}
-          <div onClick={() => setActiveSubDrawer('meetings')} className="border border-white/5 bg-white/[0.02] p-5 rounded-2xl cursor-pointer hover:border-white/10 hover:bg-white/[0.04] transition-all group shadow-md">
-            <h4 className="text-[10px] font-black text-gray-500 uppercase tracking-wider">Assemblies Attended</h4>
-            <p className="text-2xl font-serif font-bold mt-2 text-white">
-              {computedMetrics.meetingCount} <span className="text-lg font-normal text-gray-600">/ {computedMetrics.meetingTotal}</span> 
-              <span className="text-md font-sans font-black text-blue-400 ml-3">{computedMetrics.meetingPercent}%</span>
-            </p>
-            <p className="text-2xs text-gray-500 mt-3 leading-normal font-medium uppercase tracking-wide">Click to view verified ledger dates history →</p>
+        {/* Filters */}
+        <div className="flex flex-col sm:flex-row gap-3 items-center justify-end w-full lg:w-auto">
+          <div className="w-full sm:w-auto">
+            <label className="text-[8px] text-gray-500 uppercase tracking-widest block mb-1 pl-1">Semester</label>
+            <select value={selectedSemester} onChange={(e) => setSelectedSemester(e.target.value)} className="w-full bg-[#111] border border-white/20 text-white text-xs font-bold uppercase tracking-wider rounded-xl px-4 py-3 outline-none focus:border-[#d2b48c] cursor-pointer">
+              <option value="All">All Semesters</option>
+              <option value="Harmattan Semester">Harmattan</option>
+              <option value="Rain Semester">Rain</option>
+            </select>
           </div>
+          <div className="w-full sm:w-auto">
+            <label className="text-[8px] text-gray-500 uppercase tracking-widest block mb-1 pl-1">Level</label>
+            <select value={selectedLevel} onChange={(e) => setSelectedLevel(e.target.value)} className="w-full bg-[#111] border border-white/20 text-white text-xs font-bold uppercase tracking-wider rounded-xl px-4 py-3 outline-none focus:border-[#d2b48c] cursor-pointer">
+              <option value="All">All Levels</option>
+              <option value="100L">100L</option>
+              <option value="200L">200L</option>
+              <option value="300L">300L</option>
+              <option value="400L">400L</option>
+              <option value="500L">500L</option>
+            </select>
+          </div>
+        </div>
+      </div>
 
-          {/* Card Module: Conic Progress Performance Index */}
-          <div onClick={() => setActiveSubDrawer('stats')} className="border border-white/5 bg-white/[0.02] p-5 rounded-2xl flex items-center gap-5 cursor-pointer hover:border-white/10 hover:bg-white/[0.04] transition-all shadow-md">
-            <div 
-              className="relative w-16 h-16 rounded-full flex items-center justify-center shrink-0 shadow-xl border border-white/5" 
-              style={{ background: `conic-gradient(#3b82f6 ${computedMetrics.overallPercent}%, rgba(255,255,255,0.05) 0)` }}
-            >
-              <div className="w-12 h-12 bg-[#111111] rounded-full flex items-center justify-center absolute shadow-inner">
-                <span className="text-2xs font-black text-white font-mono">{computedMetrics.overallPercent}%</span>
-              </div>
+      {/* 📊 UNIVERSAL INTERACTIVE CALENDAR CONTAINER */}
+      <div className="bg-[#111111] border border-white/10 rounded-3xl p-6 shadow-2xl max-w-3xl mx-auto">
+        
+        {/* MONTH & YEAR DROPDOWN CONTROL BAR */}
+        <div className="flex flex-col sm:flex-row justify-between items-center gap-4 mb-6">
+          <div className="flex items-center gap-2">
+            <button onClick={prevMonth} className="p-3 bg-white/5 hover:bg-white/10 rounded-xl transition-colors cursor-pointer text-[#d2b48c] outline-none">
+              <FaChevronLeft size={12} />
+            </button>
+            <select value={currentMonth} onChange={(e) => { setCurrentMonth(parseInt(e.target.value)); setSelectedDateString(null); }} className="bg-white/5 border-0 rounded-xl py-2 px-3 text-sm font-black uppercase tracking-wider text-[#d2b48c] cursor-pointer outline-none appearance-none">
+              {MONTHS.map((m, index) => <option className="bg-black text-white" key={m} value={index}>{m}</option>)}
+            </select>
+            <select value={currentYear} onChange={(e) => { setCurrentYear(parseInt(e.target.value)); setSelectedDateString(null); }} className="bg-white/5 border-0 rounded-xl py-2 px-4 text-sm font-black tracking-wider text-white cursor-pointer outline-none appearance-none">
+              {YEAR_DROPDOWN_OPTIONS.map(yr => <option className="bg-black text-white" key={yr} value={yr}>{yr}</option>)}
+            </select>
+            <button onClick={nextMonth} className="p-3 bg-white/5 hover:bg-white/10 rounded-xl transition-colors cursor-pointer text-[#d2b48c] outline-none">
+              <FaChevronRight size={12} />
+            </button>
+          </div>
+          <h3 className="hidden sm:block text-base font-black tracking-widest uppercase text-neutral-400">
+            {MONTHS[currentMonth]} <span className="text-[#d2b48c]">{currentYear}</span>
+          </h3>
+        </div>
+
+        {/* CALENDAR WEEKDAY ROW GRID */}
+        <div className="grid grid-cols-7 gap-2 mb-2 text-center">
+          {DAYS_SHORT.map(d => <span key={d} className="text-[11px] font-black uppercase text-gray-500 tracking-wider py-1">{d}</span>)}
+        </div>
+
+        {/* SEVEN-COLUMN MATRIX HOLES */}
+        <div className="grid grid-cols-7 gap-2">
+          {calendarCells.map((day, idx) => {
+            const dateStr = formatDateString(day);
+            const dayLogs = day ? getLogsForDate(dateStr) : [];
+            const hasLogs = dayLogs.length > 0;
+            const isSelected = selectedDateString === dateStr;
+
+            if (!day) return <div key={`empty-${idx}`} className="aspect-square opacity-0"></div>;
+
+            return (
+              <button
+                key={`day-${day}`}
+                type="button"
+                onClick={() => hasLogs && setSelectedDateString(isSelected ? null : dateStr)}
+                className={`aspect-square rounded-xl border flex flex-col justify-between p-2 relative transition-all duration-200 outline-none text-left ${
+                  !hasLogs 
+                    ? 'border-white/5 bg-transparent opacity-30 cursor-not-allowed' 
+                    : isSelected
+                      ? 'border-[#d2b48c] bg-[#d2b48c]/20 shadow-inner scale-[0.98]'
+                      : 'border-white/20 bg-white/5 hover:border-[#d2b48c] cursor-pointer'
+                }`}
+                disabled={!hasLogs}
+              >
+                <span className={`text-sm font-black ${isSelected ? 'text-[#d2b48c]' : hasLogs ? 'text-white' : 'text-gray-600'}`}>{day}</span>
+                
+                {hasLogs && (
+                  <span className={`text-[8px] font-black px-1.5 py-0.5 rounded-md self-end block text-center uppercase ${
+                    isSelected ? 'bg-[#d2b48c] text-black' : 'bg-white/10 text-gray-300'
+                  }`}>
+                    {dayLogs.length} LOG
+                  </span>
+                )}
+              </button>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* 🖥️ DYNAMIC CLIENT DRILL DOWN DETAIL DISPLAY PANELS */}
+      {selectedDateString && (
+        <div className="bg-[#0c0c0c] border border-white/10 rounded-3xl p-6 md:p-8 animate-fadeIn shadow-2xl space-y-6 max-w-3xl mx-auto">
+          <div className="flex items-center gap-4 border-b border-white/5 pb-4">
+            <div className="p-3 bg-[#d2b48c]/10 border border-[#d2b48c]/20 rounded-2xl text-[#d2b48c]">
+              <FaCalendarDay size={20} />
             </div>
             <div>
-              <h4 className="text-[10px] font-black text-gray-500 uppercase tracking-wider">Performance Index</h4>
-              <p className="text-2xs font-mono mt-1 text-gray-400 leading-normal uppercase">
-                Standing Status:<br/>
-                <span className="font-serif font-bold text-xs text-[#d2b48c] tracking-normal">{computedMetrics.standing}</span>
-              </p>
+              <h3 className="text-xl font-serif text-white uppercase tracking-wide">Activity Logs: {selectedDateString}</h3>
+              <p className="text-xs text-gray-500 uppercase font-bold tracking-widest">Displaying user participation on this date</p>
             </div>
           </div>
 
-          {/* Card Module: Tasks Logged */}
-          <div onClick={() => setActiveSubDrawer('others')} className="border border-white/5 bg-white/[0.02] p-5 rounded-2xl cursor-pointer hover:border-white/10 hover:bg-white/[0.04] transition-all shadow-md">
-            <h4 className="text-[10px] font-black text-gray-500 uppercase tracking-wider">Operational Tasks</h4>
-            <span className="bg-blue-900/20 text-blue-400 border border-blue-900/30 text-[9px] font-black uppercase tracking-wider px-2.5 py-0.5 rounded-md mt-2 inline-block">
-              {computedMetrics.otherActivitiesCount} Tasks Verified
-            </span>
-            <p className="text-2xs text-gray-500 mt-3 leading-normal uppercase tracking-wide">Sanctuary clean-ups, novena alignments →</p>
-          </div>
-
-        </div>
-
-        {/* Advisory Methodology Framework Info Box */}
-        <footer className="bg-gradient-to-r from-[#111111] to-[#0d0d0d] text-white p-5 rounded-2xl border border-white/5 shadow-inner">
-          <h4 className="text-xs font-bold mb-1 text-[#d2b48c] uppercase tracking-wider flex items-center gap-2"><FaGraduationCap /> Analytical Compliance Guidelines</h4>
-          <p className="text-2xs leading-relaxed font-medium text-gray-500 uppercase tracking-wide">
-            Ratings compile active engagement weights across general assemblies, liturgical shifts, and mandatory sanitation tasks. Output standings directly configure governance level promotions, executive board appointments, and certificate approvals.
-          </p>
-        </footer>
-
-      </div>
-
-      {/* ==========================================
-          📂 STEP 3: CONTEXT SLIDE-OUT SUB-DRAWERS
-         ========================================== */}
-      {activeSubDrawer && (
-        <div className="fixed inset-0 z-[200] bg-black/90 backdrop-blur-xl animate-fadeIn flex items-center justify-center p-4">
-          <div className="w-full max-w-2xl bg-[#090909] border border-white/5 rounded-3xl shadow-2xl overflow-hidden flex flex-col relative">
-            
-            <div className="p-6 overflow-y-auto max-h-[70vh] space-y-6 scrollbar-none">
-              
-              {/* Drawer View Track: Assemblies History Logs */}
-              {activeSubDrawer === 'meetings' && (
-                <div className="space-y-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {activeLogs.map((session, index) => (
+              <div key={index} className={`border p-5 rounded-2xl flex flex-col justify-between transition-all bg-gradient-to-b ${
+                session.attended ? 'border-emerald-500/30 from-emerald-950/20 to-transparent' : 'border-red-500/30 from-red-950/20 to-transparent'
+              }`}>
+                <div className="flex items-start justify-between">
                   <div>
-                    <h2 className="text-lg font-serif text-[#d2b48c] uppercase tracking-wider">Assemblies Ledger</h2>
-                    <p className="text-gray-500 text-2xs uppercase tracking-widest mt-0.5">Verified Presence Checks: {computedMetrics.meetingCount} Logs</p>
+                    <span className={`text-[8px] font-black uppercase tracking-wider px-2 py-0.5 rounded flex items-center gap-1 w-max ${
+                      session.type === 'Mass' ? 'bg-blue-950 text-blue-400 border border-blue-900/30' : 'bg-purple-950 text-purple-400 border border-purple-900/30'
+                    }`}>
+                      {session.type === 'Mass' ? <FaChurch size={8} /> : <FaUsers size={8} />} {session.type}
+                    </span>
+                    <h4 className="text-sm font-serif font-bold text-white uppercase mt-2 tracking-wide truncate max-w-[200px]">{session.title}</h4>
                   </div>
-                  <div className="divide-y divide-white/5 border-t border-white/5">
-                    {computedMetrics.meetingLogs.length > 0 ? computedMetrics.meetingLogs.map((session, idx) => (
-                      <div key={idx} className="flex justify-between items-center py-4 bg-transparent">
-                        <div>
-                          <p className="text-xs font-serif font-bold text-white uppercase tracking-wide">{session.title}</p> 
-                          {/* ✅ TRANSPARENCY ENHANCEMENT: Displays long form date layout string mapping */}
-                          <p className="text-[10px] text-gray-400 font-mono mt-1 uppercase tracking-wider">
-                            {session.dateString || new Date(session.createdAt).toLocaleDateString('en-GB', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
-                          </p>
-                        </div>
-                        <div>
-                          {session.attended ? (
-                            <span className="text-green-400 flex items-center gap-1.5 text-[9px] font-black uppercase tracking-wider bg-green-950/20 px-3 py-1 rounded-md border border-green-900/30">
-                              Present
-                            </span>
-                          ) : (
-                            <span className="text-red-400 flex items-center gap-1.5 text-[9px] font-black uppercase tracking-wider bg-red-950/20 px-3 py-1 rounded-md border border-red-900/30">
-                              Absent
-                            </span>
-                          )}
-                        </div>
-                      </div>
-                    )) : (
-                      <p className="text-2xs text-gray-500 italic uppercase text-center py-8 tracking-widest">No structural session logs recorded in database clusters.</p>
-                    )}
-                  </div>
+                  {session.attended ? (
+                    <span className="flex items-center gap-1 text-[9px] font-black text-emerald-400 uppercase bg-emerald-500/10 border border-emerald-500/20 px-2 py-1 rounded-lg"><FaCheckSquare /> Attended</span>
+                  ) : (
+                    <span className="flex items-center gap-1 text-[9px] font-black text-red-400 uppercase bg-red-500/10 border border-red-500/20 px-2 py-1 rounded-lg"><FaTimes /> Missed</span>
+                  )}
                 </div>
-              )}
 
-              {/* Drawer View Track: Performance Breakdown Analytics */}
-              {activeSubDrawer === 'stats' && (
-                <div className="text-center space-y-6 py-4">
-                  <div>
-                    <h2 className="text-lg font-serif text-[#d2b48c] uppercase tracking-wider">Index Matrix Analytics</h2>
-                    <p className="text-gray-500 text-2xs uppercase tracking-widest mt-0.5">Statistical weight calculations distribution profile</p>
-                  </div>
-                  <div className="flex justify-center">
-                    <div 
-                      className="relative w-36 h-36 rounded-full flex items-center justify-center border border-white/5 shadow-2xl" 
-                      style={{ background: `conic-gradient(#3b82f6 ${computedMetrics.overallPercent}%, rgba(255,255,255,0.03) 0)` }}
-                    >
-                      <div className="w-28 h-28 bg-[#090909] rounded-full flex items-center justify-center absolute shadow-inner">
-                        <span className="text-2xl font-black font-mono text-white">{computedMetrics.overallPercent}%</span>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="max-w-md mx-auto bg-white/[0.01] border border-white/5 p-4 rounded-xl text-left space-y-2 text-2xs text-gray-400 uppercase tracking-wider font-medium">
-                    <p className="text-[#8b4513] font-bold border-b border-white/5 pb-1 mb-2">Weight Evaluation Breakdown</p>
-                    <p>• General Assembly Attendance Weight: <span className="text-white font-mono">40%</span></p>
-                    <p>• Liturgical Mass Attendance Weight: <span className="text-white font-mono">40%</span></p>
-                    <p>• Supplementary Operational Actions: <span className="text-white font-mono">20%</span></p>
-                  </div>
+                <div className="border-t border-white/5 mt-4 pt-3 flex items-center justify-between text-[9px] font-mono uppercase tracking-wider text-gray-400">
+                  <span className="text-[#d2b48c] font-bold">{session.semester}</span>
+                  <span className="bg-white/5 px-2 py-1 rounded text-gray-300 border border-white/10">{session.level || 'N/A'}</span>
                 </div>
-              )}
-
-              {/* Drawer View Track: Other Activities Logs */}
-              {activeSubDrawer === 'others' && (
-                <div className="space-y-4">
-                  <div>
-                    <h2 className="text-lg font-serif text-[#d2b48c] uppercase tracking-wider">Task Index Ledger</h2>
-                    <p className="text-gray-500 text-2xs uppercase tracking-widest mt-0.5">Supplementary Action Index logs</p>
-                  </div>
-                  <div className="divide-y divide-white/5 border-t border-white/5">
-                    {[
-                      { date: '2026-05-14', title: 'Sanctuary Vestry Arrangement', tag: 'Clean-up', type: 'success' },
-                      { date: '2026-04-20', title: 'Feast Day Liturgy Rehearsal', tag: 'Practice', type: 'info' },
-                      { date: '2026-04-02', title: 'Easter Triduum Retransmission Prep', tag: 'Formation', type: 'warn' }
-                    ].map((activity, idx) => (
-                      <div key={idx} className="flex justify-between items-center py-4 bg-transparent">
-                        <div>
-                          <p className="text-xs font-serif font-bold text-white uppercase tracking-wide">{activity.title}</p> 
-                          <p className="text-[10px] text-gray-500 font-mono mt-1 uppercase tracking-wider">{activity.date}</p>
-                        </div>
-                        <span className="px-2.5 py-0.5 text-[8px] font-black uppercase tracking-widest rounded bg-white/5 border border-white/10 text-gray-400">{activity.tag}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-
-            </div>
-
-            {/* Modal Drawer Action Controls Footer Panel */}
-            <div className="shrink-0 p-5 border-t border-white/5 bg-black/40 flex justify-between items-center gap-4">
-              <button type="button" onClick={onBackToDashboard} className="text-gray-500 hover:text-white transition-colors flex items-center gap-2 text-[10px] font-black uppercase tracking-widest outline-none">
-                <FaTachometerAlt size={12} /> Exit Panel
-              </button>
-              <button type="button" onClick={() => setActiveSubDrawer(null)} className="bg-[#1a110b] border border-[#3d2b1f] hover:border-[#8b4513] text-[#d2b48c] px-6 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all outline-none">
-                Return to Ratings
-              </button>
-            </div>
-
+              </div>
+            ))}
           </div>
         </div>
       )}
+
+      {/* Control Strip */}
+      <div className="p-4 bg-black/20 border border-white/5 rounded-2xl flex justify-between items-center max-w-3xl mx-auto mt-8">
+        <button type="button" onClick={onBackToDashboard} className="text-gray-500 hover:text-white transition-colors flex items-center gap-2 text-[10px] font-black uppercase tracking-widest outline-none">
+          <FaTachometerAlt size={12} /> Return To Panel
+        </button>
+      </div>
 
     </div>
   );

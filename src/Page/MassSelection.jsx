@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { 
-  FaCalendarAlt, FaSearch, FaCalendarDay, FaChevronDown, 
+  FaCalendarAlt, FaSearch, FaCalendarDay, 
   FaCheckCircle, FaTimesCircle, FaChevronLeft, FaChevronRight 
 } from 'react-icons/fa';
 import { PulseLoader } from 'react-spinners';
@@ -11,7 +11,11 @@ const API_BASE_URL = import.meta.env.VITE_API_BASE_URL?.replace(/\/$/, '') || im
 const MassSelection = () => {
   const [deployments, setDeployments] = useState([]);
   const [loading, setLoading] = useState(true);
+  
+  // 🛡️ DYNAMIC FILTERS
   const [searchName, setSearchName] = useState('');
+  const [selectedSemester, setSelectedSemester] = useState('All');
+  const [selectedLevel, setSelectedLevel] = useState('All');
   
   // 📆 UNRESTRICTED DYNAMIC CALENDAR ENGINE STATE
   const [currentMonth, setCurrentMonth] = useState(new Date().getMonth()); // 0 - 11
@@ -24,21 +28,23 @@ const MassSelection = () => {
   ];
   const DAYS_SHORT = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
-  // Generate an array of years dynamically for dropdown selection (e.g., 5 years back to 5 years forward)
   const startingYear = new Date().getFullYear() - 3;
   const YEAR_DROPDOWN_OPTIONS = Array.from({ length: 8 }, (_, i) => startingYear + i);
 
   useEffect(() => {
-    fetchDeploymentHistory();
-  }, []);
+    fetchDeploymentHistory(currentMonth, currentYear);
+  }, [currentMonth, currentYear]);
 
-  const fetchDeploymentHistory = async () => {
+  const fetchDeploymentHistory = async (month, year) => {
     try {
       setLoading(true);
       const token = localStorage.getItem('adminToken') || localStorage.getItem('token'); 
+      
       const res = await axios.get(`${API_BASE_URL}/api/admin/assignments/history`, {
+        params: { month: month + 1, year: year }, 
         headers: { Authorization: `Bearer ${token}` }
       });
+      
       if (res.data.success) {
         setDeployments(res.data.data);
       }
@@ -49,14 +55,12 @@ const MassSelection = () => {
     }
   };
 
-  // 🧠 CALENDAR CALCULATIONS ENGINE (Handles Leap Years automatically)
   const getDaysInMonth = (month, year) => new Date(year, month + 1, 0).getDate();
   const getFirstDayOfMonth = (month, year) => new Date(year, month, 1).getDay();
 
   const daysInMonth = getDaysInMonth(currentMonth, currentYear);
   const firstDayIndex = getFirstDayOfMonth(currentMonth, currentYear);
 
-  // Compile calendar cells array grid layout offsets
   const calendarCells = [];
   for (let i = 0; i < firstDayIndex; i++) {
     calendarCells.push(null); 
@@ -65,7 +69,6 @@ const MassSelection = () => {
     calendarCells.push(day);
   }
 
-  // Pure data string mapper to standardize ISO date comparison criteria
   const formatDateString = (day) => {
     if (!day) return '';
     const mm = String(currentMonth + 1).padStart(2, '0');
@@ -73,7 +76,6 @@ const MassSelection = () => {
     return `${currentYear}-${mm}-${dd}`;
   };
 
-  // Filters assignments matching selected dates dynamically
   const getMassesForDate = (dateStr) => {
     return deployments.filter(mass => {
       if (!mass.assignmentDate) return false;
@@ -82,43 +84,70 @@ const MassSelection = () => {
     });
   };
 
-  // Real-time highlight detector for the search bar
+  // 🛠️ UPDATED SEARCH ENGINE WITH SEMESTER AND LEVEL FILTERS
   const dateHasSearchMatch = (dateStr) => {
-    if (!searchName.trim()) return false;
     const dayMasses = getMassesForDate(dateStr);
-    return dayMasses.some(mass => isUserAssignedHere(mass, searchName));
+    return dayMasses.some(mass => isMassMatchingFilters(mass));
   };
 
-  const isUserAssignedHere = (assignment, targetName) => {
-    if (!targetName.trim()) return false;
-    const lowerTarget = targetName.toLowerCase().trim();
-    return [
-      assignment.sacristan, assignment.masterOfCeremonies, assignment.firstAcolyte,
-      assignment.secondAcolyte, assignment.crossBearer, assignment.thurifer,
-      assignment.boatBearer, assignment.firstAuxiliary, assignment.secondAuxiliary,
-      assignment.mitreBearer, assignment.crosierBearer
-    ].some(role => role && role.toLowerCase().includes(lowerTarget));
+  const isMassMatchingFilters = (mass) => {
+    // 1. Filter by Semester
+    if (selectedSemester !== 'All' && mass.semester !== selectedSemester) return false;
+
+    // 2. Filter by Name and Level
+    if (searchName.trim()) {
+      const lowerTarget = searchName.toLowerCase().trim();
+      const rolesArray = [
+        mass.roles?.sacristan, mass.roles?.masterOfCeremonies, mass.roles?.firstAcolyte,
+        mass.roles?.secondAcolyte, mass.roles?.crossBearer, mass.roles?.thurifer,
+        mass.roles?.boatBearer, mass.roles?.firstAuxiliary, mass.roles?.secondAuxiliary,
+        mass.roles?.mitreBearer, mass.roles?.crosierBearer
+      ];
+
+      // Check if user is in this mass AND matches the level filter
+      const userMatch = rolesArray.some(role => {
+        if (!role) return false;
+        const nameMatches = (role.name || '').toLowerCase().includes(lowerTarget);
+        const levelMatches = selectedLevel === 'All' || role.level === selectedLevel;
+        return nameMatches && levelMatches;
+      });
+
+      if (!userMatch) return false;
+    } else if (selectedLevel !== 'All') {
+      // If no name is searched, but level is selected, check if ANYONE in this mass matches the level
+      const rolesArray = [
+        mass.roles?.sacristan, mass.roles?.masterOfCeremonies, mass.roles?.firstAcolyte,
+        mass.roles?.secondAcolyte, mass.roles?.crossBearer, mass.roles?.thurifer,
+        mass.roles?.boatBearer, mass.roles?.firstAuxiliary, mass.roles?.secondAuxiliary,
+        mass.roles?.mitreBearer, mass.roles?.crosierBearer
+      ];
+      const levelMatch = rolesArray.some(role => role && role.level === selectedLevel);
+      if (!levelMatch) return false;
+    }
+
+    // If searchName exists but no semester/level is blocked, it's a match.
+    // If no search/level/semester exists, we don't highlight the calendar randomly.
+    return (searchName.trim() || selectedSemester !== 'All' || selectedLevel !== 'All');
   };
 
-  // 🔄 UNRESTRICTED PAGINATION FLOWS
   const prevMonth = () => {
+    setSelectedDateString(null); 
     if (currentMonth === 0) {
       setCurrentMonth(11);
       setCurrentYear(prev => prev - 1);
     } else {
       setCurrentMonth(prev => prev - 1);
     }
-    setSelectedDateString(null); // Clear selected records preview row smoothly on shift
   };
 
   const nextMonth = () => {
+    setSelectedDateString(null);
     if (currentMonth === 11) {
       setCurrentMonth(0);
       setCurrentYear(prev => prev + 1);
     } else {
       setCurrentMonth(prev => prev + 1);
     }
-    setSelectedDateString(null);
   };
 
   if (loading) return (
@@ -133,22 +162,47 @@ const MassSelection = () => {
   return (
     <div className="w-full space-y-8 animate-fadeIn text-gray-900 dark:text-white select-none font-sans pb-24 transition-colors duration-500">
       
-      {/* 🏛️ TOP ACTION CONTROL BANNER */}
-      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 border-b-2 border-[#e6d5c3] dark:border-white/10 pb-6 transition-colors">
+      {/* 🏛️ TOP ACTION CONTROL BANNER WITH NEW FILTERS */}
+      <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 border-b-2 border-[#e6d5c3] dark:border-white/10 pb-6 transition-colors">
         <div>
           <h2 className="text-4xl md:text-5xl font-black text-gray-900 dark:text-white tracking-tight uppercase">Liturgical Roadmap</h2>
           <p className="text-sm text-[#8b4513] dark:text-amber-500 font-bold uppercase tracking-widest mt-2">🛡️ Universal Multi-Year Roster Ledger Matrix Archive</p>
         </div>
 
-        <div className="relative w-full lg:w-96">
-          <FaSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={16} />
-          <input 
-            type="text" 
-            placeholder="Search name to trace highlighted dates..." 
-            value={searchName} 
-            onChange={(e) => setSearchName(e.target.value)} 
-            className="w-full bg-white dark:bg-black border-2 border-[#e6d5c3] dark:border-white/20 rounded-2xl py-4 pl-12 pr-4 text-sm font-bold text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-600 outline-none focus:border-[#8b4513] dark:focus:border-amber-500 transition-all shadow-2xl" 
-          />
+        <div className="flex flex-col sm:flex-row gap-3 w-full lg:w-auto">
+          <select 
+            value={selectedSemester} 
+            onChange={(e) => setSelectedSemester(e.target.value)}
+            className="bg-white dark:bg-[#111] border-2 border-[#e6d5c3] dark:border-white/20 text-gray-900 dark:text-white text-xs font-bold uppercase tracking-wider rounded-xl px-4 py-3 outline-none focus:border-[#8b4513] dark:focus:border-amber-500 cursor-pointer shadow-sm"
+          >
+            <option value="All">All Semesters</option>
+            <option value="Harmattan Semester">Harmattan</option>
+            <option value="Rain Semester">Rain</option>
+          </select>
+
+          <select 
+            value={selectedLevel} 
+            onChange={(e) => setSelectedLevel(e.target.value)}
+            className="bg-white dark:bg-[#111] border-2 border-[#e6d5c3] dark:border-white/20 text-gray-900 dark:text-white text-xs font-bold uppercase tracking-wider rounded-xl px-4 py-3 outline-none focus:border-[#8b4513] dark:focus:border-amber-500 cursor-pointer shadow-sm"
+          >
+            <option value="All">All Levels</option>
+            <option value="100L">100L</option>
+            <option value="200L">200L</option>
+            <option value="300L">300L</option>
+            <option value="400L">400L</option>
+            <option value="500L">500L</option>
+          </select>
+
+          <div className="relative w-full sm:w-64">
+            <FaSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={14} />
+            <input 
+              type="text" 
+              placeholder="Search name..." 
+              value={searchName} 
+              onChange={(e) => setSearchName(e.target.value)} 
+              className="w-full bg-white dark:bg-[#111] border-2 border-[#e6d5c3] dark:border-white/20 rounded-xl py-3 pl-10 pr-4 text-xs font-bold text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-600 outline-none focus:border-[#8b4513] dark:focus:border-amber-500 transition-all shadow-sm" 
+            />
+          </div>
         </div>
       </div>
 
@@ -162,7 +216,6 @@ const MassSelection = () => {
               <FaChevronLeft size={12} />
             </button>
             
-            {/* Dynamic Month Quick Jumper Dropdown */}
             <select 
               value={currentMonth}
               onChange={(e) => { setCurrentMonth(parseInt(e.target.value)); setSelectedDateString(null); }}
@@ -173,7 +226,6 @@ const MassSelection = () => {
               ))}
             </select>
 
-            {/* Dynamic Year Quick Jumper Dropdown */}
             <select
               value={currentYear}
               onChange={(e) => { setCurrentYear(parseInt(e.target.value)); setSelectedDateString(null); }}
@@ -265,7 +317,7 @@ const MassSelection = () => {
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {activeMasses.map((mass) => {
-                const isMatch = isUserAssignedHere(mass, searchName);
+                const isMatch = isMassMatchingFilters(mass);
 
                 return (
                   <div key={mass._id} className={`border-2 rounded-3xl p-6 flex flex-col justify-between bg-white dark:bg-black/60 backdrop-blur-md transition-all ${isMatch ? 'border-[#8b4513] dark:border-amber-500 shadow-[0_0_30px_rgba(139,69,19,0.15)] dark:shadow-[0_0_30px_rgba(59,130,246,0.15)]' : 'border-[#e6d5c3] dark:border-white/5'}`}>
@@ -273,34 +325,43 @@ const MassSelection = () => {
                       <div className="flex justify-between items-start border-b border-[#e6d5c3] dark:border-white/5 pb-4 mb-4">
                         <div>
                           <h4 className="text-xl font-serif font-bold text-gray-900 dark:text-white tracking-tight">{mass.massTitle}</h4>
-                          <span className="text-[10px] font-black tracking-widest uppercase text-[#8b4513] dark:text-amber-500 mt-1 inline-block">{mass.serviceType}</span>
+                          <span className="text-[10px] font-black tracking-widest uppercase text-[#8b4513] dark:text-amber-500 mt-1 inline-block">{mass.serviceType} • {mass.semester}</span>
                         </div>
                         <div className="text-xs text-right font-mono font-bold text-gray-500 dark:text-gray-400 bg-gray-50 dark:bg-white/5 border border-[#e6d5c3] dark:border-white/10 px-3 py-1 rounded-xl">{mass.assignmentTime}</div>
                       </div>
 
-                      {/* 📋 ROSTER DISPLAY SUBROW ROWS */}
+                      {/* 📋 ROSTER DISPLAY */}
                       <div className="space-y-2 mt-4">
-                        <ReadOnlyRow label="Sacristan" name={mass.sacristan} roleKey="Sacristan" attendanceMap={mass.attendance} color="text-gray-400" />
-                        <ReadOnlyRow label="MC" name={mass.masterOfCeremonies} roleKey="MC" attendanceMap={mass.attendance} color="text-emerald-400" />
-                        <ReadOnlyRow label="1st Acolyte" name={mass.firstAcolyte} roleKey="1st Acolyte" attendanceMap={mass.attendance} color="text-blue-400" />
-                        {mass.hasSecondAcolyte && <ReadOnlyRow label="2nd Acolyte" name={mass.secondAcolyte} roleKey="2nd Acolyte" attendanceMap={mass.attendance} color="text-blue-400" />}
-                        <ReadOnlyRow label="Cross Bearer" name={mass.crossBearer} roleKey="Cross Bearer" attendanceMap={mass.attendance} color="text-purple-400" />
-                        <ReadOnlyRow label="Thurifer" name={mass.thurifer} roleKey="Thurifer" attendanceMap={mass.attendance} color="text-orange-400" />
-                        <ReadOnlyRow label="Boat Bearer" name={mass.boatBearer} roleKey="Boat Bearer" attendanceMap={mass.attendance} color="text-orange-400/70" />
-                        <ReadOnlyRow label="Auxiliary 1" name={mass.firstAuxiliary} roleKey="Auxiliary 1" attendanceMap={mass.attendance} color="text-amber-500" />
-                        <ReadOnlyRow label="Auxiliary 2" name={mass.secondAuxiliary} roleKey="Auxiliary 2" attendanceMap={mass.attendance} color="text-amber-500/70" />
+                        <ReadOnlyRow label="Sacristan" name={mass.roles?.sacristan?.name || mass.sacristan} level={mass.roles?.sacristan?.level} roleKey="sacristan" attendanceMap={mass.attendance} color="text-gray-400" />
+                        <ReadOnlyRow label="MC" name={mass.roles?.masterOfCeremonies?.name || mass.masterOfCeremonies} level={mass.roles?.masterOfCeremonies?.level} roleKey="masterOfCeremonies" attendanceMap={mass.attendance} color="text-emerald-400" />
+                        <ReadOnlyRow label="1st Acolyte" name={mass.roles?.firstAcolyte?.name || mass.firstAcolyte} level={mass.roles?.firstAcolyte?.level} roleKey="firstAcolyte" attendanceMap={mass.attendance} color="text-blue-400" />
+                        
+                        {mass.hasSecondAcolyte && (
+                          <ReadOnlyRow label="2nd Acolyte" name={mass.roles?.secondAcolyte?.name || mass.secondAcolyte} level={mass.roles?.secondAcolyte?.level} roleKey="secondAcolyte" attendanceMap={mass.attendance} color="text-blue-400" />
+                        )}
+                        
+                        <ReadOnlyRow label="Cross Bearer" name={mass.roles?.crossBearer?.name || mass.crossBearer} level={mass.roles?.crossBearer?.level} roleKey="crossBearer" attendanceMap={mass.attendance} color="text-purple-400" />
+                        
+                        {mass.serviceType !== 'Evening Mass' && (
+                          <>
+                            <ReadOnlyRow label="Thurifer" name={mass.roles?.thurifer?.name || mass.thurifer} level={mass.roles?.thurifer?.level} roleKey="thurifer" attendanceMap={mass.attendance} color="text-orange-400" />
+                            <ReadOnlyRow label="Boat Bearer" name={mass.roles?.boatBearer?.name || mass.boatBearer} level={mass.roles?.boatBearer?.level} roleKey="boatBearer" attendanceMap={mass.attendance} color="text-orange-400/70" />
+                            <ReadOnlyRow label="Auxiliary 1" name={mass.roles?.firstAuxiliary?.name || mass.firstAuxiliary} level={mass.roles?.firstAuxiliary?.level} roleKey="firstAuxiliary" attendanceMap={mass.attendance} color="text-amber-500" />
+                            <ReadOnlyRow label="Auxiliary 2" name={mass.roles?.secondAuxiliary?.name || mass.secondAuxiliary} level={mass.roles?.secondAuxiliary?.level} roleKey="secondAuxiliary" attendanceMap={mass.attendance} color="text-amber-500/70" />
+                          </>
+                        )}
                         
                         {mass.serviceType === 'Bishop Mass' && (
                           <>
-                            <ReadOnlyRow label="Mitre Bearer" name={mass.mitreBearer} roleKey="Mitre Bearer" attendanceMap={mass.attendance} color="text-yellow-500" />
-                            <ReadOnlyRow label="Crosier Bearer" name={mass.crosierBearer} roleKey="Crosier Bearer" attendanceMap={mass.attendance} color="text-yellow-500" />
+                            <ReadOnlyRow label="Mitre Bearer" name={mass.roles?.mitreBearer?.name || mass.mitreBearer} level={mass.roles?.mitreBearer?.level} roleKey="mitreBearer" attendanceMap={mass.attendance} color="text-yellow-500" />
+                            <ReadOnlyRow label="Crosier Bearer" name={mass.roles?.crosierBearer?.name || mass.crosierBearer} level={mass.roles?.crosierBearer?.level} roleKey="crosierBearer" attendanceMap={mass.attendance} color="text-yellow-500" />
                           </>
                         )}
                       </div>
                     </div>
                     {isMatch && (
                       <div className="mt-6 pt-4 border-t border-[#8b4513]/20 dark:border-amber-500/20 text-center">
-                        <p className="text-[10px] text-[#8b4513] dark:text-amber-500 font-black uppercase tracking-widest animate-pulse">🛡️ You are currently deployed on this sanctuary roster</p>
+                        <p className="text-[10px] text-[#8b4513] dark:text-amber-500 font-black uppercase tracking-widest animate-pulse">🛡️ Filter match detected on this roster</p>
                       </div>
                     )}
                   </div>
@@ -314,7 +375,8 @@ const MassSelection = () => {
   );
 };
 
-const ReadOnlyRow = ({ label, name, roleKey, attendanceMap, color }) => {
+// 🛠️ UPGRADED TO ACCEPT AND DISPLAY LEVEL
+const ReadOnlyRow = ({ label, name, level, roleKey, attendanceMap, color }) => {
   if (!name || name.trim() === "") return null;
 
   let status = undefined;
@@ -339,10 +401,12 @@ const ReadOnlyRow = ({ label, name, roleKey, attendanceMap, color }) => {
     }`}>
       <div className="truncate max-w-[70%]">
         <p className={`text-[8px] uppercase font-black tracking-wider ${color}`}>{label}</p>
-        <p className="text-xs font-bold text-neutral-800 dark:text-white uppercase truncate mt-0.5">{name}</p>
+        <p className="text-xs font-bold text-neutral-800 dark:text-white uppercase truncate mt-0.5">
+          {name} {level && level !== 'All Levels' && <span className="text-[9px] text-gray-500 ml-1 lowercase">({level})</span>}
+        </p>
       </div>
       {status === undefined ? (
-        <span className="text-[9px] font-black text-neutral-500 dark:text-gray-500 uppercase bg-neutral-200/50 dark:bg-white/5 px-2 py-0.5 rounded border border-neutral-300 dark:border-white/10">Pending Audit</span>
+        <span className="text-[9px] font-black text-neutral-500 dark:text-gray-400 uppercase bg-neutral-200/50 dark:bg-white/10 px-2 py-0.5 rounded border border-neutral-300 dark:border-white/10 tracking-wider">Scheduled</span>
       ) : isServed ? (
         <span className="flex items-center gap-1 text-[9px] font-black text-green-600 dark:text-green-400 uppercase bg-green-100 dark:bg-green-950/50 px-2 py-0.5 rounded border border-green-200 dark:border-green-900/30"><FaCheckCircle size={10} /> Served</span>
       ) : (
