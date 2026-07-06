@@ -165,7 +165,7 @@ const MassSelection = () => {
       {/* 🏛️ TOP ACTION CONTROL BANNER WITH NEW FILTERS */}
       <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 border-b-2 border-[#e6d5c3] dark:border-white/10 pb-6 transition-colors">
         <div>
-          <h2 className="text-4xl md:text-5xl font-black text-gray-900 dark:text-white tracking-tight uppercase">Liturgical Roadmap</h2>
+          <h2 className="text-4xl md:text-3xl font-black text-gray-900 dark:text-white tracking-tight uppercase">ASA Roadmap</h2>
           <p className="text-sm text-[#8b4513] dark:text-amber-500 font-bold uppercase tracking-widest mt-2">🛡️ Universal Multi-Year Roster Ledger Matrix Archive</p>
         </div>
 

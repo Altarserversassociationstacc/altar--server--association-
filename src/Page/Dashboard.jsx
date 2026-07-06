@@ -5,13 +5,12 @@ import {
   FaMoneyBillWave, FaEnvelope, FaCommentDots, FaWhatsapp, 
   FaTrash, FaSignOutAlt, FaUserCircle, FaBars, FaTimes, 
   FaChevronDown, FaTachometerAlt, FaUser, FaBook, FaTasks, 
-  FaLock, FaMoon, FaSun, FaAward, FaChurch, FaCalendarCheck,
-  FaUsers
+  FaLock, FaMoon, FaSun, FaAward, FaChurch, FaCalendarCheck
 } from 'react-icons/fa';
 import { PulseLoader } from 'react-spinners';
 import { useTheme } from '../context/ThemeContext.jsx';
 
-import altarLogo from '../assets/logo.png';
+import altarLogo from '../assets/des.png';
 
 // Component Sub-layer Imports
 import Correspondence from './Correspondence';
@@ -137,7 +136,7 @@ const Dashboard = () => {
     lastEvaluatedSemester: 'Loading...',
     massesAllocatedDates: [],
     massesServedDates: [],
-    meetingLogs: [] // 🛡️ CRITICAL INITIALIZATION: Prevents undefined crashes in the calendar
+    meetingLogs: []
   });
 
   // Filter States for Level and Semester
@@ -283,6 +282,7 @@ const Dashboard = () => {
         });
 
         if (!isMounted) return;
+  
 
         setStats({
           meetingCount: data.meetingCount || 0,
@@ -294,7 +294,7 @@ const Dashboard = () => {
           lastEvaluatedSemester: 'Harmattan Semester',
           massesAllocatedDates: data.massesAllocatedDates || [],
           massesServedDates: data.massesServedDates || [],
-          meetingLogs: data.meetingLogs || [] // 🛡️ CRITICAL DATA BRIDGE CONNECTED
+          meetingLogs: data.meetingLogs || [] 
         });
 
       } catch (error) {
@@ -316,6 +316,124 @@ const Dashboard = () => {
   if (currentUser && !currentUser.isProfileComplete) {
     return <Navigate to="/complete-profile" replace />;
   }
+
+  // --- COMPONENT ROUTING RENDERER ---
+  const renderActiveView = () => {
+    switch (activeView) {
+      case 'overview':
+        return (
+          <div className="space-y-8 animate-fadeIn">
+            <header className="pb-4 border-b border-stone-200 dark:border-neutral-800 flex flex-col md:flex-row md:items-end justify-between gap-4">
+              <div>
+                <h1 className="text-3xl md:text-4xl font-serif text-amber-900 dark:text-amber-100 font-bold">Executive Dashboard</h1>
+                <p className="text-stone-500 dark:text-neutral-400 text-[11px] mt-1.5 uppercase font-bold tracking-widest">System Metrics Evaluation Matrix</p>
+              </div>
+              
+              <div className="flex items-center gap-3">
+                <select 
+                  value={selectedSemester} 
+                  onChange={(e) => setSelectedSemester(e.target.value)}
+                  className="bg-white dark:bg-neutral-900 border border-stone-200 dark:border-neutral-800 text-stone-700 dark:text-neutral-300 text-[10px] font-bold uppercase tracking-wider rounded-lg px-3 py-2 outline-none focus:border-amber-800 cursor-pointer"
+                >
+                  <option value="All">All Semesters</option>
+                  <option value="Harmattan Semester">Harmattan Semester</option>
+                  <option value="Rain Semester">Rain Semester</option>
+                </select>
+
+                <select 
+                  value={selectedLevel} 
+                  onChange={(e) => setSelectedLevel(e.target.value)}
+                  className="bg-white dark:bg-neutral-900 border border-stone-200 dark:border-neutral-800 text-stone-700 dark:text-neutral-300 text-[10px] font-bold uppercase tracking-wider rounded-lg px-3 py-2 outline-none focus:border-amber-800 cursor-pointer"
+                >
+                  <option value="All">All Levels</option>
+                  <option value="100L">100L</option>
+                  <option value="200L">200L</option>
+                  <option value="300L">300L</option>
+                  <option value="400L">400L</option>
+                  <option value="500L">500L</option>
+                </select>
+              </div>
+            </header>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4">
+              <StatCard icon={FaUserCircle} themeColor="blue" label="Meeting Presence" value={stats.meetingCount} sub="" />
+              <StatCard 
+                icon={FaCalendarCheck} 
+                themeColor="amber" 
+                label="Mass Given" 
+                value={filteredMassData.allocatedCount} 
+                onClick={() => currentUser?.role === 'admin' ? setActiveHistoryModal('allocated') : handleViewChange('personalLedger')}
+                isInteractive
+              />
+              <StatCard 
+                icon={FaChurch} 
+                themeColor="emerald" 
+                label="Masses Served" 
+                value={filteredMassData.servedCount} 
+                onClick={() => currentUser?.role === 'admin' ? setActiveHistoryModal('served') : handleViewChange('personalLedger')}
+                isInteractive
+              />
+              <StatCard icon={FaTasks} themeColor="purple" label="Community Tasks" value={stats.otherActivitiesCount} sub="Verified Tasks" />
+              <StatCard 
+                icon={FaMoneyBillWave} 
+                themeColor="amber" 
+                label="Dues Portfolio" 
+                value={`₦${stats.totalDuesPaid?.toLocaleString()}`} 
+                sub="Cleared Balance" 
+              />
+            </div>
+
+            <div className="mt-8 bg-white dark:bg-neutral-900 rounded-2xl border border-stone-200 dark:border-neutral-800 shadow-sm p-4">
+              <GuildAnalyticsDashboard metrics={stats} />
+            </div>
+          </div>
+        );
+      case 'activityRatings':
+        return (
+          <ActivityRatings 
+            allMeetings={stats.meetingLogs} 
+            metrics={stats} 
+            currentUser={currentUser} 
+            onBackToDashboard={() => handleViewChange('overview')} 
+          />
+        );
+      case 'personalLedger':
+        return <StudentPersonalLedger studentName={currentUser?.fullName} />;
+      case 'settings':
+        return <Settings user={currentUser} setCurrentUser={setCurrentUser} />;
+      case 'correspondence':
+        return <Correspondence user={currentUser} />;
+      case 'community':
+        return <Community user={currentUser} setCurrentUser={setCurrentUser} />;
+      case 'feedback':
+        return <Feedback user={currentUser} />;
+      case 'dues':
+        return (
+          <PaymentPortal 
+            currentUser={currentUser} 
+            onPaymentSuccess={(amountPaid) => {
+              setStats(prev => ({
+                ...prev,
+                totalDuesPaid: (prev.totalDuesPaid || 0) + Number(amountPaid)
+              }));
+            }}
+            onClose={() => handleViewChange('overview')}
+          />
+        );
+      case 'missa':
+        return <Missa />;
+      case 'rosary':
+        return <Rosary />;
+      case 'massSelection':
+        return <MassSelection />;
+      case 'calendar':
+        return <LiturgicalCalendar />;
+      case 'profileView':
+        return <ProfileCard user={currentUser} onViewChange={handleViewChange} />;
+      default:
+        return null;
+    }
+  };
 
   return (
     <div className="flex flex-col h-screen bg-stone-50 dark:bg-neutral-950 overflow-hidden w-full font-sans text-stone-900 dark:text-neutral-50 transition-colors duration-300">
@@ -478,107 +596,7 @@ const Dashboard = () => {
                 <p className="text-amber-800 dark:text-amber-600 text-[10px] mt-4 font-bold uppercase tracking-[0.3em] animate-pulse">Synchronizing Records...</p>
               </div>
             ) : (
-              <>
-                {activeView === 'overview' && (
-                  <div className="space-y-8 animate-fadeIn">
-                    <header className="pb-4 border-b border-stone-200 dark:border-neutral-800 flex flex-col md:flex-row md:items-end justify-between gap-4">
-                      <div>
-                        <h1 className="text-3xl md:text-4xl font-serif text-amber-900 dark:text-amber-100 font-bold">Executive Dashboard</h1>
-                        <p className="text-stone-500 dark:text-neutral-400 text-[11px] mt-1.5 uppercase font-bold tracking-widest">System Metrics Evaluation Matrix</p>
-                      </div>
-                      
-                      {/* Dynamic Filter Controls */}
-                      <div className="flex items-center gap-3">
-                        <select 
-                          value={selectedSemester} 
-                          onChange={(e) => setSelectedSemester(e.target.value)}
-                          className="bg-white dark:bg-neutral-900 border border-stone-200 dark:border-neutral-800 text-stone-700 dark:text-neutral-300 text-[10px] font-bold uppercase tracking-wider rounded-lg px-3 py-2 outline-none focus:border-amber-800 cursor-pointer"
-                        >
-                          <option value="All">All Semesters</option>
-                          <option value="Harmattan Semester">Harmattan Semester</option>
-                          <option value="Rain Semester">Rain Semester</option>
-                        </select>
-
-                        <select 
-                          value={selectedLevel} 
-                          onChange={(e) => setSelectedLevel(e.target.value)}
-                          className="bg-white dark:bg-neutral-900 border border-stone-200 dark:border-neutral-800 text-stone-700 dark:text-neutral-300 text-[10px] font-bold uppercase tracking-wider rounded-lg px-3 py-2 outline-none focus:border-amber-800 cursor-pointer"
-                        >
-                          <option value="All">All Levels</option>
-                          <option value="100L">100L</option>
-                          <option value="200L">200L</option>
-                          <option value="300L">300L</option>
-                          <option value="400L">400L</option>
-                          <option value="500L">500L</option>
-                        </select>
-                      </div>
-                    </header>
-
-                    {/* Optimized Responsive Stat Cards Layout (Supports 6 Items Perfectly) */}
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4">
-                      <StatCard icon={FaUserCircle} themeColor="blue" label="Meeting Presence" value={stats.meetingCount} sub="" />
-                      
-                      {/* NEWLY INTEGRATED MASS MEETING SLOT */}
-                      {/* <StatCard icon={FaUsers} themeColor="purple" label="Mass Meeting" value={stats.massMeetingCount} sub="Conferences" /> */}
-
-                      <StatCard 
-                        icon={FaCalendarCheck} 
-                        themeColor="amber" 
-                        label="Mass Given" 
-                        value={filteredMassData.allocatedCount} 
-                        onClick={() => currentUser?.role === 'admin' ? setActiveHistoryModal('allocated') : handleViewChange('personalLedger')}
-                        isInteractive
-                      />
-                      
-                      <StatCard 
-                        icon={FaChurch} 
-                        themeColor="emerald" 
-                        label="Masses Served" 
-                        value={filteredMassData.servedCount} 
-                
-                        onClick={() => currentUser?.role === 'admin' ? setActiveHistoryModal('served') : handleViewChange('personalLedger')}
-                        isInteractive
-                      />
-                      
-                      <StatCard icon={FaTasks} themeColor="purple" label="Community Tasks" value={stats.otherActivitiesCount} sub="Verified Tasks" />
-                      <StatCard icon={FaMoneyBillWave} themeColor="amber" label="Dues Portfolio" value={`₦${stats.totalDuesPaid?.toLocaleString()}`} sub="Cleared Balance" />
-                    </div>
-
-                    {/* Chart Container - Isolated safely inside the dashboard overview */}
-                    <div className="mt-8 bg-white dark:bg-neutral-900 rounded-2xl border border-stone-200 dark:border-neutral-800 shadow-sm p-4">
-                      <GuildAnalyticsDashboard metrics={stats} />
-                    </div>
-                  </div>
-                )}
-
-                {/* Main Component View Switcher Router */}
-                {/* {activeView === 'activityRatings' && (
-                  <ActivityRatings metrics={stats} currentUser={currentUser} onBackToDashboard={() => handleViewChange('overview')} />
-                )} */}
-     {/* Main Component View Switcher Router */}
-              {activeView === 'activityRatings' && (
-                <ActivityRatings 
-                  allMeetings={stats.meetingLogs} // <-- Successfully linked to your state matrix
-                  metrics={stats} // Optional: Pass metrics in case the component still needs them
-                  currentUser={currentUser} 
-                  onBackToDashboard={() => handleViewChange('overview')} // <-- Fixed route to match your dashboard ID
-                />
-)}
-                {activeView === 'personalLedger' && (
-                  <StudentPersonalLedger studentName={currentUser?.fullName} />
-                )}
-
-                {activeView === 'settings' && <Settings user={currentUser} setCurrentUser={setCurrentUser} />}
-                {activeView === 'correspondence' && <Correspondence user={currentUser} />}
-                {activeView === 'community' && <Community user={currentUser} setCurrentUser={setCurrentUser} />}
-                {activeView === 'feedback' && <Feedback user={currentUser} />}
-                {activeView === 'dues' && <PaymentPortal currentUser={currentUser} />}
-                {activeView === 'missa' && <Missa />}
-                {activeView === 'rosary' && <Rosary />}
-                {activeView === 'massSelection' && <MassSelection />}
-                {activeView === 'calendar' && <LiturgicalCalendar />}
-                {activeView === 'profileView' && <ProfileCard user={currentUser} onViewChange={handleViewChange} />}
-              </>
+              renderActiveView()
             )}
           </div>
 

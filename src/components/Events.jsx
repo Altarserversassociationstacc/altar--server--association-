@@ -15,7 +15,7 @@ const Events = ({ isFullPage = false }) => {
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
 
-  const categories = ["All Events", "Workshops", "Seminars", "Liturgical Competitions", "Fellowship", "Meetings"];
+  const categories = ["All Events", "General", "General Meetings", "General Practice", "ASA Novena", "ASA Chaplaincy Cup", "Sendforth Events"];
 
   // 1. Core Data Synchronization Engine
   useEffect(() => {

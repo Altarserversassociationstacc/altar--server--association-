@@ -93,7 +93,7 @@ const StudentPersonalLedger = ({ studentName }) => {
       <div className="bg-white dark:bg-[#111] border border-stone-200 dark:border-[#d2b48c]/30 rounded-3xl p-6 shadow-xl">
         <div className="mb-6 border-b border-stone-200 dark:border-white/10 pb-4 flex justify-between items-end">
           <div>
-            <h2 className="text-2xl font-black text-stone-900 dark:text-white uppercase tracking-tight">Service Ledger</h2>
+            <h2 className="text-2xl font-black text-stone-900 dark:text-white uppercase tracking-tight">Mass Records</h2>
             <p className="text-xs text-stone-500 dark:text-gray-400 mt-1 uppercase font-bold tracking-widest">Select filters below to view records</p>
           </div>
           <div className="text-right">
