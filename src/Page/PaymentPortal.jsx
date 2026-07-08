@@ -263,7 +263,7 @@ paystack.newTransaction({
           <form onSubmit={handlePayClick} className="space-y-5">
             <div>
               <label className={`text-[10px] font-black uppercase tracking-widest mb-1 flex items-center gap-2 ${isDarkMode ? 'text-emerald-500' : 'text-emerald-600'}`}>
-                <FaTag size={10} /> Payment Narration (Purpose)
+                <FaTag size={10} /> Payment Narration 
               </label>
               <select 
                 disabled={isProcessing}
