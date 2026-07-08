@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { 
   FaLock, FaCheckCircle, FaPrint, FaArrowRight, FaTag, 
-  FaCircleNotch, FaExclamationCircle, FaSun, FaMoon, FaHome 
+  FaCircleNotch, FaExclamationCircle, FaSun, FaMoon, FaHome, FaChevronDown 
 } from 'react-icons/fa';
 import PaystackPop from '@paystack/inline-js';
 
@@ -138,32 +138,25 @@ const PaymentPortal = ({ currentUser, onPaymentSuccess, onClose }) => {
 
       const finalGrossUserCharge = calculatePaystackTotalCharge(numericAmount);
 
-      // 1. Initialize Paystack instance
       const paystack = new PaystackPop();
 
-      // 2. Call transaction method cleanly
-// Locate this block in your PaymentPortal.jsx and add the name fields:
-paystack.newTransaction({
-  key: paystackKey, 
-  email: currentUserRef.current?.email || "student@example.com", 
-  amount: Math.round(finalGrossUserCharge * 100), 
-  currency: 'NGN', 
-  reference: uniqueRef, 
-  
-  // 💡 ADD THESE FIELDS TO SATISFY THE BANK CHANNELS:
-  firstname: currentUserRef.current?.firstName || currentUserRef.current?.studentName?.split(' ')[0] || "Student",
-  lastname: currentUserRef.current?.lastName || currentUserRef.current?.studentName?.split(' ')[1] || "Portal",
-  
-  metadata: {
-    studentId: currentUserRef.current?._id,
-    custom_fields: [
-      { display_name: "Narration", variable_name: "narration", value: currentFormData.narration },
-      { display_name: "Target Level", variable_name: "level", value: currentFormData.level },
-      { display_name: "Academic Year", variable_name: "academic_year", value: currentFormData.year },
-      { display_name: "Session", variable_name: "session", value: currentFormData.session }
-    ]
-  },
-  // ... keep onSuccess, onCancel, and onError exactly as they are
+      paystack.newTransaction({
+        key: paystackKey, 
+        email: currentUserRef.current?.email || "student@example.com", 
+        amount: Math.round(finalGrossUserCharge * 100), 
+        currency: 'NGN', 
+        reference: uniqueRef, 
+        firstname: currentUserRef.current?.firstName || currentUserRef.current?.studentName?.split(' ')[0] || "Student",
+        lastname: currentUserRef.current?.lastName || currentUserRef.current?.studentName?.split(' ')[1] || "Portal",
+        metadata: {
+          studentId: currentUserRef.current?._id,
+          custom_fields: [
+            { display_name: "Narration", variable_name: "narration", value: currentFormData.narration },
+            { display_name: "Target Level", variable_name: "level", value: currentFormData.level },
+            { display_name: "Academic Year", variable_name: "academic_year", value: currentFormData.year },
+            { display_name: "Session", variable_name: "session", value: currentFormData.session }
+          ]
+        },
         onSuccess: (response) => {
           setStep('verifying');
           verifyPaymentOnBackend(response.reference, numericAmount, currentFormData)
@@ -208,7 +201,6 @@ paystack.newTransaction({
     }));
   };
 
-  // Base thematic styles mapping to reduce JSX clutter
   const theme = {
     bg: isDarkMode ? 'bg-[#090909] text-white' : 'bg-stone-100 text-stone-900',
     card: isDarkMode ? 'bg-black/40 border-white/10' : 'bg-white border-stone-200 shadow-stone-300/40',
@@ -228,7 +220,6 @@ paystack.newTransaction({
   return (
     <div className={`min-h-screen flex items-center justify-center p-4 font-sans transition-colors duration-300 ${theme.bg}`}>
       
-      {/* PHASE 1: Data Entry Form */}
       {step === 'form' && (
         <div className={`backdrop-blur-xl p-8 rounded-3xl shadow-2xl w-full max-w-md border transition-all duration-300 ${theme.card}`}>
           
@@ -263,36 +254,48 @@ paystack.newTransaction({
           <form onSubmit={handlePayClick} className="space-y-5">
             <div>
               <label className={`text-[10px] font-black uppercase tracking-widest mb-1 flex items-center gap-2 ${isDarkMode ? 'text-emerald-500' : 'text-emerald-600'}`}>
-                <FaTag size={10} /> Payment Narration 
+                <FaTag size={10} /> Payment Narration (Purpose)
               </label>
-              <select 
-                disabled={isProcessing}
-                value={formData.narration}
-                className={`w-full rounded-xl px-4 py-3 text-sm focus:outline-none transition-colors duration-200 border ${theme.input}`}
-                onChange={onSelectChangeHandler}
-              >
-                <option value="Sessional Dues">Sessional Dues (Unlocks Profile)</option>
-                <option value="Sendforth levy and Appeal fund card">Sendforth levy and Appeal fund card</option>
-                <option value="Donation">Donation (Custom Amount Value)</option>
-                <option value="Other Clearance">Other Clearance</option>
-              </select>
+              {/* ✅ FIX APPLIED HERE: appearance-none added, and relative div wrapper with FaChevronDown */}
+              <div className="relative">
+                <select 
+                  disabled={isProcessing}
+                  value={formData.narration}
+                  className={`appearance-none w-full rounded-xl px-4 py-3 pr-10 text-sm focus:outline-none transition-colors duration-200 border ${theme.input}`}
+                  onChange={onSelectChangeHandler}
+                >
+                  <option value="Sessional Dues">Sessional Dues (Unlocks Profile)</option>
+                  <option value="Sendforth levy and Appeal fund card">Sendforth levy and Appeal fund card</option>
+                  <option value="Donation">Donation (Custom Amount Value)</option>
+                  <option value="Other Clearance">Other Clearance</option>
+                </select>
+                <div className="absolute inset-y-0 right-0 flex items-center px-4 pointer-events-none text-gray-400">
+                  <FaChevronDown size={12} />
+                </div>
+              </div>
             </div>
 
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <label className={`text-[10px] font-black uppercase tracking-widest mb-1 block ${theme.mutedText}`}>Target Level</label>
-                <select 
-                  disabled={isProcessing}
-                  value={formData.level}
-                  className={`w-full rounded-xl px-4 py-3 text-sm focus:outline-none transition-colors duration-200 border ${theme.input}`}
-                  onChange={e => setFormData(prev => ({...prev, level: e.target.value}))}
-                >
-                  <option value="100L">100L</option>
-                  <option value="200L">200L</option>
-                  <option value="300L">300L</option>
-                  <option value="400L">400L</option>
-                  <option value="500L">500L</option>
-                </select>
+                {/* ✅ FIX APPLIED HERE */}
+                <div className="relative">
+                  <select 
+                    disabled={isProcessing}
+                    value={formData.level}
+                    className={`appearance-none w-full rounded-xl px-4 py-3 pr-10 text-sm focus:outline-none transition-colors duration-200 border ${theme.input}`}
+                    onChange={e => setFormData(prev => ({...prev, level: e.target.value}))}
+                  >
+                    <option value="100L">100L</option>
+                    <option value="200L">200L</option>
+                    <option value="300L">300L</option>
+                    <option value="400L">400L</option>
+                    <option value="500L">500L</option>
+                  </select>
+                  <div className="absolute inset-y-0 right-0 flex items-center px-3 pointer-events-none text-gray-400">
+                    <FaChevronDown size={12} />
+                  </div>
+                </div>
               </div>
 
               <div>
@@ -307,14 +310,20 @@ paystack.newTransaction({
 
             <div>
               <label className={`text-[10px] font-black uppercase tracking-widest mb-1 block ${theme.mutedText}`}>Academic Session</label>
-              <select 
-                disabled={isProcessing} value={formData.session}
-                className={`w-full rounded-xl px-4 py-3 text-sm focus:outline-none transition-colors duration-200 border ${theme.input}`}
-                onChange={e => setFormData(prev => ({...prev, session: e.target.value}))}
-              >
-                <option value="Harmattan Semester">Harmattan Semester</option>
-                <option value="Rainy Semester">Rainy Semester</option>
-              </select>
+              {/* ✅ FIX APPLIED HERE */}
+              <div className="relative">
+                <select 
+                  disabled={isProcessing} value={formData.session}
+                  className={`appearance-none w-full rounded-xl px-4 py-3 pr-10 text-sm focus:outline-none transition-colors duration-200 border ${theme.input}`}
+                  onChange={e => setFormData(prev => ({...prev, session: e.target.value}))}
+                >
+                  <option value="Harmattan Semester">Harmattan Semester</option>
+                  <option value="Rainy Semester">Rainy Semester</option>
+                </select>
+                <div className="absolute inset-y-0 right-0 flex items-center px-4 pointer-events-none text-gray-400">
+                  <FaChevronDown size={12} />
+                </div>
+              </div>
             </div>
 
             <div>
@@ -358,7 +367,6 @@ paystack.newTransaction({
         </div>
       )}
 
-      {/* PHASE 2: Background Verification loader */}
       {step === 'verifying' && (
         <div className={`backdrop-blur-xl p-12 rounded-3xl text-center max-w-sm w-full border transition-all duration-300 ${theme.card}`}>
           <FaCircleNotch className="text-emerald-500 animate-spin mx-auto mb-4" size={36} />
@@ -367,7 +375,6 @@ paystack.newTransaction({
         </div>
       )}
 
-      {/* PHASE 3: Official Receipt Slip */}
       {step === 'slip' && receiptDetails && (
         <div className="bg-white text-black p-8 rounded-2xl w-full max-w-sm relative border border-stone-200 shadow-2xl animate-fadeIn">
           <div className="text-center mb-6">
