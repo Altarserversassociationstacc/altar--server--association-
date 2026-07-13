@@ -17,6 +17,7 @@ import CompleteProfile from './Page/CompleteProfile';
 import Home from './Page/Home';
 import Dashboard from './Page/Dashboard';
 import { ExecutiveLandingPage } from './Page/ExecutiveLandingPage';
+import { LevelLandingPage } from './Page/LevelLandingPage';
 
 // Set up a global Axios interceptor to catch token expiration from backend API calls
 axios.interceptors.response.use(
@@ -66,6 +67,7 @@ export default function App() {
           <Route path="/gallery" element={<Gallery />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/levels" element={<LevelLandingPage />} />
           <Route path="/pending-approval" element={<PendingApproval />} />
           <Route path="/verify-email" element={<VerifyEmail />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />

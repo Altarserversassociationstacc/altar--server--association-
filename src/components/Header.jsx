@@ -27,6 +27,7 @@ const Header = () => {
           <Link to="/events" className="transition-colors text-gray-800 hover:text-[#8b4513] dark:text-[#d2b48c] dark:hover:text-white">Events</Link>
           <Link to="/executives" className="transition-colors text-gray-800 hover:text-[#8b4513] dark:text-[#d2b48c] dark:hover:text-white">Executives</Link>
           <Link to="/gallery" className="transition-colors text-gray-800 hover:text-[#8b4513] dark:text-[#d2b48c] dark:hover:text-white">Gallery</Link>
+         <Link to="/levels" className="transition-colors text-gray-800 hover:text-[#8b4513] dark:text-[#d2b48c] dark:hover:text-white">Levels</Link>
           <Link to="/contact" className="transition-colors text-gray-800 hover:text-[#8b4513] dark:text-[#d2b48c] dark:hover:text-white">Contact</Link>
         </div>
 
@@ -48,6 +49,7 @@ const Header = () => {
             <Link to="/events" onClick={() => setIsMenuOpen(false)} className="uppercase tracking-widest text-sm hover:text-[#8b4513]">Events</Link>
             <Link to="/executives" onClick={() => setIsMenuOpen(false)} className="uppercase tracking-widest text-sm hover:text-[#8b4513]">Executives</Link>
             <Link to="/gallery" onClick={() => setIsMenuOpen(false)} className="uppercase tracking-widest text-sm hover:text-[#8b4513]">Gallery</Link>
+           <Link to="/levels" onClick={() => setIsMenuOpen(false)} className="uppercase tracking-widest text-sm hover:text-[#8b4513]">Levels</Link>
             <Link to="/contact" onClick={() => setIsMenuOpen(false)} className="uppercase tracking-widest text-sm hover:text-[#8b4513]">Contact</Link>
             <Link to="/signup" className="bg-gradient-to-r from-[#8b4513] to-[#5c4033] text-white px-5 py-3 mt-4 rounded-lg font-bold uppercase tracking-widest shadow-md inline-block">
                       Join Us
