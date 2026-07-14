@@ -121,7 +121,7 @@ const VerifyEmail = () => {
       
       <div className="max-w-md w-full bg-white/60 dark:bg-black/40 backdrop-blur-xl border border-[#e6d5c3] dark:border-white/10 rounded-3xl shadow-2xl overflow-hidden relative z-10 animate-fadeIn transition-colors">
         <div className="p-8 text-center border-b border-[#e6d5c3] dark:border-white/5 bg-[#8b4513]/5">
-          <h2 className="text-3xl font-serif text-gray-900 dark:text-white tracking-tight">Verify Access</h2>
+          <h2 className="text-3xl font-serif text-gray-900 dark:text-white tracking-tight">Verify </h2>
           <p className="text-[#8b4513] dark:text-[#d2b48c] text-[10px] mt-2 font-bold uppercase tracking-[0.2em]">Enter Authentication Code</p>
         </div>
 
