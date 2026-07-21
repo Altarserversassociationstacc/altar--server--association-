@@ -254,7 +254,7 @@ const PaymentPortal = ({ currentUser, onPaymentSuccess, onClose }) => {
           <form onSubmit={handlePayClick} className="space-y-5">
             <div>
               <label className={`text-[10px] font-black uppercase tracking-widest mb-1 flex items-center gap-2 ${isDarkMode ? 'text-emerald-500' : 'text-emerald-600'}`}>
-                <FaTag size={10} /> Payment Narration (Purpose)
+                <FaTag size={10} /> Payment Narration 
               </label>
               {/* ✅ FIX APPLIED HERE: appearance-none added, and relative div wrapper with FaChevronDown */}
               <div className="relative">
@@ -266,7 +266,7 @@ const PaymentPortal = ({ currentUser, onPaymentSuccess, onClose }) => {
                 >
                   <option value="Sessional Dues">Sessional Dues (Unlocks Profile)</option>
                   <option value="Sendforth levy and Appeal fund card">Sendforth levy and Appeal fund card</option>
-                  <option value="Donation">Donation (Custom Amount Value)</option>
+                  <option value="Donation">Donation </option>
                   <option value="Other Clearance">Other Clearance</option>
                 </select>
                 <div className="absolute inset-y-0 right-0 flex items-center px-4 pointer-events-none text-gray-400">
@@ -309,26 +309,8 @@ const PaymentPortal = ({ currentUser, onPaymentSuccess, onClose }) => {
             </div>
 
             <div>
-              <label className={`text-[10px] font-black uppercase tracking-widest mb-1 block ${theme.mutedText}`}>Academic Session</label>
-              {/* ✅ FIX APPLIED HERE */}
-              <div className="relative">
-                <select 
-                  disabled={isProcessing} value={formData.session}
-                  className={`appearance-none w-full rounded-xl px-4 py-3 pr-10 text-sm focus:outline-none transition-colors duration-200 border ${theme.input}`}
-                  onChange={e => setFormData(prev => ({...prev, session: e.target.value}))}
-                >
-                  <option value="Harmattan Semester">Harmattan Semester</option>
-                  <option value="Rainy Semester">Rainy Semester</option>
-                </select>
-                <div className="absolute inset-y-0 right-0 flex items-center px-4 pointer-events-none text-gray-400">
-                  <FaChevronDown size={12} />
-                </div>
-              </div>
-            </div>
-
-            <div>
               <label className={`text-[10px] font-black uppercase tracking-widest mb-1 flex items-center justify-between ${theme.mutedText}`}>
-                <span>Amount Payable (₦)</span>
+                <span>Amount</span>
                 {!isCustomAmountAllowed && <span className="text-[8px] text-amber-500 font-bold">Admin Managed</span>}
               </label>
               <div className="relative mt-1">

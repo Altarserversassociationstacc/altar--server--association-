@@ -23,7 +23,7 @@ import MassSelection from './MassSelection';
 import LiturgicalCalendar from './LiturgicalCalendar';
 import MembershipLockModal from '../components/MembershipLockModal';
 import ActivityRatings from '../Page/ActivityRatings';
-import GuildAnalyticsDashboard from '../components/GuildAnalyticsDashboard';
+// import GuildAnalyticsDashboard from '../components/GuildAnalyticsDashboard';
 import StudentPersonalLedger from '../Page/StudentPersonalLedger.jsx'; 
 import PaymentPortal from './PaymentPortal.jsx';
 
@@ -167,13 +167,13 @@ const Dashboard = () => {
 
   // --- MEMOIZED CONFIGURATION MATRICES ---
   const dropdownItems = useMemo(() => [
-    { id: 'activityRatings', name: 'Meetings', icon: FaAward, color: 'text-amber-500' },
-    { id: 'dues', name: 'Dues ', icon: FaMoneyBillWave, color: 'text-emerald-500' },
+    { id: 'activityRatings', name: 'Activities', icon: FaAward, color: 'text-amber-500' },
+    // { id: 'dues', name: 'Dues ', icon: FaMoneyBillWave, color: 'text-emerald-500' },
     { id: 'correspondence', name: 'Correspondence', icon: FaEnvelope, color: 'text-blue-500' },
     { id: 'feedback', name: 'Feedback ', icon: FaCommentDots, color: 'text-purple-500' },
     { id: 'community', name: 'WhatsApp Group', icon: FaWhatsapp, color: 'text-green-400' },
     { id: 'settings', name: 'Lock Profile', icon: FaLock, color: 'text-slate-400' },
-    { id: 'delete', name: 'Purge Account', icon: FaTrash, color: 'text-rose-500' },
+    { id: 'delete', name: 'Delete Account', icon: FaTrash, color: 'text-rose-500' },
   ], []);
 
   const resourceSubviews = useMemo(() => [
@@ -325,8 +325,7 @@ const Dashboard = () => {
           <div className="space-y-8 animate-fadeIn">
             <header className="pb-4 border-b border-stone-200 dark:border-neutral-800 flex flex-col md:flex-row md:items-end justify-between gap-4">
               <div>
-                <h1 className="text-3xl md:text-4xl font-serif text-amber-900 dark:text-amber-100 font-bold">Executive Dashboard</h1>
-                <p className="text-stone-500 dark:text-neutral-400 text-[11px] mt-1.5 uppercase font-bold tracking-widest">System Metrics Evaluation Matrix</p>
+                <h1 className="text-3xl md:text-4xl font-serif text-amber-900 dark:text-amber-100 font-bold">Dashboard</h1>
               </div>
               
               <div className="flex items-center gap-3">
@@ -355,8 +354,8 @@ const Dashboard = () => {
               </div>
             </header>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4">
-              <StatCard icon={FaUserCircle} themeColor="blue" label="Meeting Presence" value={stats.meetingCount} sub="" />
+            <div className="grid grid-cols-1 sm:grid-cols-4 lg:grid-cols-4 xl:grid-cols-4 gap-6">
+              <StatCard icon={FaUserCircle} themeColor="blue" label="Total Activites" value={stats.meetingCount} sub="" />
               <StatCard 
                 icon={FaCalendarCheck} 
                 themeColor="amber" 
@@ -373,7 +372,7 @@ const Dashboard = () => {
                 onClick={() => currentUser?.role === 'admin' ? setActiveHistoryModal('served') : handleViewChange('personalLedger')}
                 isInteractive
               />
-              <StatCard icon={FaTasks} themeColor="purple" label="Community Tasks" value={stats.otherActivitiesCount} sub="Verified Tasks" />
+              {/* <StatCard icon={FaTasks} themeColor="purple" label="Community Tasks" value={stats.otherActivitiesCount} sub="Verified Tasks" /> */}
               <StatCard 
                 icon={FaMoneyBillWave} 
                 themeColor="amber" 
@@ -382,10 +381,10 @@ const Dashboard = () => {
                 sub="Cleared Balance" 
               />
             </div>
-
+{/* 
             <div className="mt-8 bg-white dark:bg-neutral-900 rounded-2xl border border-stone-200 dark:border-neutral-800 shadow-sm p-4">
               <GuildAnalyticsDashboard metrics={stats} />
-            </div>
+            </div> */}
           </div>
         );
       case 'activityRatings':
@@ -520,7 +519,6 @@ const Dashboard = () => {
         <aside className={`${isSidebarOpen ? 'w-64' : 'w-0'} absolute md:relative z-40 h-full bg-white dark:bg-neutral-900/40 flex flex-col border-r border-stone-200 dark:border-neutral-800 transition-all duration-300 overflow-hidden`}>
           <div className="p-6 w-64 flex-1 overflow-y-auto space-y-8">
             <div>
-              <p className="text-amber-800 dark:text-amber-600 text-[10px] font-black uppercase tracking-[0.2em] mb-4 opacity-70">Operations</p>
               <div className="space-y-1">
                 <button 
                   onClick={() => handleViewChange('overview')} 
@@ -539,7 +537,7 @@ const Dashboard = () => {
                   onClick={() => handleViewChange('personalLedger')} 
                   className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-[11px] font-bold uppercase tracking-wider transition-all ${activeView === 'personalLedger' ? 'bg-amber-800 text-white shadow-md shadow-amber-900/10' : 'text-stone-600 dark:text-neutral-400 hover:bg-stone-50 dark:hover:bg-neutral-800'}`}
                 >
-                  <FaAward size={14} /> My Ledger
+                  <FaAward size={14} /> Mass Served
                 </button>
                 
                 <div className="pt-1">
@@ -568,13 +566,12 @@ const Dashboard = () => {
             </div>
             
             <div>
-              <p className="text-amber-800 dark:text-amber-600 text-[10px] font-black uppercase tracking-[0.2em] mb-4 opacity-70">Finance</p>
               <div className="space-y-1">
                 <button 
                   onClick={() => handleViewChange('dues')} 
                   className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-[11px] font-bold uppercase tracking-wider transition-all ${activeView === 'dues' ? 'bg-amber-800 text-white shadow-md' : 'text-stone-600 dark:text-neutral-400 hover:bg-stone-50 dark:hover:bg-neutral-800 group'}`}
                 >
-                  <FaMoneyBillWave className="group-hover:text-emerald-500 transition-colors" size={14} /> Pay Dues
+                  <FaMoneyBillWave className="group-hover:text-emerald-500 transition-colors" size={14} />  Dues
                 </button>
                 <button 
                   onClick={handleLogout} 

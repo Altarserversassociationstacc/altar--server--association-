@@ -139,9 +139,6 @@ const CompleteProfile = () => {
 
   if (!user) return null;
 
-  // Determine if we should lock the level. 
-  // If the user already has a level set in the database AND their profile is complete, we lock it.
-  // (During initial registration, this is false, so they can select their starting level).
   const isLevelLocked = Boolean(user?.currentLevel && user?.isProfileComplete);
 
   return (
