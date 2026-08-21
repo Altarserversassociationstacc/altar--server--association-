@@ -325,7 +325,7 @@ const Dashboard = () => {
           <div className="space-y-8 animate-fadeIn">
             <header className="pb-4 border-b border-stone-200 dark:border-neutral-800 flex flex-col md:flex-row md:items-end justify-between gap-4">
               <div>
-                <h1 className="text-3xl md:text-4xl font-serif text-amber-900 dark:text-amber-100 font-bold">Dashboard</h1>
+                <h1 className="text-3xl md:text-4xl font-serif text-amber-900 dark:text-amber-100 font-bold">Altar Server Dashboard</h1>
               </div>
               
               <div className="flex items-center gap-3">

@@ -93,12 +93,10 @@ const StudentPersonalLedger = ({ studentName }) => {
       <div className="bg-white dark:bg-[#111] border border-stone-200 dark:border-[#d2b48c]/30 rounded-3xl p-6 shadow-xl">
         <div className="mb-6 border-b border-stone-200 dark:border-white/10 pb-4 flex justify-between items-end">
           <div>
-            <h2 className="text-2xl font-black text-stone-900 dark:text-white uppercase tracking-tight">Mass Records</h2>
-            <p className="text-xs text-stone-500 dark:text-gray-400 mt-1 uppercase font-bold tracking-widest">Select filters below to view records</p>
+            <h2 className="text-2xl font-black text-stone-900 dark:text-white">Altar server Records</h2>
           </div>
           <div className="text-right">
             <p className="text-3xl font-serif text-[#8b4513] dark:text-[#d2b48c] font-bold leading-none">{stats.served} <span className="text-lg text-stone-400">/ {stats.total}</span></p>
-            <p className="text-[10px] uppercase font-black tracking-widest text-emerald-600 dark:text-emerald-500 mt-1">Masses Served</p>
           </div>
         </div>
 
@@ -107,9 +105,6 @@ const StudentPersonalLedger = ({ studentName }) => {
           
           {/* Semester Dropdown */}
           <div className="flex flex-col">
-            <label className="text-[10px] text-stone-400 dark:text-gray-500 font-black uppercase tracking-widest mb-2">
-              Semester Section
-            </label>
             <div className="relative">
               <select
                 value={activeSemester}
@@ -128,9 +123,6 @@ const StudentPersonalLedger = ({ studentName }) => {
 
           {/* Level Dropdown */}
           <div className="flex flex-col">
-            <label className="text-[10px] text-stone-400 dark:text-gray-500 font-black uppercase tracking-widest mb-2">
-              Level Section
-            </label>
             <div className="relative">
               <select
                 value={activeLevel}
@@ -163,8 +155,7 @@ const StudentPersonalLedger = ({ studentName }) => {
         ) : displayedRecords.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-20 text-center border-2 border-dashed border-stone-200 dark:border-white/10 rounded-2xl">
             <FaChurch size={32} className="text-stone-300 dark:text-white/10 mb-4" />
-            <p className="text-sm font-bold text-stone-500 dark:text-gray-400 uppercase tracking-wide">No assignments found</p>
-            <p className="text-[10px] text-stone-400 dark:text-gray-600 uppercase tracking-widest mt-1">Try adjusting your drop-down filters</p>
+            <p className="text-sm font-bold text-stone-500 dark:text-gray-400 uppercase tracking-wide">Not found</p>
           </div>
         ) : (
           <div className="space-y-4">

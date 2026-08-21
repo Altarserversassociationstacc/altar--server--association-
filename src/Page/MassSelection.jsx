@@ -165,8 +165,7 @@ const MassSelection = () => {
       {/* 🏛️ TOP ACTION CONTROL BANNER WITH NEW FILTERS */}
       <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 border-b-2 border-[#e6d5c3] dark:border-white/10 pb-6 transition-colors">
         <div>
-          <h2 className="text-4xl md:text-3xl font-black text-gray-900 dark:text-white tracking-tight uppercase">ASA Roadmap</h2>
-          <p className="text-sm text-[#8b4513] dark:text-amber-500 font-bold uppercase tracking-widest mt-2">🛡️ Universal Multi-Year Roster Ledger Matrix Archive</p>
+          <h2 className="text-4xl md:text-3xl font-black text-gray-900 dark:text-white tracking-tight uppercase">Altar server</h2>
         </div>
 
         <div className="flex flex-col sm:flex-row gap-3 w-full lg:w-auto">
@@ -307,8 +306,7 @@ const MassSelection = () => {
               <FaCalendarDay size={20} />
             </div>
             <div>
-              <h3 className="text-2xl font-serif text-gray-900 dark:text-white uppercase tracking-wide">Liturgical Deployment: {selectedDateString}</h3>
-              <p className="text-xs text-gray-500 uppercase font-bold tracking-widest">Displaying the active rosters synced across selected temporal points</p>
+              <h3 className="text-2xl font-serif text-gray-900 dark:text-white lowercase tracking-wide">Liturgical Deployment: {selectedDateString}</h3>
             </div>
           </div>
 

@@ -34,7 +34,7 @@ const Community = ({ user, setCurrentUser }) => {
         <h3 className="text-2xl font-serif text-[#8b4513] dark:text-[#d2b48c] mb-2 tracking-tight">ASA WhatsApp Community</h3>
         <p className="text-gray-700 dark:text-gray-400 text-xs mt-2 mb-8 font-light uppercase tracking-widest leading-relaxed">
           By joining the community, you will be able to see all specialized sub-groups. <br /><br />
-          <strong className="text-[#8b4513]">Note:</strong> Access to certain groups requires approval from the Secretary General.
+          <strong className="text-[#8b4513]">Note:</strong> Access to certain groups requires approval from the Admin.
         </p>
 
         <button
@@ -46,7 +46,7 @@ const Community = ({ user, setCurrentUser }) => {
 
         {user?.communityRequest === 'pending' && (
           <p className="text-[10px] text-yellow-600 mt-4 italic">
-            Your request has been logged. The Secretary General will review any sub-group requests you make on WhatsApp.
+            Your request has been logged. The Admin will review any sub-group requests you make on WhatsApp.
           </p>
         )}
         

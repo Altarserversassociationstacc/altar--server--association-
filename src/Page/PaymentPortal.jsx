@@ -21,10 +21,9 @@ const PaymentPortal = ({ currentUser, onPaymentSuccess, onClose }) => {
 
   const [formData, setFormData] = useState({
     narration: 'Sessional Dues', 
-    level: '400L',
-    year: '2025/2026',
-    session: 'Harmattan Semester',
-    amount: '5000' 
+    level: '',
+    year: '',
+    amount: '' 
   });
   
   const [receiptDetails, setReceiptDetails] = useState(null);
@@ -224,7 +223,7 @@ const PaymentPortal = ({ currentUser, onPaymentSuccess, onClose }) => {
         <div className={`backdrop-blur-xl p-8 rounded-3xl shadow-2xl w-full max-w-md border transition-all duration-300 ${theme.card}`}>
           
           <header className={`mb-8 border-b pb-4 text-center relative ${isDarkMode ? 'border-white/5' : 'border-stone-100'}`}>
-            <button 
+            {/* <button 
               type="button"
               onClick={() => setIsDarkMode(!isDarkMode)}
               className={`absolute top-0 right-0 p-2.5 rounded-xl border transition-all duration-300 cursor-pointer ${
@@ -235,13 +234,13 @@ const PaymentPortal = ({ currentUser, onPaymentSuccess, onClose }) => {
               title={isDarkMode ? "Switch to Light Layout" : "Switch to Dark Layout"}
             >
               {isDarkMode ? <FaSun size={14} /> : <FaMoon size={14} />}
-            </button>
+            </button> */}
 
             <div className={`w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-3 border ${isDarkMode ? 'bg-amber-950/30 text-amber-500 border-amber-900/50' : 'bg-amber-50 text-amber-600 border-amber-200'}`}>
               <FaLock size={18} />
             </div>
-            <h2 className={`font-serif text-2xl uppercase tracking-wide ${isDarkMode ? 'text-[#d2b48c]' : 'text-stone-800 font-bold'}`}>Payments Portal</h2>
-            <p className={`text-xs mt-2 uppercase tracking-widest ${theme.mutedText}`}>Verify session targets securely</p>
+            <h2 className={`font-serif text-2xl uppercase tracking-wide ${isDarkMode ? 'text-[#d2b48c]' : 'text-stone-800 font-bold'}`}>Payment Portal</h2>
+            <p className={`text-xs mt-2 uppercase tracking-widest ${theme.mutedText}`}>Verify paymenet</p>
           </header>
 
           {uiError && (
@@ -253,10 +252,9 @@ const PaymentPortal = ({ currentUser, onPaymentSuccess, onClose }) => {
 
           <form onSubmit={handlePayClick} className="space-y-5">
             <div>
-              <label className={`text-[10px] font-black uppercase tracking-widest mb-1 flex items-center gap-2 ${isDarkMode ? 'text-emerald-500' : 'text-emerald-600'}`}>
-                <FaTag size={10} /> Payment Narration 
+              <label className={`text-[10px] font-black uppercase tracking-widest mb-1 flex items-center gap-2 ${isDarkMode ? 'text-white-500' : 'text-white-600'}`}>
+                <FaTag size={10} /> Narration 
               </label>
-              {/* ✅ FIX APPLIED HERE: appearance-none added, and relative div wrapper with FaChevronDown */}
               <div className="relative">
                 <select 
                   disabled={isProcessing}
@@ -264,7 +262,7 @@ const PaymentPortal = ({ currentUser, onPaymentSuccess, onClose }) => {
                   className={`appearance-none w-full rounded-xl px-4 py-3 pr-10 text-sm focus:outline-none transition-colors duration-200 border ${theme.input}`}
                   onChange={onSelectChangeHandler}
                 >
-                  <option value="Sessional Dues">Sessional Dues (Unlocks Profile)</option>
+                  <option value="Sessional Dues">Sessional Dues </option>
                   <option value="Sendforth levy and Appeal fund card">Sendforth levy and Appeal fund card</option>
                   <option value="Donation">Donation </option>
                   <option value="Other Clearance">Other Clearance</option>
@@ -277,7 +275,7 @@ const PaymentPortal = ({ currentUser, onPaymentSuccess, onClose }) => {
 
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className={`text-[10px] font-black uppercase tracking-widest mb-1 block ${theme.mutedText}`}>Target Level</label>
+                <label className={`text-[10px] font-black uppercase tracking-widest mb-1 block ${theme.mutedText}`}> Level</label>
                 {/* ✅ FIX APPLIED HERE */}
                 <div className="relative">
                   <select 
@@ -311,7 +309,7 @@ const PaymentPortal = ({ currentUser, onPaymentSuccess, onClose }) => {
             <div>
               <label className={`text-[10px] font-black uppercase tracking-widest mb-1 flex items-center justify-between ${theme.mutedText}`}>
                 <span>Amount</span>
-                {!isCustomAmountAllowed && <span className="text-[8px] text-amber-500 font-bold">Admin Managed</span>}
+                {!isCustomAmountAllowed && <span className="text-[8px] text-amber-500 font-bold">Admin </span>}
               </label>
               <div className="relative mt-1">
                 <span className={`absolute left-4 top-1/2 -translate-y-1/2 font-bold text-sm ${theme.mutedText}`}>₦</span>
@@ -328,11 +326,7 @@ const PaymentPortal = ({ currentUser, onPaymentSuccess, onClose }) => {
                   onChange={e => setFormData(prev => ({...prev, amount: e.target.value}))}
                 />
               </div>
-              {formData.amount && (
-                <p className={`text-[9px] font-medium mt-1.5 tracking-wide uppercase ${isDarkMode ? 'text-amber-400/80' : 'text-amber-600/90'}`}>
-                  * Note: Paystack platform handling gateway surcharges will be computed at payment step.
-                </p>
-              )}
+        
             </div>
 
             <button 
@@ -342,7 +336,7 @@ const PaymentPortal = ({ currentUser, onPaymentSuccess, onClose }) => {
               {isProcessing ? (
                 <><FaCircleNotch className="animate-spin" size={14} /> Contacting Bank Gateway...</>
               ) : (
-                <><FaArrowRight size={12} /> Complete Secure Payment</>
+                <><FaArrowRight size={12} /> Complete Payment</>
               )}
             </button>
           </form>

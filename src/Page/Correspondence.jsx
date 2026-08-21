@@ -7,8 +7,8 @@ const API_BASE_URL = import.meta.env.VITE_API_BASE_URL?.replace(/\/$/, '') || 'h
 
 const Correspondence = ({ user }) => {
   const [form, setForm] = useState({
-    recipient: 'Secretary General',
-    subject: 'Excuse from Meeting',
+    recipient: '',
+    subject: '',
     message: ''
   });
   const [status, setStatus] = useState({ loading: false, error: '', success: '' });
@@ -53,7 +53,6 @@ const Correspondence = ({ user }) => {
           </div>
           <div>
             <h3 className="text-gray-900 dark:text-white font-serif text-xl">Send a Message</h3>
-            <p className="text-gray-600 dark:text-gray-400 text-[10px] uppercase tracking-widest mt-1">Submit excuses or general inquiries directly to the executives</p>
           </div>
         </div>
 
@@ -71,7 +70,7 @@ const Correspondence = ({ user }) => {
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
-              <label className="block text-[#8b4513] text-[10px] font-bold uppercase tracking-widest mb-2">Recipient (Executive)</label>
+              <label className="block text-[#8b4513] text-[10px] font-bold uppercase tracking-widest mb-2">Recipient</label>
               <div className="relative group">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-[#8b4513] dark:text-gray-500 opacity-70 group-focus-within:opacity-100 transition-colors">
                   <FaUserTie size={14} />
@@ -81,24 +80,23 @@ const Correspondence = ({ user }) => {
                   onChange={(e) => setForm({ ...form, recipient: e.target.value })}
                   className="w-full bg-transparent dark:bg-white/5 border border-[#e6d5c3] dark:border-white/10 rounded-lg pl-10 p-3.5 text-sm text-gray-900 dark:text-[#d2b48c] focus:ring-2 focus:ring-[#8b4513]/50 focus:border-[#8b4513] outline-none transition-all appearance-none cursor-pointer"
                 >
-                  <option value="Secretary General">Secretary General</option>
-                  <option value="PRO">Public Relations Officer (PRO)</option>
-                  <option value="President">President</option>
-                  <option value="Liturgical Coordinator">Liturgical Coordinator</option>
+                  <option value="PRO">Public Relations Officer</option>
+                  <option value="President">Chief Sacristian</option>
+                  <option value="Liturgical Coordinator">Practice Coordinator</option>
                 </select>
               </div>
             </div>
 
             <div>
-              <label className="block text-[#8b4513] text-[10px] font-bold uppercase tracking-widest mb-2">Subject / Reason</label>
+              <label className="block text-[#8b4513] text-[10px] font-bold uppercase tracking-widest mb-2"> Reason</label>
               <select
                 value={form.subject}
                 onChange={(e) => setForm({ ...form, subject: e.target.value })}
-                className="w-full bg-transparent dark:bg-white/5 border border-[#e6d5c3] dark:border-white/10 rounded-lg p-3.5 text-sm text-gray-900 dark:text-[#d2b48c] focus:ring-2 focus:ring-[#8b4513]/50 focus:border-[#8b4513] outline-none transition-all cursor-pointer"
+                className="w-full bg-gray dark:bg-white/5 border border-[#e6d5c3] dark:border-gray/10 rounded-lg p-3.5 text-sm text-gray-900 dark:text-[#d2b48c] focus:ring-2 focus:ring-[#8b4513]/50 focus:border-[#8b4513] outline-none transition-all cursor-pointer"
               >
                 <option value="Excuse from Meeting">Excuse from Meeting</option>
-                <option value="Excuse from Mass/Duty">Excuse from Mass/Duty</option>
-                <option value="General Inquiry">General Inquiry</option>
+                <option value="Excuse from Mass/Duty">Excuse from Mass</option>
+                <option value="General Inquiry">General</option>
                 <option value="Suggestion">Suggestion / Feedback</option>
               </select>
             </div>
