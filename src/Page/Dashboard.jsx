@@ -192,11 +192,11 @@ const Dashboard = () => {
     const baseTimeout = setTimeout(() => setIsViewLoading(false), VIEW_LOAD_TIMEOUT);
     return () => clearTimeout(baseTimeout);
   }, [activeView]);
-
-  const handleLogout = useCallback(() => {
-    localStorage.clear();
-    window.location.href = '/login';
-  }, []);
+const handleLogout = useCallback(() => {
+  localStorage.clear();
+  sessionStorage.clear(); 
+  window.location.href = '/'; 
+}, []);
 
   const handleAccountPurge = useCallback(async () => {
     if (!window.confirm("Permanent deletion cannot be undone. Proceed?")) return;
