@@ -3,8 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import { FaEnvelope, FaLock, FaArrowRight, FaEye, FaEyeSlash } from 'react-icons/fa';
 import { PulseLoader } from 'react-spinners';
 import axios from 'axios';
-
-// 🎯 Network Alignment Layer: Connects seamlessly to Render production url or defaults locally
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL?.replace(/\/$/, '') || 'http://localhost:5001';
 
 const Login = () => {
@@ -38,8 +36,6 @@ const Login = () => {
 
     try {
       const response = await axios.post(`${API_BASE_URL}/api/student/login`, formData);
-      
-      // Store the logged-in user's information and secure token in the browser's localStorage
       localStorage.setItem('user', JSON.stringify(response.data.user));
       localStorage.setItem('token', response.data.token);
       
@@ -56,8 +52,6 @@ const Login = () => {
     } catch (err) {
       const message = err.response?.data?.message || 'Something went wrong. Please try again.';
       setError(message);
-      
-      // Handle account state errors (Not approved or not verified)
       if (err.response?.status === 403) {
         if (message.toLowerCase().includes('approved')) {
           setTimeout(() => navigate('/pending-approval'), 2000);
@@ -70,8 +64,6 @@ const Login = () => {
       setLoading(false);
     }
   };
-
-  // 🛠️ Optimized Component Input Macro Renderer
   const renderInputField = (name, type, placeholder, Icon, required = true, isPasswordField = false) => (
     <div className="relative mb-5 group">
       <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-[#8b4513] dark:text-[#d2b48c] opacity-70 group-focus-within:opacity-100 transition-colors">
